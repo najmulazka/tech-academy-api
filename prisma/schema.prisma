@@ -20,6 +20,7 @@ model User {
   negara          String?
   gambarProfile   String?
   fileId          String?
+  isActivated     Boolean  @default(false)
   isAdmin         Boolean  @default(false)
   googleId        String?
   notifikasi      Notifikasi[]

@@ -1,7 +1,7 @@
 const notFoundHandler = (req, res) => {
   res.status(404).json({
     error: {
-      status: 404,
+      status: false,
       message: "Resource not found",
     },
   });

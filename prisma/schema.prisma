@@ -11,30 +11,31 @@ datasource db {
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
-  namaLengkap     String
-  email           String   @unique
-  password        String?
-  noTelp          String?
-  kota            String?
-  negara          String?
-  gambarProfile   String?
-  fileId          String?
-  isActivated     Boolean  @default(false)
-  isAdmin         Boolean  @default(false)
-  googleId        String?
-  notifikasi      Notifikasi[]
-  transaksi       Transaksi[]
-  activationCode  ActivationCode[]
-  resetCode       ResetCode[]
+  id             Int              @id @default(autoincrement())
+  namaLengkap    String
+  email          String           @unique
+  password       String?
+  noTelp         String?
+  otp            String?
+  kota           String?
+  negara         String?
+  gambarProfile  String?
+  fileId         String?
+  isActivated    Boolean          @default(false)
+  isAdmin        Boolean          @default(false)
+  googleId       String?
+  notifikasi     Notifikasi[]
+  transaksi      Transaksi[]
+  activationCode ActivationCode[]
+  resetCode      ResetCode[]
 }
 
 model ActivationCode {
-  id              Int      @id @default(autoincrement())
-  userId          Int
-  activationCode  String
-  createdAt       DateTime  @default(now())
-  user            User      @relation(fields: [userId], references: [id])
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  activationCode String
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id])
 }
 
 model ResetCode {
@@ -46,57 +47,56 @@ model ResetCode {
 }
 
 model Notifikasi {
-  id          Int      @id @default(autoincrement())
-  title       String
-  body        String
-  deskripsi   String?
-  dateTime    DateTime @default(now()) 
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  title     String
+  body      String
+  deskripsi String?
+  dateTime  DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 }
 
-model Tipe{
+model Tipe {
   id        Int     @id @default(autoincrement())
   tipeKelas String
   kelas     Kelas[]
 }
 
-model Level{
+model Level {
   id        Int     @id @default(autoincrement())
   namaLevel String
   kelas     Kelas[]
 }
 
-model Kategori{
-  id            Int     @id @default(autoincrement())
-  namaKategori  String
-  kelas         Kelas[]
+model Kategori {
+  id           Int     @id @default(autoincrement())
+  namaKategori String
+  kelas        Kelas[]
 }
 
-model Kelas{
-  kodeKelas   String     @unique
-  namaKelas   String
-  harga       Decimal
-  materi      String
-  vidio       String
-  fileId      String
-  tipeId      Int 
-  levelId     Int 
-  kategoriId  Int
-  tipe        Tipe        @relation(fields: [tipeId], references: [id])
-  level       Level       @relation(fields: [levelId], references: [id])
-  kategori    Kategori    @relation(fields: [kategoriId], references: [id])
-  transaksi   Transaksi[]
+model Kelas {
+  kodeKelas  String      @unique
+  namaKelas  String
+  harga      Decimal
+  materi     String
+  vidio      String
+  fileId     String
+  tipeId     Int
+  levelId    Int
+  kategoriId Int
+  tipe       Tipe        @relation(fields: [tipeId], references: [id])
+  level      Level       @relation(fields: [levelId], references: [id])
+  kategori   Kategori    @relation(fields: [kategoriId], references: [id])
+  transaksi  Transaksi[]
 }
 
-model Transaksi{
-  id            Int       @id @default(autoincrement())
-  status        Boolean   @default(false)
-  metode        String
-  tanggalBayar  DateTime
-  userId        Int
-  kodeKelas     String
-  user          User      @relation(fields: [userId], references: [id])
-  kelas         Kelas     @relation(fields: [kodeKelas], references: [kodeKelas])
+model Transaksi {
+  id           Int      @id @default(autoincrement())
+  status       Boolean  @default(false)
+  metode       String
+  tanggalBayar DateTime
+  userId       Int
+  kodeKelas    String
+  user         User     @relation(fields: [userId], references: [id])
+  kelas        Kelas    @relation(fields: [kodeKelas], references: [kodeKelas])
 }
-

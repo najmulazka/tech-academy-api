@@ -16,6 +16,8 @@ app.use(express.static(path.join(__dirname, 'views')));
 
 app.use('/api/v1', router);
 
+app.use('/api/v1/auth', require('./routes/auth.routes'));
+
 // server error handling middleware
 app.use(notFoundHandler);
 app.use(errorHandler);

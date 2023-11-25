@@ -10,93 +10,123 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id             Int              @id @default(autoincrement())
-  namaLengkap    String
-  email          String           @unique
-  password       String?
-  noTelp         String?
-  otp            String?
-  kota           String?
-  negara         String?
-  gambarProfile  String?
-  fileId         String?
-  isActivated    Boolean          @default(false)
-  isAdmin        Boolean          @default(false)
-  googleId       String?
-  notifikasi     Notifikasi[]
-  transaksi      Transaksi[]
-  activationCode ActivationCode[]
-  resetCode      ResetCode[]
+model Users {
+  id              Int               @id @default(autoincrement())
+  fullName        String
+  email           String            @unique
+  password        String?
+  noTelp          String?
+  city            String?
+  country         String?
+  profilePicture  String?
+  fileId          String?
+  isActivated     Boolean           @default(false)
+  isAdmin         Boolean           @default(false)
+  googleId        String?
+  notification    Notifications[]
+  transactions    Transactions[]
+  activationCodes ActivationCodes[]
+  resetCodes      ResetCodes[]
 }
 
-model ActivationCode {
+model ActivationCodes {
   id             Int      @id @default(autoincrement())
-  userId         Int
+  userId         Int      @unique
   activationCode String
   createdAt      DateTime @default(now())
-  user           User     @relation(fields: [userId], references: [id])
+  users          Users    @relation(fields: [userId], references: [id])
 }
 
-model ResetCode {
+model ResetCodes {
   id        Int      @id @default(autoincrement())
-  userId    Int
+  userId    Int      @unique
   resetCode String
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  users     Users    @relation(fields: [userId], references: [id])
 }
 
-model Notifikasi {
+model Notifications {
   id        Int      @id @default(autoincrement())
   title     String
   body      String
   deskripsi String?
   dateTime  DateTime @default(now())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  users     Users    @relation(fields: [userId], references: [id])
 }
 
-model Tipe {
+model Type {
   id        Int     @id @default(autoincrement())
-  tipeKelas String
-  kelas     Kelas[]
+  classType String
+  class     Class[]
 }
 
 model Level {
   id        Int     @id @default(autoincrement())
-  namaLevel String
-  kelas     Kelas[]
+  levelName String
+  class     Class[]
 }
 
-model Kategori {
-  id           Int     @id @default(autoincrement())
-  namaKategori String
-  kelas        Kelas[]
+model Categorys {
+  id           Int                 @id @default(autoincrement())
+  categoryName String
+  class        CategoriesOnClass[]
 }
 
-model Kelas {
-  kodeKelas  String      @unique
-  namaKelas  String
-  harga      Decimal
-  materi     String
-  vidio      String
-  fileId     String
-  tipeId     Int
-  levelId    Int
-  kategoriId Int
-  tipe       Tipe        @relation(fields: [tipeId], references: [id])
-  level      Level       @relation(fields: [levelId], references: [id])
-  kategori   Kategori    @relation(fields: [kategoriId], references: [id])
-  transaksi  Transaksi[]
+model CategoriesOnClass {
+  classCode  String
+  categoryId Int
+  categorys  Categorys @relation(fields: [categoryId], references: [id])
+  class      Class     @relation(fields: [classCode], references: [classCode])
+
+  @@id([classCode, categoryId])
 }
 
-model Transaksi {
-  id           Int      @id @default(autoincrement())
-  status       Boolean  @default(false)
-  metode       String
-  tanggalBayar DateTime
-  userId       Int
-  kodeKelas    String
-  user         User     @relation(fields: [userId], references: [id])
-  kelas        Kelas    @relation(fields: [kodeKelas], references: [kodeKelas])
+model Class {
+  classCode    String              @unique
+  className    String
+  description  String
+  price        Decimal
+  typeId       Int
+  levelId      Int
+  type         Type                @relation(fields: [typeId], references: [id])
+  level        Level               @relation(fields: [levelId], references: [id])
+  chapters     ChapterOnClass[]
+  categorys    CategoriesOnClass[]
+  transactions Transactions[]
+}
+
+model ChapterOnClass {
+  classCode String
+  chapterId Int
+  chapters  Chapters @relation(fields: [chapterId], references: [id])
+  class     Class    @relation(fields: [classCode], references: [classCode])
+
+  @@id([classCode, chapterId])
+}
+
+model Chapters {
+  id          Int              @id @default(autoincrement())
+  chapterName String
+  class       ChapterOnClass[]
+  lessons     Lessons[]
+}
+
+model Lessons {
+  id                   Int      @id @default(autoincrement())
+  learningMaterial     String
+  linkLearningMaterial String
+  chapterId            Int
+  chapters             Chapters @relation(fields: [chapterId], references: [id])
+}
+
+model Transactions {
+  id            Int      @id @default(autoincrement())
+  status        Boolean  @default(false)
+  paymentMethod String
+  paymentDate   DateTime
+  userId        Int
+  classCode     String
+  users         Users    @relation(fields: [userId], references: [id])
+  class         Class    @relation(fields: [classCode], references: [classCode])
 }

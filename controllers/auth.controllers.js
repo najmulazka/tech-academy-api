@@ -2,13 +2,12 @@ const prisma = require("../utils/libs/prisma.libs");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET_KEY } = process.env;
-
 const { generateOTP } = require("../utils/libs/otp.libs");
 const nodemailer = require("../utils/libs/nodemailer.libs");
 
 const register = async (req, res, next) => {
   try {
-    const { namaLengkap, email, noTelp, password } = req.body;
+    const { fullName, email, noTelp, password } = req.body;
     const otp = generateOTP();
 
     if (!email) {
@@ -20,7 +19,7 @@ const register = async (req, res, next) => {
       });
     }
 
-    let userExist = await prisma.user.findUnique({ where: { email } });
+    let userExist = await prisma.Users.findUnique({ where: { email } });
     if (userExist) {
       return res.status(400).json({
         status: false,
@@ -31,9 +30,9 @@ const register = async (req, res, next) => {
     }
 
     let encryptedPassword = await bcrypt.hash(password, 10);
-    let user = await prisma.user.create({
+    let user = await prisma.Users.create({
       data: {
-        namaLengkap,
+        fullName,
         email,
         noTelp,
         password: encryptedPassword,
@@ -71,7 +70,7 @@ const resendOTP = async (req, res, next) => {
       });
     }
 
-    let userExist = await prisma.user.findUnique({ where: { email } });
+    let userExist = await prisma.Users.findUnique({ where: { email } });
     if (!userExist) {
       return res.status(404).json({
         status: false,
@@ -82,12 +81,11 @@ const resendOTP = async (req, res, next) => {
     }
 
     const otp = generateOTP();
-    let user = await prisma.user.update({
+    let user = await prisma.Users.update({
       where: { email },
       data: { otp },
     });
 
-    let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
     const htmlOtp = await nodemailer.getHtml("otp-message.ejs", {
       user: { otp },
     });
@@ -106,7 +104,7 @@ const resendOTP = async (req, res, next) => {
 
 const verifyOTP = async (req, res, next) => {
   try {
-    const { email, otp } = req.body;
+    const { namaLengkap, email, otp } = req.body;
 
     if (!email || !otp) {
       return res.status(400).json({
@@ -117,7 +115,7 @@ const verifyOTP = async (req, res, next) => {
       });
     }
 
-    let userExist = await prisma.user.findUnique({ where: { email } });
+    let userExist = await prisma.Users.findUnique({ where: { email } });
     if (!userExist) {
       return res.status(404).json({
         status: false,
@@ -136,13 +134,13 @@ const verifyOTP = async (req, res, next) => {
       });
     }
 
-    let user = await prisma.user.update({
+    let user = await prisma.Users.update({
       where: { email },
       data: { otp: null },
     });
 
     const htmlOtp = await nodemailer.getHtml("welcome-message.ejs", {
-      namaLengkap: user.namaLengkap,
+      namaLengkap,
     });
     nodemailer.sendEmail(email, "Berhasil", htmlOtp);
 
@@ -151,6 +149,218 @@ const verifyOTP = async (req, res, next) => {
       message: "OTP verified successfully",
       err: null,
       data: { email },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const login = async (req, res, next) => {
+  try {
+    let { email, password } = req.body;
+    const user = await prisma.Users.findUnique({ where: { email } });
+    if (!user) {
+      return res.status(400).json({
+        status: false,
+        message: "Bad Request",
+        err: "Email atau password salah",
+        data: null,
+      });
+    }
+
+    let isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+      return res.status(400).json({
+        status: false,
+        message: "Bad Request",
+        err: "Email atau password salah",
+        data: null,
+      });
+    }
+
+    let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
+    res.status(200).json({
+      status: true,
+      message: "OK",
+      err: null,
+      data: { user, token },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const forrgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        status: false,
+        message: "Bad Request",
+        error: "Email  are required",
+        data: null,
+      });
+    }
+
+    const user = await prisma.Users.findUnique({ where: { email } });
+    if (!user) {
+      return res.status(400).json({
+        status: false,
+        message: "Bad Request!",
+        err: "User does not exist",
+        data: null,
+      });
+    }
+
+    const otp = generateOTP();
+    await prisma.resetCodes.upsert({
+      where: { userId: user.id },
+      create: {
+        userId: user.id,
+        resetCode: otp,
+        createdAt: new Date(Date.now()),
+      },
+      update: {
+        resetCode: otp,
+        createdAt: new Date(Date.now()),
+      },
+    });
+
+    let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
+
+    const htmlOtp = await nodemailer.getHtml("forrgot-password.ejs", {
+      otp,
+      fullName: user.fullName,
+    });
+    nodemailer.sendEmail(email, "Lupa Password", htmlOtp);
+
+    return res.status(200).json({
+      status: true,
+      message: "OK!",
+      err: null,
+      data: { user, otp, token },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const resendOtpPassword = async (req, res, next) => {
+  try {
+    let { authorization } = req.headers;
+
+    jwt.verify(authorization, JWT_SECRET_KEY, async (err, decoded) => {
+      if (err) {
+        return res.status(400).json({
+          status: false,
+          message: "Bad Request",
+          err: err.message,
+          data: null,
+        });
+      }
+
+      console.log(decoded);
+
+      let user = await prisma.Users.findUnique({
+        where: { email: decoded.email },
+      });
+      if (!user) {
+        return res.status(400).json({
+          status: false,
+          message: "Bad Request",
+          err: "User does not exist",
+          data: null,
+        });
+      }
+
+      const otp = generateOTP();
+      let updateResetCode = await prisma.resetCodes.update({
+        where: { userId: user.id },
+        data: {
+          resetCode: otp,
+          createdAt: new Date(Date.now()),
+        },
+      });
+
+      const htmlOtp = await nodemailer.getHtml("forrgot-password.ejs", {
+        otp,
+        fullName: user.fullName,
+      });
+      nodemailer.sendEmail(decoded.email, "Lupa Password", htmlOtp);
+
+      return res.status(200).json({
+        status: true,
+        message: "resend OTP forrgot password resent successfully",
+        err: null,
+        data: { user, otp },
+      });
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const verifyOtpForrgotPassword = async (req, res, next) => {
+  try {
+    const { otp } = req.body;
+    let { authorization } = req.headers;
+
+    jwt.verify(authorization, JWT_SECRET_KEY, async (err, decoded) => {
+      if (err) {
+        return res.status(400).json({
+          status: false,
+          message: "Bad Request",
+          err: err.message,
+          data: null,
+        });
+      }
+
+      if (!otp) {
+        return res.status(400).json({
+          status: false,
+          message: "Bad Request",
+          error: "OTP are required",
+          data: null,
+        });
+      }
+
+      let user = await prisma.Users.findUnique({
+        where: { email: decoded.email },
+      });
+      if (!user) {
+        return res.status(400).json({
+          status: false,
+          message: "Bad Request!",
+          err: "User does not exist",
+          data: null,
+        });
+      }
+
+      let result = await prisma.resetCodes.findFirst({
+        where: {
+          userId: user.id,
+          resetCode: otp,
+          createdAt: {
+            gte: new Date(Date.now() - 5 * 60 * 1000), // Valid selama 5 menit
+          },
+        },
+      });
+
+      if (!result) {
+        return res.status(400).json({
+          status: false,
+          message: "Bad Request",
+          err: "Invalid OTP",
+          data: null,
+        });
+      }
+
+      return res.status(200).json({
+        status: true,
+        message: "OTP verified password successfully",
+        err: null,
+        data: { user },
+      });
     });
   } catch (err) {
     next(err);
@@ -180,7 +390,7 @@ const changePassword = async (req, res, next) => {
       });
     }
 
-    const userExist = await prisma.user.findUnique({ where: { email } });
+    const userExist = await prisma.Users.findUnique({ where: { email } });
 
     if (!userExist) {
       return res.status(404).json({
@@ -207,7 +417,7 @@ const changePassword = async (req, res, next) => {
 
     const encryptedNewPassword = await bcrypt.hash(newPassword, 10);
 
-    let user = await prisma.user.update({
+    let user = await prisma.Users.update({
       where: { email },
       data: { password: encryptedNewPassword },
     });
@@ -229,5 +439,9 @@ module.exports = {
   register,
   resendOTP,
   verifyOTP,
+  login,
   changePassword,
+  forrgotPassword,
+  resendOtpPassword,
+  verifyOtpForrgotPassword,
 };

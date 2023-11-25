@@ -12,10 +12,21 @@ POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "fullName":"Najmul Azka",
-    "email":"najmulazka369@gmail.com",
+    "fullName":"imran",
+    "email":"muhammadalimran22@gmail.com",
     "noTelp":"085326678543",
     "password":"najmul"
+}
+
+### change-password
+POST http://localhost:3000/api/v1/auth/change-password
+Content-Type: application/json
+
+{
+    "email":"muhammadalimran22@gmail.com",
+    "currentPassword":"",
+    "new_password":"",
+    "new_password_confirm":""
 }
 
 #### VERIVY-OTP
@@ -24,12 +35,11 @@ Content-Type: application/json
 
 {
     "email":"muhammadalimran22@gmail.com",
-    "otp":"447569"
+    "activationCode":"519812"
 }
 
 ####
-GET http://localhost:3000/api/v1/auth/resend-otp?email=muhammadalimran22@gmail.com
-
+GET http://localhost:3000/api/v1/auth/resend-otp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMDkwNzMwMX0.UIWbCdaX9wjr4BoeEPPF8480boZl2vaI8HDzJ2kg80g
 
 #### RESEND-OTP
 POST http://localhost:3000/api/v1/auth/resend-otp
@@ -53,10 +63,10 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzN
 
 #### VERIFY OTP PASSWORD
 POST http://localhost:3000/api/v1/auth/verify-otp-password
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAwODQ3Mzk0fQ.rTbhoADrKe6sgrXmcoawzfHrw84YlxlgblFPtn-k9Aw
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMDkwMTM2Mn0.aKgi1xnMn0xSs7M2KOs_onlERV0Prb7QC6kCMMSNAm8
 Content-Type: application/json
 
 {
-    "email":"najmulazka369@gmail.com",
-    "otp":"527918"
+    "email":"muhammadalimran22@gmail.com",
+    "otp":"644622"
 }

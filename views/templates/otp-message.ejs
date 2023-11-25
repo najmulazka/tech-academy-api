@@ -1,49 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>SkyPass OTP Verification</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechAcademy OTP Verification</title>
     <style>
-      /* Styling email content */
       body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        padding: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        text-align: center;
       }
 
       .container {
         max-width: 600px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 40px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        margin: 20px auto;
       }
 
       h1 {
-        color: #333;
+        color: #4b0082;
         margin-top: 0;
+        font-size: 20px;
       }
 
       p {
-        color: #777;
-        line-height: 1.5;
+        color: #333;
+        line-height: 1.6;
+        margin-bottom: 15px;
       }
 
       .otp-code {
         font-weight: bold;
-        font-size: 36px;
-        color: #ff6600;
+        font-size: 24px;
+        color: #4b0082;
         margin-top: 20px;
-      }
-
-      .cta-button {
-        display: inline-block;
-        background-color: #ff6600;
-        color: #fff;
-        text-decoration: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        margin-top: 30px;
       }
     </style>
   </head>
@@ -51,13 +43,12 @@
     <div class="container">
       <h1>TechAcademy OTP Verification</h1>
       <p>
-        Welcome to TechAcademyApi! To complete your registration, please enter
-        the following OTP code:
+        Welcome to TechAcademy! To complete your registration, please enter the
+        following OTP code:
       </p>
-      <p class="otp-code"><%= user.otp %></p>
+      <p class="otp-code"><%= user.activationCode %></p>
       <p>If you didn't sign up for TechAcademy, please disregard this email.</p>
       <p>Thank you for choosing TechAcademy.</p>
-      <p>Team TechAcademy</p>
     </div>
   </body>
 </html>

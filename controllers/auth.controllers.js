@@ -8,7 +8,6 @@ const nodemailer = require("../utils/libs/nodemailer.libs");
 const register = async (req, res, next) => {
   try {
     const { fullName, email, noTelp, password } = req.body;
-    const otp = generateOTP();
 
     if (!email) {
       return res.status(400).json({
@@ -19,7 +18,7 @@ const register = async (req, res, next) => {
       });
     }
 
-    let userExist = await prisma.Users.findUnique({ where: { email } });
+    let userExist = await prisma.users.findUnique({ where: { email } });
     if (userExist) {
       return res.status(400).json({
         status: false,
@@ -30,27 +29,40 @@ const register = async (req, res, next) => {
     }
 
     let encryptedPassword = await bcrypt.hash(password, 10);
-    let user = await prisma.Users.create({
+    let user = await prisma.users.create({
       data: {
         fullName,
         email,
         noTelp,
         password: encryptedPassword,
-        otp,
+      },
+    });
+
+    const otp = generateOTP();
+    await prisma.activationCodes.upsert({
+      where: { userId: user.id },
+      create: {
+        userId: user.id,
+        activationCode: otp,
+        createdAt: new Date(),
+      },
+      update: {
+        activationCode: otp,
+        createdAt: new Date(),
       },
     });
 
     let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
     const htmlOtp = await nodemailer.getHtml("otp-message.ejs", {
-      user: { otp },
+      user: { activationCode: otp },
     });
-    nodemailer.sendEmail(email, "OTP Verification", htmlOtp);
+    nodemailer.sendEmail(email, "Activation Code Verification", htmlOtp);
 
     return res.status(200).json({
       status: true,
       message: "Created",
       err: null,
-      data: { user, token },
+      data: { fullName, email, noTelp, password, token },
     });
   } catch (err) {
     next(err);
@@ -59,19 +71,24 @@ const register = async (req, res, next) => {
 
 const resendOTP = async (req, res, next) => {
   try {
-    const { email } = req.query;
+    const { token } = req.query;
 
-    if (!email) {
+    if (!token) {
       return res.status(400).json({
         status: false,
         message: "Bad Request",
-        error: "Email is required",
+        error: "Token is required",
         data: null,
       });
     }
 
-    let userExist = await prisma.Users.findUnique({ where: { email } });
-    if (!userExist) {
+    const decodedToken = jwt.verify(token, JWT_SECRET_KEY);
+    const { email } = decodedToken;
+    let user = await prisma.users.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
       return res.status(404).json({
         status: false,
         message: "Not Found",
@@ -81,21 +98,33 @@ const resendOTP = async (req, res, next) => {
     }
 
     const otp = generateOTP();
-    let user = await prisma.Users.update({
-      where: { email },
-      data: { otp },
+    await prisma.activationCodes.upsert({
+      where: { userId: user.id },
+      create: {
+        userId: user.id,
+        activationCode: otp,
+        createdAt: new Date(),
+      },
+      update: {
+        activationCode: otp,
+        createdAt: new Date(),
+      },
+    });
+
+    await prisma.activationCodes.findFirst({
+      where: { userId: user.id },
     });
 
     const htmlOtp = await nodemailer.getHtml("otp-message.ejs", {
-      user: { otp },
+      user: { activationCode: otp },
     });
-    nodemailer.sendEmail(email, "OTP Verification", htmlOtp);
+    nodemailer.sendEmail(email, "Activation Code Resent", htmlOtp);
 
     return res.status(200).json({
       status: true,
       message: "OTP resent successfully",
       err: null,
-      data: { token },
+      data: { email, token },
     });
   } catch (err) {
     next(err);
@@ -104,9 +133,9 @@ const resendOTP = async (req, res, next) => {
 
 const verifyOTP = async (req, res, next) => {
   try {
-    const { namaLengkap, email, otp } = req.body;
+    const { email, activationCode } = req.body;
 
-    if (!email || !otp) {
+    if (!email || !activationCode) {
       return res.status(400).json({
         status: false,
         message: "Bad Request",
@@ -115,8 +144,8 @@ const verifyOTP = async (req, res, next) => {
       });
     }
 
-    let userExist = await prisma.Users.findUnique({ where: { email } });
-    if (!userExist) {
+    let user = await prisma.users.findUnique({ where: { email } });
+    if (!user) {
       return res.status(404).json({
         status: false,
         message: "Not Found",
@@ -125,30 +154,37 @@ const verifyOTP = async (req, res, next) => {
       });
     }
 
-    if (userExist.otp !== otp) {
+    let userActivationCode = await prisma.activationCodes.findFirst({
+      where: {
+        userId: user.id,
+        activationCode,
+        createdAt: { gte: new Date(Date.now() - 5 * 60 * 1000) },
+      },
+    });
+
+    if (!userActivationCode) {
       return res.status(400).json({
         status: false,
         message: "Bad Request",
-        err: "Invalid OTP",
+        err: "Invalid Activation Code or Code Expired",
         data: null,
       });
     }
 
-    let user = await prisma.Users.update({
-      where: { email },
-      data: { otp: null },
+    await prisma.activationCodes.delete({
+      where: { userId: user.id },
     });
 
     const htmlOtp = await nodemailer.getHtml("welcome-message.ejs", {
-      namaLengkap,
+      user: { fullName: user.fullName },
     });
-    nodemailer.sendEmail(email, "Berhasil", htmlOtp);
+    nodemailer.sendEmail(email, "Welcome to TechAcademy", htmlOtp);
 
     return res.status(200).json({
       status: true,
-      message: "OTP verified successfully",
+      message: "Activation Code verified successfully",
       err: null,
-      data: { email },
+      data: { email, activationCode },
     });
   } catch (err) {
     next(err);
@@ -369,19 +405,20 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
 
 const changePassword = async (req, res, next) => {
   try {
-    const { email, currentPassword, newPassword, repeatNewPassword } = req.body;
+    const { email, currentPassword, new_password, new_password_confirm } =
+      req.body;
 
-    if (!email || !currentPassword || !newPassword || !repeatNewPassword) {
+    if (!email || !currentPassword || !new_password || !new_password_confirm) {
       return res.status(400).json({
         status: false,
         message: "Bad Request",
         error:
-          "Email, currentPassword, newPassword, and repeatNewPassword are required",
+          "Email, currentPassword, new_password, and new_password_confirm are required",
         data: null,
       });
     }
 
-    if (newPassword !== repeatNewPassword) {
+    if (new_password !== new_password_confirm) {
       return res.status(400).json({
         status: false,
         message: "Bad Request",
@@ -415,11 +452,11 @@ const changePassword = async (req, res, next) => {
       });
     }
 
-    const encryptedNewPassword = await bcrypt.hash(newPassword, 10);
+    const encryptednew_password = await bcrypt.hash(new_password, 10);
 
     let user = await prisma.Users.update({
       where: { email },
-      data: { password: encryptedNewPassword },
+      data: { password: encryptednew_password },
     });
 
     const token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
@@ -428,7 +465,13 @@ const changePassword = async (req, res, next) => {
       status: true,
       message: "Password changed successfully",
       err: null,
-      data: { user, token },
+      data: {
+        email,
+        currentPassword,
+        new_password,
+        new_password_confirm,
+        token,
+      },
     });
   } catch (err) {
     next(err);

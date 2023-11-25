@@ -14,13 +14,9 @@ Content-Type: application/json
 
 {
     "email":"muhammadalimran22@gmail.com",
-    "otp":"821187"
+    "otp":"447569"
 }
 
 ####
-POST http://localhost:3000/api/v1/auth/resend-otp
-Content-Type: application/json
+GET http://localhost:3000/api/v1/auth/resend-otp?email=muhammadalimran22@gmail.com
 
-{
-    "email":"muhammadalimran22@gmail.com"
-}

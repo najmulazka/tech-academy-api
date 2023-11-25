@@ -60,7 +60,7 @@ const register = async (req, res, next) => {
 
 const resendOTP = async (req, res, next) => {
   try {
-    const { email } = req.body;
+    const { email } = req.query;
 
     if (!email) {
       return res.status(400).json({
@@ -87,6 +87,7 @@ const resendOTP = async (req, res, next) => {
       data: { otp },
     });
 
+    let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
     const htmlOtp = await nodemailer.getHtml("otp-message.ejs", {
       user: { otp },
     });
@@ -96,7 +97,7 @@ const resendOTP = async (req, res, next) => {
       status: true,
       message: "OTP resent successfully",
       err: null,
-      data: { otp },
+      data: { token },
     });
   } catch (err) {
     next(err);
@@ -105,7 +106,7 @@ const resendOTP = async (req, res, next) => {
 
 const verifyOTP = async (req, res, next) => {
   try {
-    const { namaLengkap, email, otp } = req.body;
+    const { email, otp } = req.body;
 
     if (!email || !otp) {
       return res.status(400).json({
@@ -141,7 +142,7 @@ const verifyOTP = async (req, res, next) => {
     });
 
     const htmlOtp = await nodemailer.getHtml("welcome-message.ejs", {
-      namaLengkap,
+      namaLengkap: user.namaLengkap,
     });
     nodemailer.sendEmail(email, "Berhasil", htmlOtp);
 

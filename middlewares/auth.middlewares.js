@@ -1,5 +1,5 @@
-const prisma = require("../utils/libs/prisma.libs");
-const jwt = require("jsonwebtoken");
+const prisma = require('../utils/libs/prisma.libs');
+const jwt = require('jsonwebtoken');
 const { JWT_SECRET_KEY } = process.env;
 
 module.exports = {
@@ -8,8 +8,8 @@ module.exports = {
     if (!authorization) {
       return res.status(401).json({
         status: false,
-        message: "Unauthorized",
-        err: "missing token on header!",
+        message: 'Unauthorized',
+        err: 'missing token on header!',
         data: null,
       });
     }
@@ -18,13 +18,13 @@ module.exports = {
       if (err) {
         return res.status(401).json({
           status: false,
-          message: "Unauthorized",
+          message: 'Unauthorized',
           err: err.message,
           data: null,
         });
       }
 
-      req.user = await prisma.user.findUnique({ where: { id: decoded.id } });
+      req.user = await prisma.Users.findUnique({ where: { email: decoded.email } });
       next();
     });
   },

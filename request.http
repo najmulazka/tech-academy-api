@@ -12,10 +12,10 @@ POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "namaLengkap":"imran",
-    "email":"muhammadalimran22@gmail.com",
-    "noTelp":"081397648082",
-    "password":"imran123"
+    "fullName":"Najmul Azka",
+    "email":"najmulazka369@gmail.com",
+    "noTelp":"085326678543",
+    "password":"najmul"
 }
 
 #### VERIVY-OTP
@@ -23,8 +23,8 @@ POST http://localhost:3000/api/v1/auth/verify-otp
 Content-Type: application/json
 
 {
-    "email":"muhammadalimran22@gmail.com",
-    "otp":"821187"
+    "email":"najmulazka369@gmail.com",
+    "otp":"551286"
 }
 
 #### RESEND-OTP
@@ -33,4 +33,26 @@ Content-Type: application/json
 
 {
     "email":"muhammadalimran22@gmail.com"
+}
+
+#### FORRGOT-PASSWORD
+POST http://localhost:3000/api/v1/auth/forrgot-password
+Content-Type: application/json
+
+{
+    "email":"najmulazka369@gmail.com"
+}
+
+#### RESEND OTP PASSWORD
+GET http://localhost:3000/api/v1/auth/resend-otp-password
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAwODQ3Mzk0fQ.rTbhoADrKe6sgrXmcoawzfHrw84YlxlgblFPtn-k9Aw
+
+#### VERIFY OTP PASSWORD
+POST http://localhost:3000/api/v1/auth/verify-otp-password
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAwODQ3Mzk0fQ.rTbhoADrKe6sgrXmcoawzfHrw84YlxlgblFPtn-k9Aw
+Content-Type: application/json
+
+{
+    "email":"najmulazka369@gmail.com",
+    "otp":"527918"
 }

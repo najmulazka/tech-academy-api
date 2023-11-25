@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
     "fullName":"imran",
-    "email":"muhammadalimran22@gmail.com",
+    "email":"muhamadalimran22@gmail.com",
     "noTelp":"085326678543",
     "password":"najmul"
 }
@@ -34,12 +34,12 @@ POST http://localhost:3000/api/v1/auth/verify-otp
 Content-Type: application/json
 
 {
-    "email":"muhammadalimran22@gmail.com",
-    "activationCode":"519812"
+    "email":"attariq.200170193@mhs.unimal.ac.id",
+    "activationCode":"666413"
 }
 
 ####
-GET http://localhost:3000/api/v1/auth/resend-otp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMDkwNzMwMX0.UIWbCdaX9wjr4BoeEPPF8480boZl2vaI8HDzJ2kg80g
+GET http://localhost:3000/api/v1/auth/resend-otp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtYWRhbGltcmFuMjJAZ21haWwuY29tIiwiaWF0IjoxNzAwOTMwNDE4fQ.ui4onW3HfvNqj3S_oe1EH-isVV5N4c050knZ91lVeb8
 
 #### RESEND-OTP
 POST http://localhost:3000/api/v1/auth/resend-otp

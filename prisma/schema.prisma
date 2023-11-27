@@ -71,25 +71,38 @@ model CategoriesOnClass {
 }
 
 model Class {
-  classCode    String              @unique
-  className    String
-  description  String
-  price        Decimal
-  typeId       Int
-  levelName    String
-  isFree       Boolean
-  lessons      Lessons[]
-  categorys    CategoriesOnClass[]
-  transactions Transactions[]
+  classCode        String              @unique
+  className        String
+  description      String
+  thumbnailPicture String
+  fileId           String
+  price            Decimal
+  typeId           Int
+  levelName        String
+  isFree           Boolean
+  chapters         Chapters[]
+  categorys        CategoriesOnClass[]
+  transactions     Transactions[]
+  Lessons          Lessons[]
+}
+
+model Chapters {
+  id          Int       @id @default(autoincrement())
+  chapterName String
+  classCode   String
+  class       Class     @relation(fields: [classCode], references: [classCode])
+  Lessons     Lessons[]
 }
 
 model Lessons {
-  id                   Int    @id @default(autoincrement())
+  id                   Int      @id @default(autoincrement())
+  title                String
   learningMaterial     String
   linkLearningMaterial String
-  chapter              Int
+  chapterId            Int
   classCode            String
-  class                Class  @relation(fields: [classCode], references: [classCode])
+  class                Class    @relation(fields: [classCode], references: [classCode])
+  chapters             Chapters @relation(fields: [chapterId], references: [id])
 }
 
 model Transactions {

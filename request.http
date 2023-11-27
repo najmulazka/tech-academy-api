@@ -42,7 +42,7 @@ Content-Type: application/json
 GET http://localhost:3000/api/v1/auth/resend-otp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMDkwNzMwMX0.UIWbCdaX9wjr4BoeEPPF8480boZl2vaI8HDzJ2kg80g
 
 #### RESEND-OTP
-POST http://localhost:3000/api/v1/auth/resend-otp
+POST http://localhost:3000/api/v1/auth/resend-otp?token=
 Content-Type: application/json
 
 {
@@ -58,15 +58,12 @@ Content-Type: application/json
 }
 
 #### RESEND OTP PASSWORD
-GET http://localhost:3000/api/v1/auth/resend-otp-password
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAwODQ3Mzk0fQ.rTbhoADrKe6sgrXmcoawzfHrw84YlxlgblFPtn-k9Aw
+GET http://localhost:3000/api/v1/auth/resend-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxMDg1NTYzfQ.4HdBeds0y4qClAHOiqS2B8cNLb_L2B51SCj8Ac5EmS8
 
 #### VERIFY OTP PASSWORD
-POST http://localhost:3000/api/v1/auth/verify-otp-password
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMDkwMTM2Mn0.aKgi1xnMn0xSs7M2KOs_onlERV0Prb7QC6kCMMSNAm8
+POST http://localhost:3000/api/v1/auth/verify-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxMDg1NTYzfQ.4HdBeds0y4qClAHOiqS2B8cNLb_L2B51SCj8Ac5EmS8
 Content-Type: application/json
 
 {
-    "email":"muhammadalimran22@gmail.com",
-    "otp":"644622"
+    "otp":"617158"
 }

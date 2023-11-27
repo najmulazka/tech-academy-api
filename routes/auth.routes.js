@@ -15,9 +15,9 @@ router.post("/register", register);
 router.get("/resend-otp", resendOTP);
 router.post("/verify-otp", verifyOTP);
 router.post("/login", login);
-router.get("/resend-otp-password", restrict, resendOtpPassword);
+router.get("/resend-otp-password", resendOtpPassword);
 router.post("/forrgot-password", forrgotPassword);
-router.post("/verify-otp-password", restrict, verifyOtpForrgotPassword);
+router.post("/verify-otp-password", verifyOtpForrgotPassword);
 router.post("/change-password", changePassword);
 
 module.exports = router;

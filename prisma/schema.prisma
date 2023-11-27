@@ -55,12 +55,6 @@ model Notifications {
   users     Users    @relation(fields: [userId], references: [id])
 }
 
-model Level {
-  id        Int     @id @default(autoincrement())
-  levelName String
-  class     Class[]
-}
-
 model Categorys {
   id           Int                 @id @default(autoincrement())
   categoryName String
@@ -82,9 +76,8 @@ model Class {
   description  String
   price        Decimal
   typeId       Int
-  levelId      Int
+  levelName    String
   isFree       Boolean
-  level        Level               @relation(fields: [levelId], references: [id])
   lessons      Lessons[]
   categorys    CategoriesOnClass[]
   transactions Transactions[]

@@ -28,7 +28,7 @@ const createClass = async (req, res, next) => {
     let countClass = await prisma.class.count();
     classCode += countClass.toString();
 
-    const classs = await prisma.Class.create({
+    const classs = await prisma.class.create({
       data: {
         classCode,
         className,
@@ -38,6 +38,22 @@ const createClass = async (req, res, next) => {
         price: Number(price),
         isFree: Boolean(isFree),
         levelName,
+        categorys: {
+          create: [
+            {
+              categorys: {
+                connectOrCreate: {
+                  where: {
+                    categoryName,
+                  },
+                  create: {
+                    categoryName,
+                  },
+                },
+              },
+            },
+          ],
+        },
       },
     });
 

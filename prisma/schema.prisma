@@ -57,7 +57,7 @@ model Notifications {
 
 model Categorys {
   id           Int                 @id @default(autoincrement())
-  categoryName String
+  categoryName String              @unique
   class        CategoriesOnClass[]
 }
 

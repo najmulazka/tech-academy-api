@@ -3,8 +3,9 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email":"najmulazka369@gmail.com",
-    "password":"najmulazka"
+    "email":"deapark01@gmail.com",
+    "password":"lili",
+    "categoryName": "Product Management"
 }
 
 ### REGISTER
@@ -12,10 +13,10 @@ POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "fullName":"imran",
-    "email":"muhammadalimran22@gmail.com",
+    "fullName":"Dea Lili",
+    "email":"deapark01@gmail.com",
     "noTelp":"085326678543",
-    "password":"najmul"
+    "password":"lili"
 }
 
 ### change-password
@@ -34,8 +35,8 @@ POST http://localhost:3000/api/v1/auth/verify-otp
 Content-Type: application/json
 
 {
-    "email":"muhammadalimran22@gmail.com",
-    "activationCode":"519812"
+    "email":"deapark01@gmail.com",
+    "activationCode":"741486"
 }
 
 ####

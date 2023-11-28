@@ -71,13 +71,12 @@ model CategoriesOnClass {
 }
 
 model Class {
-  classCode        String              @unique
+  classCode        String              @id @unique
   className        String
   description      String
   thumbnailPicture String
   fileId           String
   price            Decimal
-  typeId           Int
   levelName        String
   isFree           Boolean
   chapters         Chapters[]

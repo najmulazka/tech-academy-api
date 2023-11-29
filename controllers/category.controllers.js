@@ -18,7 +18,10 @@ const createCategory = async (req, res, next) => {
 
 const getCategory = async (req, res, next) => {
   try {
-    const categories = await prisma.categorys.findMany();
+    const categories = await prisma.categorys.findMany({
+      include: { class: true },
+      orderBy: { id: "asc" },
+    });
     return res.status(200).json({
       status: true,
       message: "get category successfully",

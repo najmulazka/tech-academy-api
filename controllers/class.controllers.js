@@ -185,6 +185,26 @@ const getAllClass = async (req, res, next) => {
 
 const getByIdClass = async (req, res, next) => {
   try {
+    const { classCode } = req.params;
+    const classes = await prisma.class.findUnique({
+      where: { classCode: classCode },
+    });
+
+    if (!classes) {
+      return res.status(400).json({
+        status: false,
+        message: "Not Found",
+        err: "Class not found",
+        data: null,
+      });
+    }
+
+    res.status(200).json({
+      status: true,
+      message: "getById class successfully",
+      err: null,
+      data: classes,
+    });
   } catch (err) {
     next(err);
   }
@@ -192,6 +212,41 @@ const getByIdClass = async (req, res, next) => {
 
 const updateClass = async (req, res, next) => {
   try {
+    const { classCode } = req.params;
+    const { className, description, price, isFree, levelName, categoryId } =
+      req.body;
+
+    const existingClass = await prisma.class.findUnique({
+      where: { classCode: classCode },
+    });
+
+    if (!existingClass) {
+      return res.status(400).json({
+        status: false,
+        message: "Not Found",
+        err: "Class not found",
+        data: null,
+      });
+    }
+
+    const updatedClass = await prisma.class.update({
+      where: { classCode: classCode },
+      data: {
+        className,
+        description,
+        price: Number(price),
+        isFree: JSON.parse(isFree),
+        levelName,
+        categoryId: Number(categoryId),
+      },
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "OK",
+      err: null,
+      data: updatedClass,
+    });
   } catch (err) {
     next(err);
   }

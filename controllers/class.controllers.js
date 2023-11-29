@@ -2,6 +2,7 @@ const prisma = require("../utils/libs/prisma.libs");
 const imagekit = require("../utils/libs/imagekit.libs");
 const path = require("path");
 const { generateClassCode } = require("../utils/libs/classcode.libs");
+
 const createClass = async (req, res, next) => {
   try {
     let { className, description, price, isFree, levelName, categoryId } =
@@ -182,4 +183,18 @@ const getAllClass = async (req, res, next) => {
   }
 };
 
-module.exports = { createClass, getAllClass };
+const getByIdClass = async (req, res, next) => {
+  try {
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateClass = async (req, res, next) => {
+  try {
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { createClass, getAllClass, getByIdClass, updateClass };

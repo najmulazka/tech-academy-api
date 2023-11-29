@@ -68,6 +68,7 @@ const updateCategory = async (req, res, next) => {
     next(err);
   }
 };
+
 module.exports = {
   createCategory,
   getCategory,

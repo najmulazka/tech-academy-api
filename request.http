@@ -4,8 +4,7 @@ Content-Type: application/json
 
 {
     "email":"deapark01@gmail.com",
-    "password":"lili",
-    "categoryName": "Product Management"
+    "password":"lili"
 }
 
 ### REGISTER
@@ -68,3 +67,6 @@ Content-Type: application/json
 {
     "otp":"617158"
 }
+
+#### GET ALL CLASS
+GET http://localhost:3000/api/v1/class

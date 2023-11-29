@@ -2,31 +2,33 @@ const prisma = require('../utils/libs/prisma.libs');
 const imagekit = require('../utils/libs/imagekit.libs');
 const path = require('path');
 const { getPagination } = require('../utils/libs/pagination.libs');
+const { generateClassCode } = require("../utils/libs/classcode.libs");
 
 const createClass = async (req, res, next) => {
   try {
-    let { className, description, price, isFree, levelName, categoryId } = req.body;
+    let { className, description, price, isFree, levelName, categoryId } =
+      req.body;
     if (!req.file) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        err: 'File is required',
+        message: "Bad Request",
+        err: "File is required",
         data: null,
       });
     }
 
-    let strFile = req.file.buffer.toString('base64');
+    let strFile = req.file.buffer.toString("base64");
     const { url, fileId } = await imagekit.upload({
       fileName: Date.now() + path.extname(req.file.originalname),
       file: strFile,
     });
 
-    let a = await prisma.categorys.findUnique({ where: { id: Number(categoryId) }, select: { categoryName: true } });
-    let classCode = '';
-    let result = a.categoryName.split(' ');
-    for (let i = 0; i < result.length; i++) {
-      classCode += result[i][0];
-    }
+    let category = await prisma.categorys.findUnique({
+      where: { id: Number(categoryId) },
+      select: { categoryName: true },
+    });
+    let classCode = generateClassCode(category.categoryName);
+
     let countClass = await prisma.class.count();
     classCode += countClass.toString();
 
@@ -46,7 +48,7 @@ const createClass = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'OK',
+      message: "OK",
       err: null,
       data: classs,
     });
@@ -65,8 +67,8 @@ const getAllClass = async (req, res, next) => {
     let pagination = getPagination(req, _count, limit, page);
 
     if (categoryId && levelName && isFree) {
-      let categorys = categoryId.split('-').map(Number);
-      let levels = levelName.split('-');
+      let categorys = categoryId.split("-").map(Number);
+      let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
@@ -80,13 +82,13 @@ const getAllClass = async (req, res, next) => {
 
       res.status(200).json({
         status: true,
-        message: 'OK',
+        message: "OK",
         err: null,
         data: { pagination, result },
       });
     } else if (categoryId && levelName) {
-      let categorys = categoryId.split('-').map(Number);
-      let levels = levelName.split('-');
+      let categorys = categoryId.split("-").map(Number);
+      let levels = levelName.split("-");
       const result = await prisma.class.findMany({
         where: {
           categoryId: { in: categorys },
@@ -98,12 +100,12 @@ const getAllClass = async (req, res, next) => {
 
       res.status(200).json({
         status: true,
-        message: 'OK',
+        message: "OK",
         err: null,
         data: { pagination, result },
       });
     } else if (categoryId && isFree) {
-      let categorys = categoryId.split('-').map(Number);
+      let categorys = categoryId.split("-").map(Number);
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
@@ -116,12 +118,12 @@ const getAllClass = async (req, res, next) => {
 
       res.status(200).json({
         status: true,
-        message: 'OK',
+        message: "OK",
         err: null,
         data: { pagination, result },
       });
     } else if (levelName && isFree) {
-      let levels = levelName.split('-');
+      let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
 
       const result = await prisma.class.findMany({
@@ -135,12 +137,12 @@ const getAllClass = async (req, res, next) => {
 
       res.status(200).json({
         status: true,
-        message: 'OK',
+        message: "OK",
         err: null,
         data: { pagination, result },
       });
     } else if (categoryId) {
-      let categorys = categoryId.split('-').map(Number);
+      let categorys = categoryId.split("-").map(Number);
       const result = await prisma.class.findMany({
         where: {
           categoryId: { in: categorys },
@@ -151,12 +153,12 @@ const getAllClass = async (req, res, next) => {
 
       res.status(200).json({
         status: true,
-        message: 'OK',
+        message: "OK",
         err: null,
         data: { pagination, result },
       });
     } else if (levelName) {
-      let levels = levelName.split('-');
+      let levels = levelName.split("-");
       const result = await prisma.class.findMany({
         where: {
           levelName: { in: levels },
@@ -165,7 +167,7 @@ const getAllClass = async (req, res, next) => {
 
       res.status(200).json({
         status: true,
-        message: 'OK',
+        message: "OK",
         err: null,
         data: { pagination, result },
       });
@@ -179,7 +181,7 @@ const getAllClass = async (req, res, next) => {
 
       res.status(200).json({
         status: true,
-        message: 'OK',
+        message: "OK",
         err: null,
         data: { pagination, result },
       });
@@ -188,7 +190,7 @@ const getAllClass = async (req, res, next) => {
 
       res.status(200).json({
         status: true,
-        message: 'OK',
+        message: "OK",
         err: null,
         data: { pagination, result },
       });

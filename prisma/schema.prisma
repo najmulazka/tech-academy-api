@@ -56,22 +56,13 @@ model Notifications {
 }
 
 model Categorys {
-  id           Int                 @id @default(autoincrement())
-  categoryName String              @unique
-  class        CategoriesOnClass[]
-}
-
-model CategoriesOnClass {
-  classCode  String
-  categoryId Int
-  categorys  Categorys @relation(fields: [categoryId], references: [id])
-  class      Class     @relation(fields: [classCode], references: [classCode])
-
-  @@id([classCode, categoryId])
+  id           Int     @id @default(autoincrement())
+  categoryName String  @unique
+  class        Class[]
 }
 
 model Class {
-  classCode        String              @id @unique
+  classCode        String         @id @unique
   className        String
   description      String
   thumbnailPicture String
@@ -79,8 +70,9 @@ model Class {
   price            Decimal
   levelName        String
   isFree           Boolean
+  categoryId       Int
+  categorys        Categorys      @relation(fields: [categoryId], references: [id])
   chapters         Chapters[]
-  categorys        CategoriesOnClass[]
   transactions     Transactions[]
   Lessons          Lessons[]
 }

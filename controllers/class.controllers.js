@@ -4,7 +4,7 @@ const path = require('path');
 
 const createClass = async (req, res, next) => {
   try {
-    let { className, description, categoryName, price, isFree, levelName } = req.body;
+    let { className, description, price, isFree, levelName, categoryId } = req.body;
     if (!req.file) {
       return res.status(400).json({
         status: false,
@@ -20,8 +20,9 @@ const createClass = async (req, res, next) => {
       file: strFile,
     });
 
+    let a = await prisma.categorys.findUnique({ where: { id: Number(categoryId) }, select: { categoryName: true } });
     let classCode = '';
-    let result = categoryName.split(' ');
+    let result = a.categoryName.split(' ');
     for (let i = 0; i < result.length; i++) {
       classCode += result[i][0];
     }
@@ -36,24 +37,9 @@ const createClass = async (req, res, next) => {
         thumbnailPicture: url,
         fileId,
         price: Number(price),
-        isFree: Boolean(isFree),
+        isFree: JSON.parse(isFree),
         levelName,
-        categorys: {
-          create: [
-            {
-              categorys: {
-                connectOrCreate: {
-                  where: {
-                    categoryName,
-                  },
-                  create: {
-                    categoryName,
-                  },
-                },
-              },
-            },
-          ],
-        },
+        categoryId: Number(categoryId),
       },
     });
 
@@ -68,4 +54,131 @@ const createClass = async (req, res, next) => {
   }
 };
 
-module.exports = { createClass };
+const getAllClass = async (req, res, next) => {
+  try {
+    let { categoryId, levelName, isFree } = req.query;
+    if (categoryId && levelName && isFree) {
+      let categorys = categoryId.split('-').map(Number);
+      let levels = levelName.split('-');
+      isFree = JSON.parse(isFree);
+      const result = await prisma.class.findMany({
+        where: {
+          categoryId: { in: categorys },
+          levelName: { in: levels },
+          isFree,
+        },
+      });
+
+      res.status(200).json({
+        status: true,
+        message: 'OK',
+        err: null,
+        data: result,
+      });
+    } else if (categoryId && levelName) {
+      let categorys = categoryId.split('-').map(Number);
+      let levels = levelName.split('-');
+      const result = await prisma.class.findMany({
+        where: {
+          categoryId: { in: categorys },
+          levelName: { in: levels },
+        },
+      });
+
+      res.status(200).json({
+        status: true,
+        message: 'OK',
+        err: null,
+        data: result,
+      });
+    } else if (categoryId && isFree) {
+      let categorys = categoryId.split('-').map(Number);
+      isFree = JSON.parse(isFree);
+      const result = await prisma.class.findMany({
+        where: {
+          categoryId: { in: categorys },
+          isFree,
+        },
+      });
+
+      res.status(200).json({
+        status: true,
+        message: 'OK',
+        err: null,
+        data: result,
+      });
+    } else if (levelName && isFree) {
+      let levels = levelName.split('-');
+      isFree = JSON.parse(isFree);
+
+      const result = await prisma.class.findMany({
+        where: {
+          levelName: { in: levels },
+          isFree,
+        },
+      });
+
+      res.status(200).json({
+        status: true,
+        message: 'OK',
+        err: null,
+        data: result,
+      });
+    } else if (categoryId) {
+      let categorys = categoryId.split('-').map(Number);
+      const result = await prisma.class.findMany({
+        where: {
+          categoryId: { in: categorys },
+        },
+      });
+
+      res.status(200).json({
+        status: true,
+        message: 'OK',
+        err: null,
+        data: result,
+      });
+    } else if (levelName) {
+      let levels = levelName.split('-');
+      const result = await prisma.class.findMany({
+        where: {
+          levelName: { in: levels },
+        },
+      });
+
+      res.status(200).json({
+        status: true,
+        message: 'OK',
+        err: null,
+        data: result,
+      });
+    } else if (isFree) {
+      isFree = JSON.parse(isFree);
+      const result = await prisma.class.findMany({
+        where: {
+          isFree,
+        },
+      });
+
+      res.status(200).json({
+        status: true,
+        message: 'OK',
+        err: null,
+        data: result,
+      });
+    } else {
+      const result = await prisma.class.findMany();
+
+      res.status(200).json({
+        status: true,
+        message: 'OK',
+        err: null,
+        data: result,
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { createClass, getAllClass };

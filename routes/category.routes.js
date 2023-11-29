@@ -8,7 +8,7 @@ const {
 
 router.post("/", createCategory);
 router.get("/", getCategory);
-router.get("/:classCode", getByIdCategory);
+router.get("/:id", getByIdCategory);
 router.put("/:id", updateCategory);
 
 module.exports = router;

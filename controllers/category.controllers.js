@@ -35,17 +35,25 @@ const getCategory = async (req, res, next) => {
 const getByIdCategory = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let { categoryName } = req.body;
 
-    const idCategory = await prisma.categorys.update({
+    const category = await prisma.categorys.findUnique({
       where: { id: Number(id) },
-      data: { categoryName },
+      include: { class: true },
     });
+
+    if (!category) {
+      return res.status(404).json({
+        status: false,
+        message: "Not Found",
+        err: "Category not found",
+        data: null,
+      });
+    }
 
     return res.status(200).json({
       status: true,
       message: "getById category successfully",
-      data: idCategory,
+      data: category,
     });
   } catch (err) {
     next(err);

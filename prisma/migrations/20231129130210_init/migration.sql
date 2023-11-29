@@ -49,22 +49,6 @@ CREATE TABLE "Notifications" (
 );
 
 -- CreateTable
-CREATE TABLE "Type" (
-    "id" SERIAL NOT NULL,
-    "classType" TEXT NOT NULL,
-
-    CONSTRAINT "Type_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Level" (
-    "id" SERIAL NOT NULL,
-    "levelName" TEXT NOT NULL,
-
-    CONSTRAINT "Level_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Categorys" (
     "id" SERIAL NOT NULL,
     "categoryName" TEXT NOT NULL,
@@ -85,23 +69,20 @@ CREATE TABLE "Class" (
     "classCode" TEXT NOT NULL,
     "className" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "thumbnailPicture" TEXT NOT NULL,
+    "fileId" TEXT NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
-    "typeId" INTEGER NOT NULL,
-    "levelId" INTEGER NOT NULL
-);
+    "levelName" TEXT NOT NULL,
+    "isFree" BOOLEAN NOT NULL,
 
--- CreateTable
-CREATE TABLE "ChapterOnClass" (
-    "classCode" TEXT NOT NULL,
-    "chapterId" INTEGER NOT NULL,
-
-    CONSTRAINT "ChapterOnClass_pkey" PRIMARY KEY ("classCode","chapterId")
+    CONSTRAINT "Class_pkey" PRIMARY KEY ("classCode")
 );
 
 -- CreateTable
 CREATE TABLE "Chapters" (
     "id" SERIAL NOT NULL,
     "chapterName" TEXT NOT NULL,
+    "classCode" TEXT NOT NULL,
 
     CONSTRAINT "Chapters_pkey" PRIMARY KEY ("id")
 );
@@ -109,9 +90,11 @@ CREATE TABLE "Chapters" (
 -- CreateTable
 CREATE TABLE "Lessons" (
     "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
     "learningMaterial" TEXT NOT NULL,
     "linkLearningMaterial" TEXT NOT NULL,
     "chapterId" INTEGER NOT NULL,
+    "classCode" TEXT NOT NULL,
 
     CONSTRAINT "Lessons_pkey" PRIMARY KEY ("id")
 );
@@ -138,6 +121,9 @@ CREATE UNIQUE INDEX "ActivationCodes_userId_key" ON "ActivationCodes"("userId");
 CREATE UNIQUE INDEX "ResetCodes_userId_key" ON "ResetCodes"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Categorys_categoryName_key" ON "Categorys"("categoryName");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Class_classCode_key" ON "Class"("classCode");
 
 -- AddForeignKey
@@ -156,16 +142,10 @@ ALTER TABLE "CategoriesOnClass" ADD CONSTRAINT "CategoriesOnClass_categoryId_fke
 ALTER TABLE "CategoriesOnClass" ADD CONSTRAINT "CategoriesOnClass_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Class" ADD CONSTRAINT "Class_typeId_fkey" FOREIGN KEY ("typeId") REFERENCES "Type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Chapters" ADD CONSTRAINT "Chapters_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Class" ADD CONSTRAINT "Class_levelId_fkey" FOREIGN KEY ("levelId") REFERENCES "Level"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ChapterOnClass" ADD CONSTRAINT "ChapterOnClass_chapterId_fkey" FOREIGN KEY ("chapterId") REFERENCES "Chapters"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ChapterOnClass" ADD CONSTRAINT "ChapterOnClass_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Lessons" ADD CONSTRAINT "Lessons_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Lessons" ADD CONSTRAINT "Lessons_chapterId_fkey" FOREIGN KEY ("chapterId") REFERENCES "Chapters"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

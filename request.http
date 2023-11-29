@@ -12,8 +12,8 @@ POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "fullName":"Dea Lili",
-    "email":"deapark01@gmail.com",
+    "fullName":"imran",
+    "email":"muhammadalimran22@gmail.com",
     "noTelp":"085326678543",
     "password":"lili"
 }
@@ -34,12 +34,12 @@ POST http://localhost:3000/api/v1/auth/verify-otp
 Content-Type: application/json
 
 {
-    "email":"deapark01@gmail.com",
-    "activationCode":"741486"
+    "email":"muhammadalimran22@gmail.com",
+    "activationCode":"519812"
 }
 
 ####
-GET http://localhost:3000/api/v1/auth/resend-otp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMDkwNzMwMX0.UIWbCdaX9wjr4BoeEPPF8480boZl2vaI8HDzJ2kg80g
+GET http://localhost:3000/api/v1/auth/resend-otp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtYWRhbGltcmFuMjJAZ21haWwuY29tIiwiaWF0IjoxNzAwOTMwNDE4fQ.ui4onW3HfvNqj3S_oe1EH-isVV5N4c050knZ91lVeb8
 
 #### RESEND-OTP
 POST http://localhost:3000/api/v1/auth/resend-otp?token=
@@ -69,4 +69,4 @@ Content-Type: application/json
 }
 
 #### GET ALL CLASS
-GET http://localhost:3000/api/v1/class?categoryId=1-3-2-4-5&levelName=Easy&isFree=true&limit=7&page=1
+GET http://localhost:3000/api/v1/class?categoryId=1-3-2-4-5&levelName=Hard&isFree=true&limit=2&page=1

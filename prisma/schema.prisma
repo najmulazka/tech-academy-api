@@ -55,21 +55,9 @@ model Notifications {
   users     Users    @relation(fields: [userId], references: [id])
 }
 
-model Type {
-  id        Int     @id @default(autoincrement())
-  classType String
-  class     Class[]
-}
-
-model Level {
-  id        Int     @id @default(autoincrement())
-  levelName String
-  class     Class[]
-}
-
 model Categorys {
   id           Int                 @id @default(autoincrement())
-  categoryName String
+  categoryName String              @unique
   class        CategoriesOnClass[]
 }
 
@@ -83,40 +71,36 @@ model CategoriesOnClass {
 }
 
 model Class {
-  classCode    String              @unique
-  className    String
-  description  String
-  price        Decimal
-  typeId       Int
-  levelId      Int
-  type         Type                @relation(fields: [typeId], references: [id])
-  level        Level               @relation(fields: [levelId], references: [id])
-  chapters     ChapterOnClass[]
-  categorys    CategoriesOnClass[]
-  transactions Transactions[]
-}
-
-model ChapterOnClass {
-  classCode String
-  chapterId Int
-  chapters  Chapters @relation(fields: [chapterId], references: [id])
-  class     Class    @relation(fields: [classCode], references: [classCode])
-
-  @@id([classCode, chapterId])
+  classCode        String              @id @unique
+  className        String
+  description      String
+  thumbnailPicture String
+  fileId           String
+  price            Decimal
+  levelName        String
+  isFree           Boolean
+  chapters         Chapters[]
+  categorys        CategoriesOnClass[]
+  transactions     Transactions[]
+  Lessons          Lessons[]
 }
 
 model Chapters {
-  id          Int              @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   chapterName String
-  class       ChapterOnClass[]
-  lessons     Lessons[]
+  classCode   String
+  class       Class     @relation(fields: [classCode], references: [classCode])
+  Lessons     Lessons[]
 }
 
 model Lessons {
   id                   Int      @id @default(autoincrement())
+  title                String
   learningMaterial     String
   linkLearningMaterial String
   chapterId            Int
+  classCode            String
+  class                Class    @relation(fields: [classCode], references: [classCode])
   chapters             Chapters @relation(fields: [chapterId], references: [id])
 }
 

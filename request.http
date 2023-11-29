@@ -3,8 +3,9 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email":"najmulazka369@gmail.com",
-    "password":"najmulazka"
+    "email":"deapark01@gmail.com",
+    "password":"lili",
+    "categoryName": "Product Management"
 }
 
 ### REGISTER
@@ -13,9 +14,9 @@ Content-Type: application/json
 
 {
     "fullName":"imran",
-    "email":"muhamadalimran22@gmail.com",
+    "email":"muhammadalimran22@gmail.com",
     "noTelp":"085326678543",
-    "password":"najmul"
+    "password":"lili"
 }
 
 ### change-password
@@ -34,15 +35,15 @@ POST http://localhost:3000/api/v1/auth/verify-otp
 Content-Type: application/json
 
 {
-    "email":"attariq.200170193@mhs.unimal.ac.id",
-    "activationCode":"666413"
+    "email":"muhammadalimran22@gmail.com",
+    "activationCode":"519812"
 }
 
 ####
 GET http://localhost:3000/api/v1/auth/resend-otp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtYWRhbGltcmFuMjJAZ21haWwuY29tIiwiaWF0IjoxNzAwOTMwNDE4fQ.ui4onW3HfvNqj3S_oe1EH-isVV5N4c050knZ91lVeb8
 
 #### RESEND-OTP
-POST http://localhost:3000/api/v1/auth/resend-otp
+POST http://localhost:3000/api/v1/auth/resend-otp?token=
 Content-Type: application/json
 
 {
@@ -58,15 +59,12 @@ Content-Type: application/json
 }
 
 #### RESEND OTP PASSWORD
-GET http://localhost:3000/api/v1/auth/resend-otp-password
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAwODQ3Mzk0fQ.rTbhoADrKe6sgrXmcoawzfHrw84YlxlgblFPtn-k9Aw
+GET http://localhost:3000/api/v1/auth/resend-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxMDg1NTYzfQ.4HdBeds0y4qClAHOiqS2B8cNLb_L2B51SCj8Ac5EmS8
 
 #### VERIFY OTP PASSWORD
-POST http://localhost:3000/api/v1/auth/verify-otp-password
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMDkwMTM2Mn0.aKgi1xnMn0xSs7M2KOs_onlERV0Prb7QC6kCMMSNAm8
+POST http://localhost:3000/api/v1/auth/verify-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxMDg1NTYzfQ.4HdBeds0y4qClAHOiqS2B8cNLb_L2B51SCj8Ac5EmS8
 Content-Type: application/json
 
 {
-    "email":"muhammadalimran22@gmail.com",
-    "otp":"644622"
+    "otp":"617158"
 }

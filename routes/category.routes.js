@@ -6,9 +6,9 @@ const {
   updateCategory,
 } = require("../controllers/category.controllers");
 
-router.post("/category", createCategory);
-router.get("/category", getCategory);
-router.get("/category/:id", getByIdCategory);
-router.put("/category/:id", updateCategory);
+router.post("/", createCategory);
+router.get("/", getCategory);
+router.get("/:id", getByIdCategory);
+router.put("/:id", updateCategory);
 
 module.exports = router;

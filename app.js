@@ -13,10 +13,8 @@ app.use(express.json());
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "views")));
 
+// router index
 app.use("/api/v1", require("./routes/index.routes"));
-
-app.use("/api/v1/auth", require("./routes/auth.routes"));
-app.use("/api/v1", require("./routes/category.routes"));
 
 // server error handling middleware
 app.use(notFoundHandler);

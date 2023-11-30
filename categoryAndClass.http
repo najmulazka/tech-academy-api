@@ -1,0 +1,45 @@
+### CATEGORY CREATE
+POST http://localhost:3000/api/v1/category
+Content-Type: application/json
+
+{
+    "categoryName":"Data Science"
+}
+
+#### GET ALL CATEGORY AND INCLUDE CLASS ALL
+GET http://localhost:3000/api/v1/category
+
+
+### CATEGORY BY ID
+GET http://localhost:3000/api/v1/category/1
+
+
+### CATEGORY UPDATE
+PUT http://localhost:3000/api/v1/category/1
+Content-Type: application/json
+
+{
+    "categoryName":"UI/UX DESIGN UPDATE"
+}
+
+
+
+#### CLASS ENDPOINT GetByClassCode AND PUT ####
+### 
+GET http://localhost:3000/api/v1/class/WD2
+
+####
+PUT http://localhost:3000/api/v1/class/WD2
+Content-Type: application/json
+
+{
+    "className":"update",
+    "description":"update",
+    "price":2000,
+    "levelName":"Beginner",
+    "isFree":true,
+    "categoryId":"3"
+}
+
+#### GET ALL CATEGORY AND INCLUDE CLASS ALL
+GET http://localhost:3000/api/v1/category

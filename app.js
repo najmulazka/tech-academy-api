@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'views')));
 
 // router index
 app.use('/', (req, res) => {
-  res.status(200).json({
+  return res.status(200).json({
     status: true,
     message: 'Welcome to techacademy app',
     err: null,

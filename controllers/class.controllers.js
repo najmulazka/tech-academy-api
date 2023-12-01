@@ -1,13 +1,20 @@
-const prisma = require('../utils/libs/prisma.libs');
-const imagekit = require('../utils/libs/imagekit.libs');
-const path = require('path');
-const { getPagination } = require('../utils/libs/pagination.libs');
+const prisma = require("../utils/libs/prisma.libs");
+const imagekit = require("../utils/libs/imagekit.libs");
+const path = require("path");
+const { getPagination } = require("../utils/libs/pagination.libs");
 const { generateClassCode } = require("../utils/libs/classcode.libs");
 
 const createClass = async (req, res, next) => {
   try {
-    let { className, description, price, isFree, levelName, categoryId } =
-      req.body;
+    let {
+      className,
+      description,
+      price,
+      isFree,
+      levelName,
+      categoryId,
+      views,
+    } = req.body;
     if (!req.file) {
       return res.status(400).json({
         status: false,
@@ -43,6 +50,7 @@ const createClass = async (req, res, next) => {
         isFree: JSON.parse(isFree),
         levelName,
         categoryId: Number(categoryId),
+        views: Number(views),
       },
     });
 
@@ -186,7 +194,10 @@ const getAllClass = async (req, res, next) => {
         data: { pagination, result },
       });
     } else {
-      const result = await prisma.class.findMany({ skip: (page - 1) * limit, take: limit });
+      const result = await prisma.class.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+      });
 
       res.status(200).json({
         status: true,
@@ -202,25 +213,30 @@ const getAllClass = async (req, res, next) => {
 
 const getByIdClass = async (req, res, next) => {
   try {
-    const { classCode } = req.params;
-    const classes = await prisma.class.findUnique({
-      where: { classCode: classCode },
-    });
+    let { classCode } = req.params;
 
-    if (!classes) {
+    if (!classCode) {
       return res.status(400).json({
         status: false,
-        message: "Not Found",
-        err: "Class not found",
+        message: "classcode is required",
         data: null,
       });
     }
 
+    await prisma.class.update({
+      where: { classCode: classCode },
+      data: { views: { increment: 1 } },
+    });
+
+    const updatedClassWithViews = await prisma.class.findUnique({
+      where: { classCode: classCode },
+      include: { chapters: true },
+    });
+
     res.status(200).json({
       status: true,
       message: "getById class successfully",
-      err: null,
-      data: classes,
+      data: updatedClassWithViews,
     });
   } catch (err) {
     next(err);

@@ -3,7 +3,7 @@ POST http://localhost:3000/api/v1/category
 Content-Type: application/json
 
 {
-    "categoryName":"Data Science"
+    "categoryName":"Iphone"
 }
 
 #### GET ALL CATEGORY AND INCLUDE CLASS ALL
@@ -11,7 +11,7 @@ GET http://localhost:3000/api/v1/category
 
 
 ### CATEGORY BY ID
-GET http://localhost:3000/api/v1/category/3
+GET http://localhost:3000/api/v1/category/5
 
 
 ### CATEGORY UPDATE
@@ -24,8 +24,8 @@ Content-Type: application/json
 
 
 
-#### CLASS ENDPOINT GetByClassCode AND PUT ####
-### 
+#### CLASS ENDPOINT GetByClassCode AND PUT ###
+###
 GET http://localhost:3000/api/v1/class/UD0
 
 ####

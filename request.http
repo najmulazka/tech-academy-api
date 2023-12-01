@@ -69,4 +69,4 @@ Content-Type: application/json
 }
 
 #### GET ALL CLASS
-GET http://localhost:3000/api/v1/class?categoryId=1-3-2-4-5&levelName=Hard&isFree=true&limit=2&page=1
+GET http://localhost:3000/api/v1/class

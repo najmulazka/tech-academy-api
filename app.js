@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'views')));
 
 // router index
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   return res.status(200).json({
     status: true,
     message: 'Welcome to techacademy app',

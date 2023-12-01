@@ -11,7 +11,7 @@ GET http://localhost:3000/api/v1/category
 
 
 ### CATEGORY BY ID
-GET http://localhost:3000/api/v1/category/1
+GET http://localhost:3000/api/v1/category/3
 
 
 ### CATEGORY UPDATE
@@ -26,7 +26,7 @@ Content-Type: application/json
 
 #### CLASS ENDPOINT GetByClassCode AND PUT ####
 ### 
-GET http://localhost:3000/api/v1/class/WD2
+GET http://localhost:3000/api/v1/class/UD0
 
 ####
 PUT http://localhost:3000/api/v1/class/WD2

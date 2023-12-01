@@ -70,6 +70,8 @@ model Class {
   price            Decimal
   levelName        String
   isFree           Boolean
+  views            Int
+  createdAt        DateTime       @default(now())
   categoryId       Int
   categorys        Categorys      @relation(fields: [categoryId], references: [id])
   chapters         Chapters[]

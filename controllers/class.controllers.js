@@ -304,4 +304,50 @@ const updateClass = async (req, res, next) => {
   }
 };
 
-module.exports = { createClass, getAllClass, getByIdClass, updateClass };
+const deleteClass = async (req, res, next) => {
+  try {
+    let { classCode } = req.params;
+
+    if (!classCode) {
+      return res.status(400).json({
+        status: false,
+        message: "classCode is required",
+        data: null,
+      });
+    }
+
+    const existingClass = await prisma.class.findUnique({
+      where: { classCode: classCode },
+      include: { chapters: true },
+    });
+
+    if (!existingClass) {
+      return res.status(400).json({
+        status: false,
+        message: "class with the provided classCode does not exist",
+        data: null,
+      });
+    }
+
+    const deletedClass = await prisma.class.delete({
+      where: { classCode: classCode },
+      include: { chapters: true },
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "class deleted successfully",
+      data: deletedClass,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  createClass,
+  getAllClass,
+  getByIdClass,
+  updateClass,
+  deleteClass,
+};

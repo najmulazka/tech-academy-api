@@ -223,6 +223,18 @@ const getByIdClass = async (req, res, next) => {
       });
     }
 
+    const existingClass = await prisma.class.findUnique({
+      where: { classCode: classCode },
+    });
+
+    if (!existingClass) {
+      return res.status(400).json({
+        status: false,
+        message: "classCode not exist",
+        data: null,
+      });
+    }
+
     await prisma.class.update({
       where: { classCode: classCode },
       data: { views: { increment: 1 } },
@@ -232,6 +244,14 @@ const getByIdClass = async (req, res, next) => {
       where: { classCode: classCode },
       include: { chapters: true },
     });
+
+    if (!updatedClassWithViews) {
+      return res.status(400).json({
+        status: false,
+        message: "classCode not exist",
+        data: null,
+      });
+    }
 
     res.status(200).json({
       status: true,
@@ -256,8 +276,7 @@ const updateClass = async (req, res, next) => {
     if (!existingClass) {
       return res.status(400).json({
         status: false,
-        message: "Not Found",
-        err: "Class not found",
+        message: "category id not exist",
         data: null,
       });
     }

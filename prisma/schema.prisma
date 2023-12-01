@@ -73,7 +73,7 @@ model Class {
   views            Int
   createdAt        DateTime       @default(now())
   categoryId       Int
-  categorys        Categorys      @relation(fields: [categoryId], references: [id])
+  categorys        Categorys      @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   chapters         Chapters[]
   transactions     Transactions[]
   Lessons          Lessons[]
@@ -83,7 +83,7 @@ model Chapters {
   id          Int       @id @default(autoincrement())
   chapterName String
   classCode   String
-  class       Class     @relation(fields: [classCode], references: [classCode])
+  class       Class     @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
   Lessons     Lessons[]
 }
 

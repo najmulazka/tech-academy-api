@@ -12,6 +12,18 @@ const createChapter = async (req, res, next) => {
       });
     }
 
+    const existingClass = await prisma.class.findUnique({
+      where: { classCode: classCode },
+    });
+
+    if (!existingClass) {
+      return res.status(400).json({
+        status: false,
+        message: "class with the provided classCode does not exist",
+        data: null,
+      });
+    }
+
     const newChapter = await prisma.chapters.create({
       data: { chapterName, classCode },
     });
@@ -30,7 +42,7 @@ const getChapter = async (req, res, next) => {
   try {
     let chapters = await prisma.chapters.findMany();
 
-    if (!chapters) {
+    if (!chapters || chapters.length === 0) {
       return res.status(400).json({
         status: false,
         message: "chapter get all not exist",

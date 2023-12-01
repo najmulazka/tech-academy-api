@@ -3,7 +3,7 @@ POST http://localhost:3000/api/v1/category
 Content-Type: application/json
 
 {
-    "categoryName":"Iphone"
+    "categoryName":"Product Management"
 }
 
 #### GET ALL CATEGORY AND INCLUDE CLASS ALL
@@ -11,22 +11,24 @@ GET http://localhost:3000/api/v1/category
 
 
 ### CATEGORY BY ID
-GET http://localhost:3000/api/v1/category/5
+GET http://localhost:3000/api/v1/category/2
 
 
 ### CATEGORY UPDATE
-PUT http://localhost:3000/api/v1/category/1
+PUT http://localhost:3000/api/v1/category/2
 Content-Type: application/json
 
 {
     "categoryName":"UI/UX DESIGN UPDATE"
 }
 
+### CATEGORY BY ID
+DELETE http://localhost:3000/api/v1/category/2
 
 
 #### CLASS ENDPOINT GetByClassCode AND PUT ###
-###
-GET http://localhost:3000/api/v1/class/UD0
+####
+GET http://localhost:3000/api/v1/class/UDU0
 
 ####
 PUT http://localhost:3000/api/v1/class/WD2

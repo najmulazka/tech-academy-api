@@ -18,6 +18,9 @@ app.use("/api/v1", require("./routes/index.routes"));
 app.use("/api/v1/auth", require("./routes/auth.routes"));
 app.use("/api/v1", require("./routes/category.routes"));
 
+const userRouter = require('./routes/user.routes');
+app.use('/users', userRouter);
+
 // server error handling middleware
 app.use(notFoundHandler);
 app.use(errorHandler);

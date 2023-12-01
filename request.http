@@ -1,9 +1,33 @@
+### Get All Users (GET)
+GET http://localhost:3000/api/v1/user
+
+### Get User by ID (GET)
+GET http://localhost:3000/api/v1/user/2
+
+### Update User by ID (PUT)
+PUT http://localhost:3000/api/v1/user/2
+Content-Type: application/json
+
+{
+  "fullName": "Updated Name",
+  "noTelp": "987654321",
+  "city": "Updated City",
+  "country": "Updated Country",
+  "profilePicture": "updated_profile.jpg",
+  "fileId": "updated_file123",
+  "isAdmin": false,
+  "googleId": "updated_google123"
+}
+
+### Delete User by ID (DELETE)
+DELETE http://localhost:3000/api/v1/user/2
+
 ### LOGIN
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email":"deapark01@gmail.com",
+    "email":"muhammadalimran22@gmail.com",
     "password":"lili"
 }
 

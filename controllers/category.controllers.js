@@ -8,7 +8,7 @@ const createCategory = async (req, res, next) => {
     });
     return res.status(201).json({
       status: true,
-      message: "created successfully",
+      message: "created successfullyy",
       data: newCategory,
     });
   } catch (err) {

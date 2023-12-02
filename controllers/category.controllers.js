@@ -3,6 +3,15 @@ const prisma = require("../utils/libs/prisma.libs");
 const createCategory = async (req, res, next) => {
   try {
     let { categoryName } = req.body;
+
+    if (!categoryName) {
+      return res.status(400).json({
+        status: false,
+        message: "category code are required",
+        data: null,
+      });
+    }
+
     const newCategory = await prisma.categorys.create({
       data: { categoryName },
     });
@@ -22,6 +31,15 @@ const getCategory = async (req, res, next) => {
       include: { class: true },
       orderBy: { id: "asc" },
     });
+
+    if (!categories || categories.length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: "categories get all not exist",
+        data: null,
+      });
+    }
+
     return res.status(200).json({
       status: true,
       message: "get category successfully",
@@ -41,11 +59,10 @@ const getByIdCategory = async (req, res, next) => {
       include: { class: true },
     });
 
-    if (!category) {
-      return res.status(404).json({
+    if (!category || !id) {
+      return res.status(400).json({
         status: false,
-        message: "Not Found",
-        err: "Category not found",
+        message: "categories by id not exist",
         data: null,
       });
     }
@@ -65,10 +82,30 @@ const updateCategory = async (req, res, next) => {
     let { id } = req.params;
     let { categoryName } = req.body;
 
+    const existingCategory = await prisma.categorys.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!existingCategory || !id) {
+      return res.status(400).json({
+        status: false,
+        message: "category id not exist",
+        data: null,
+      });
+    }
+
     const updatedCategory = await prisma.categorys.update({
       where: { id: Number(id) },
       data: { categoryName },
     });
+
+    if (!updatedCategory) {
+      return res.status(400).json({
+        status: false,
+        message: "category code are required",
+        data: null,
+      });
+    }
 
     return res.status(200).json({
       status: true,
@@ -80,9 +117,42 @@ const updateCategory = async (req, res, next) => {
   }
 };
 
+const deletedCategory = async (req, res, next) => {
+  try {
+    let { id } = req.params;
+
+    const existingCategory = await prisma.categorys.findUnique({
+      where: { id: Number(id) },
+      include: { class: true },
+    });
+
+    if (!existingCategory || !id) {
+      return res.status(400).json({
+        status: false,
+        message: "category id not exist",
+        data: null,
+      });
+    }
+
+    const deletedCategory = await prisma.categorys.delete({
+      where: { id: Number(id) },
+      include: { class: { select: { classCode: true, className: true } } },
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "category deleted successfully",
+      data: deletedCategory,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createCategory,
   getCategory,
   getByIdCategory,
   updateCategory,
+  deletedCategory,
 };

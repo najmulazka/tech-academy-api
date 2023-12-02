@@ -1,13 +1,20 @@
-const prisma = require('../utils/libs/prisma.libs');
-const imagekit = require('../utils/libs/imagekit.libs');
-const path = require('path');
-const { getPagination } = require('../utils/libs/pagination.libs');
+const prisma = require("../utils/libs/prisma.libs");
+const imagekit = require("../utils/libs/imagekit.libs");
+const path = require("path");
+const { getPagination } = require("../utils/libs/pagination.libs");
 const { generateClassCode } = require("../utils/libs/classcode.libs");
 
 const createClass = async (req, res, next) => {
   try {
-    let { className, description, price, isFree, levelName, categoryId } =
-      req.body;
+    let {
+      className,
+      description,
+      price,
+      isFree,
+      levelName,
+      categoryId,
+      views,
+    } = req.body;
     if (!req.file) {
       return res.status(400).json({
         status: false,
@@ -43,6 +50,7 @@ const createClass = async (req, res, next) => {
         isFree: JSON.parse(isFree),
         levelName,
         categoryId: Number(categoryId),
+        views: Number(views),
       },
     });
 
@@ -186,7 +194,10 @@ const getAllClass = async (req, res, next) => {
         data: { pagination, result },
       });
     } else {
-      const result = await prisma.class.findMany({ skip: (page - 1) * limit, take: limit });
+      const result = await prisma.class.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+      });
 
       res.status(200).json({
         status: true,
@@ -202,16 +213,42 @@ const getAllClass = async (req, res, next) => {
 
 const getByIdClass = async (req, res, next) => {
   try {
-    const { classCode } = req.params;
-    const classes = await prisma.class.findUnique({
+    let { classCode } = req.params;
+
+    if (!classCode) {
+      return res.status(400).json({
+        status: false,
+        message: "classcode is required",
+        data: null,
+      });
+    }
+
+    const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
     });
 
-    if (!classes) {
+    if (!existingClass) {
       return res.status(400).json({
         status: false,
-        message: "Not Found",
-        err: "Class not found",
+        message: "classCode not exist",
+        data: null,
+      });
+    }
+
+    await prisma.class.update({
+      where: { classCode: classCode },
+      data: { views: { increment: 1 } },
+    });
+
+    const updatedClassWithViews = await prisma.class.findUnique({
+      where: { classCode: classCode },
+      include: { chapters: true },
+    });
+
+    if (!updatedClassWithViews) {
+      return res.status(400).json({
+        status: false,
+        message: "classCode not exist",
         data: null,
       });
     }
@@ -219,8 +256,7 @@ const getByIdClass = async (req, res, next) => {
     res.status(200).json({
       status: true,
       message: "getById class successfully",
-      err: null,
-      data: classes,
+      data: updatedClassWithViews,
     });
   } catch (err) {
     next(err);
@@ -240,8 +276,7 @@ const updateClass = async (req, res, next) => {
     if (!existingClass) {
       return res.status(400).json({
         status: false,
-        message: "Not Found",
-        err: "Class not found",
+        message: "category id not exist",
         data: null,
       });
     }
@@ -269,4 +304,50 @@ const updateClass = async (req, res, next) => {
   }
 };
 
-module.exports = { createClass, getAllClass, getByIdClass, updateClass };
+const deleteClass = async (req, res, next) => {
+  try {
+    let { classCode } = req.params;
+
+    if (!classCode) {
+      return res.status(400).json({
+        status: false,
+        message: "classCode is required",
+        data: null,
+      });
+    }
+
+    const existingClass = await prisma.class.findUnique({
+      where: { classCode: classCode },
+      include: { chapters: true },
+    });
+
+    if (!existingClass) {
+      return res.status(400).json({
+        status: false,
+        message: "class with the provided classCode does not exist",
+        data: null,
+      });
+    }
+
+    const deletedClass = await prisma.class.delete({
+      where: { classCode: classCode },
+      include: { chapters: true },
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "class deleted successfully",
+      data: deletedClass,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  createClass,
+  getAllClass,
+  getByIdClass,
+  updateClass,
+  deleteClass,
+};

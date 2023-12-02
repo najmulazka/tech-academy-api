@@ -1,0 +1,27 @@
+### CATEGORY CREATE
+POST http://localhost:3000/api/v1/chapter
+Content-Type: application/json
+
+{
+    "chapterName":"Chapter-1 Pendahuluan",
+    "classCode":"U0"
+}
+
+####
+GET http://localhost:3000/api/v1/chapter
+
+
+####
+GET http://localhost:3000/api/v1/chapter/35
+
+###
+PUT http://localhost:3000/api/v1/chapter/1
+Content-Type: application/json
+
+{
+    "chapterName":"Chapter-1 Pendahuluan",
+    "classCode":"UD0"
+}
+
+####
+DELETE http://localhost:3000/api/v1/chapter/35

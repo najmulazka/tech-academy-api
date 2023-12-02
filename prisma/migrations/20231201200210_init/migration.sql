@@ -66,6 +66,8 @@ CREATE TABLE "Class" (
     "price" DECIMAL(65,30) NOT NULL,
     "levelName" TEXT NOT NULL,
     "isFree" BOOLEAN NOT NULL,
+    "views" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "categoryId" INTEGER NOT NULL,
 
     CONSTRAINT "Class_pkey" PRIMARY KEY ("classCode")

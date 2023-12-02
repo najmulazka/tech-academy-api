@@ -70,7 +70,7 @@ model Class {
   price            Decimal
   levelName        String
   isFree           Boolean
-  views            Int
+  views            Int            @default(0)
   createdAt        DateTime       @default(now())
   categoryId       Int
   categorys        Categorys      @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -99,12 +99,13 @@ model Lessons {
 }
 
 model Transactions {
-  id            Int      @id @default(autoincrement())
-  status        Boolean  @default(false)
-  paymentMethod String
-  paymentDate   DateTime
+  id            Int       @id @default(autoincrement())
+  status        Boolean   @default(false)
+  paymentMethod String?
+  paymentDate   DateTime?
+  createdAt     DateTime  @default(now())
   userId        Int
   classCode     String
-  users         Users    @relation(fields: [userId], references: [id])
-  class         Class    @relation(fields: [classCode], references: [classCode])
+  users         Users     @relation(fields: [userId], references: [id])
+  class         Class     @relation(fields: [classCode], references: [classCode])
 }

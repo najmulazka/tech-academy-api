@@ -3,8 +3,8 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email":"deapark01@gmail.com",
-    "password":"lili"
+    "email":"najmulazka369@gmail.com",
+    "password":"najmul"
 }
 
 ### REGISTER
@@ -12,10 +12,10 @@ POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "fullName":"imran",
-    "email":"muhammadalimran22@gmail.com",
-    "noTelp":"085326678543",
-    "password":"lili"
+    "fullName":"Najmul",
+    "email":"najmulazka369@gmail.com",
+    "noTelp":"085326672543",
+    "password":"najmul"
 }
 
 ### change-password
@@ -34,8 +34,8 @@ POST http://localhost:3000/api/v1/auth/verify-otp
 Content-Type: application/json
 
 {
-    "email":"muhammadalimran22@gmail.com",
-    "activationCode":"519812"
+    "email":"najmulazka369@gmail.com",
+    "activationCode":"454787"
 }
 
 ####

@@ -1,0 +1,10 @@
+POST http://localhost:3000/api/v1/payment/U0
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxNDgyNjk0fQ.gDIOvVDLNI9itz5zHEVDVgYct3HJLkiM_j0bqs182VM
+
+### Get transaction
+GET http://localhost:3000/api/v1/payment/admin
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxNDgyNjk0fQ.gDIOvVDLNI9itz5zHEVDVgYct3HJLkiM_j0bqs182VM
+
+### Get transaction params
+GET http://localhost:3000/api/v1/payment/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxNDgyNjk0fQ.gDIOvVDLNI9itz5zHEVDVgYct3HJLkiM_j0bqs182VM

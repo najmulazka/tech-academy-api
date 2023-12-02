@@ -13,7 +13,6 @@ const createClass = async (req, res, next) => {
       isFree,
       levelName,
       categoryId,
-      views,
     } = req.body;
     if (!req.file) {
       return res.status(400).json({
@@ -50,7 +49,6 @@ const createClass = async (req, res, next) => {
         isFree: JSON.parse(isFree),
         levelName,
         categoryId: Number(categoryId),
-        views: Number(views),
       },
     });
 

@@ -1,25 +1,25 @@
-### Get All Users (GET)
+### GET ALL USER
 GET http://localhost:3000/api/v1/user
 
-### Get User by ID (GET)
-GET http://localhost:3000/api/v1/user/2
+### GET USER BY ID
+GET http://localhost:3000/api/v1/user/3
 
-### Update User by ID (PUT)
-PUT http://localhost:3000/api/v1/user/2
-Content-Type: application/json
+### UPDATE USER
+PUT http://localhost:3000/api/v1/user/3
+Content-Type: multipart/form-data
 
 {
-  "fullName": "Updated Name",
-  "noTelp": "987654321",
-  "city": "Updated City",
-  "country": "Updated Country",
-  "profilePicture": "updated_profile.jpg",
-  "fileId": "updated_file123",
+  "fullName": "Achmad Fahmi",
+  "noTelp": "1234567890",
+  "city": "Surabaya",
+  "country": "Indonesia",
+  "profilePicture": "https://ik.imagekit.io/techacademy/1701619115846_kCwEkz3ur.png",
+  "fileId": "pm001",
   "isAdmin": false,
-  "googleId": "updated_google123"
+  "googleId": "google1"
 }
 
-### Delete User by ID (DELETE)
+### DELETE USER
 DELETE http://localhost:3000/api/v1/user/2
 
 ### LOGIN

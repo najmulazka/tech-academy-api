@@ -1,4 +1,6 @@
 const prisma = require("../utils/libs/prisma.libs");
+const imagekit = require('../utils/libs/imagekit.libs');
+const path = require('path');
 const { getPagination } = require("../utils/libs/pagination.libs");
 
 const getAllUsers = async (req, res, next) => {
@@ -77,6 +79,16 @@ const updateUser = async (req, res, next) => {
         .json({ success: false, message: "User not found" });
     }
 
+    let updatedProfilePicture = profilePicture;
+    if (req.file) {
+      const strFile = req.file.buffer.toString("base64");
+      const { url } = await imagekit.upload({
+        fileName: Date.now() + path.extname(req.file.originalname),
+        file: strFile,
+      });
+      updatedProfilePicture = url;
+    }
+
     const user = await prisma.users.update({
       where: { id: userId },
       data: {
@@ -84,20 +96,21 @@ const updateUser = async (req, res, next) => {
         noTelp,
         city,
         country,
-        profilePicture,
+        profilePicture: updatedProfilePicture,
         fileId,
-        isAdmin,
+        isAdmin: JSON.parse(isAdmin), // Konversi nilai isAdmin menjadi boolean
         googleId,
       },
     });
 
     res
       .status(200)
-      .json({ success: true, message: "Post Successfull Updated", data: user });
+      .json({ success: true, message: "User berhasil diperbarui", data: user });
   } catch (error) {
     next(error);
   }
 };
+
 
 const deleteUser = async (req, res, next) => {
   try {

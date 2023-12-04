@@ -4,15 +4,14 @@ const classs = require('./class.routes');
 const categories = require('./category.routes');
 const chapter = require('./chapter.routes');
 const payment = require('./payment.routes');
-// const admin = require('./admin.routes');
-// const { admin } = require('../middlewares/admin.midlewares');
+const user = require('./user.routes')
 const { restrict } = require('../middlewares/auth.middlewares');
 
 router.use('/auth', auth);
 router.use('/class', classs);
 router.use('/category', categories);
 router.use('/chapter', chapter);
-// router.use('/admin', admin);
 router.use('/payment', restrict, payment);
+router.use('/user', user);
 
 module.exports = router;

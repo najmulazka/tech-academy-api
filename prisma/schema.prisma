@@ -56,9 +56,11 @@ model Notifications {
 }
 
 model Categorys {
-  id           Int     @id @default(autoincrement())
-  categoryName String  @unique
-  class        Class[]
+  id                       Int     @id @default(autoincrement())
+  categoryName             String  @unique
+  thumbnailPictureCategory String
+  fileId                   String
+  class                    Class[]
 }
 
 model Class {

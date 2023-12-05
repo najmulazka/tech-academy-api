@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const router= require("express").Router();
 const {
   getAllUsers,
   getUserById,
@@ -6,9 +6,6 @@ const {
   deleteUser
 } = require("../controllers/user.controllers");
 const { image } = require('../utils/libs/multer.libs');
-
-
-const router = Router();
 
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);

@@ -348,12 +348,12 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
   try {
     const { otp } = req.body;
     let { token } = req.query;
-    
+
     if (!token) {
       return res.status(400).json({
         status: false,
-        message: "Bad Request",
-        error: "Token is required",
+        message: 'Bad Request',
+        error: 'Token is required',
         data: null,
       });
     }
@@ -420,6 +420,77 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
   }
 };
 
+const resetPassword = async (req, res, next) => {
+  try {
+    const { newPassword, newPasswordConfirmation } = req.body;
+    let { token } = req.query;
+
+    if (!newPassword || !newPasswordConfirmation) {
+      return res.status(400).json({
+        status: false,
+        message: 'Bad Request',
+        error: 'newPassword and newPasswordConfirmation are required',
+        data: null,
+      });
+    }
+
+    if (newPassword !== newPasswordConfirmation) {
+      return res.status(400).json({
+        status: false,
+        message: 'Bad Request',
+        error: 'new password and new password confirmation not same',
+        data: null,
+      });
+    }
+
+    jwt.verify(token, JWT_SECRET_KEY, async (err, decoded) => {
+      if (err) {
+        return res.status(400).json({
+          status: false,
+          message: 'Bad Request',
+          err: err.message,
+          data: null,
+        });
+      }
+
+      let existUser = await prisma.Users.findUnique({
+        where: { email: decoded.email },
+      });
+      if (!existUser) {
+        return res.status(400).json({
+          status: false,
+          message: 'Bad Request!',
+          err: 'User does not exist',
+          data: null,
+        });
+      }
+
+      const encryptedNewPassword = await bcrypt.hash(newPassword, 10);
+      const user = await prisma.users.update({
+        where: { email: existUser.email },
+        data: {
+          password: encryptedNewPassword,
+        },
+      });
+
+      const resetPasswordSucces = await nodemailer.getHtml('reset-password-success.ejs', {
+        fullName: user.fullName,
+      });
+      nodemailer.sendEmail(user.email, 'Reset Password Success', resetPasswordSucces);
+
+      return res.status(200).json({
+        status: true,
+        message: 'Reset password success',
+        err: null,
+        data: null,
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
 const changePassword = async (req, res, next) => {
   try {
     const { email, currentPassword, new_password, new_password_confirm } = req.body;
@@ -464,11 +535,11 @@ const changePassword = async (req, res, next) => {
       });
     }
 
-    const encryptednew_password = await bcrypt.hash(new_password, 10);
+    const encryptedNewPassword = await bcrypt.hash(new_password, 10);
 
     let user = await prisma.Users.update({
       where: { email },
-      data: { password: encryptednew_password },
+      data: { password: encryptedNewPassword },
     });
 
     const token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
@@ -490,126 +561,6 @@ const changePassword = async (req, res, next) => {
   }
 };
 
-const resetPasswordRequest = async (req, res, next) => {
-  try {
-    const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({
-        status: false,
-        message: 'Bad Request',
-        error: 'Email is required',
-        data: null,
-      });
-    }
-
-    const user = await prisma.Users.findUnique({ where: { email } });
-
-    if (!user) {
-      return res.status(404).json({
-        status: false,
-        message: 'Not Found',
-        error: 'User not found',
-        data: null,
-      });
-    }
-
-    // Generate a unique token for password reset
-    const resetToken = generateResetToken();
-
-    // Store the resetToken and expiration time in the database
-    await prisma.Users.update({
-      where: { email },
-      data: {
-        resetPasswordToken: resetToken,
-        resetPasswordExpires: new Date(Date.now() + 3600000), // Set expiration time (1 hour)
-      },
-    });
-
-    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
-
-    // Send an email with the password reset link
-    const htmlReset = await nodemailer.getHtml('reset-password.ejs', {
-      user: { resetLink },
-    });
-    nodemailer.sendEmail(email, 'Password Reset Request', htmlReset);
-
-    return res.status(200).json({
-      status: true,
-      message: 'Password reset email sent successfully',
-      error: null,
-      data: null,
-    });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-};
-
-const resetPassword = async (req, res, next) => {
-  try {
-    const { email, newPassword, resetToken } = req.body;
-
-    if (!email || !newPassword || !resetToken) {
-      return res.status(400).json({
-        status: false,
-        message: 'Bad Request',
-        error: 'Email, newPassword, and resetToken are required',
-        data: null,
-      });
-    }
-
-    const user = await prisma.Users.findUnique({
-      where: { email, resetPasswordToken: resetToken, resetPasswordExpires: { gte: new Date() } },
-    });
-
-    if (!user) {
-      return res.status(400).json({
-        status: false,
-        message: 'Bad Request',
-        error: 'Invalid or expired reset token',
-        data: null,
-      });
-    }
-
-    const encryptedNewPassword = await bcrypt.hash(newPassword, 10);
-
-    // Update user password and clear resetToken fields
-    await prisma.Users.update({
-      where: { email },
-      data: {
-        password: encryptedNewPassword,
-        resetPasswordToken: null,
-        resetPasswordExpires: null,
-      },
-    });
-    
-    const confirmationHtml = `
-      <html>
-        <body>
-          <h1>Password Reset Successful</h1>
-          <p>Your password has been reset successfully. If you did not initiate this action, please contact us immediately.</p>
-          <p>If you have any questions or concerns, feel free to reply to this email.</p>
-          <p>Thank you for using our services!</p>
-        </body>
-      </html>
-    `;
-
-    nodemailer.sendEmail(email, 'Password Reset Successful', confirmationHtml);
-
-    return res.status(200).json({
-      status: true,
-      message: 'Password reset successfully',
-      error: null,
-      data: null,
-    });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-};
-
-
 module.exports = {
   register,
   resendOTP,
@@ -619,6 +570,5 @@ module.exports = {
   forrgotPassword,
   resendOtpPassword,
   verifyOtpForrgotPassword,
-  resetPasswordRequest,
   resetPassword,
 };

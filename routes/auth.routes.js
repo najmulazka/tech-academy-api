@@ -9,8 +9,9 @@ const {
   resendOtpPassword,
   resetPassword,
 } = require("../controllers/auth.controllers");
+const emailValidation = require('../middlewares/validationEmail.middlewares')
 
-router.post("/register", register);
+router.post("/register", emailValidation, register);
 router.get("/resend-otp", resendOTP);
 router.post("/verify-otp", verifyOTP);
 router.post("/login", login);

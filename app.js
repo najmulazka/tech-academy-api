@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const morgan = require("morgan");
 const path = require("path");
 const { PORT = 3000 } = process.env;
@@ -12,6 +13,7 @@ const {
 
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cors());
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "views")));

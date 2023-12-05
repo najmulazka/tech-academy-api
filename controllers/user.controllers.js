@@ -1,54 +1,24 @@
 const prisma = require("../utils/libs/prisma.libs");
-const imagekit = require('../utils/libs/imagekit.libs');
-const path = require('path');
-const { getPagination } = require("../utils/libs/pagination.libs");
+const imagekit = require("../utils/libs/imagekit.libs");
+const path = require("path");
 
-const getAllUsers = async (req, res, next) => {
-  try {
-    let { limit = 2, page = 1 } = req.query;
-    limit = Number(limit);
-    page = Number(page);
-    let users = await prisma.users.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      orderBy: {
-        id: "asc",
-      },
-    });
-    const { _count } = await prisma.users.aggregate({
-      _count: { id: true },
-    });
-
-    let pagination = getPagination(req, _count.id, page, limit);
-
-    res.status(201).json({
-      status: true,
-      message: "All Users Data",
-      data: { pagination, users },
-    });
-  } catch (err) {
-    next(err);
-  }
-};
 
 const getUserById = async (req, res, next) => {
   try {
-    const userId = parseInt(req.params.id);
-    const user = await prisma.users.findUnique({
-      where: {
-        id: userId,
-      },
-    });
+    const user = req.user;
 
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
+    const userResponse = {
+      fullName: user.fullName,
+      noTelp: user.noTelp,
+      city: user.city,
+      country: user.country,
+      profilePicture: user.profilePicture,
+    };
 
     res.status(200).json({
       status: true,
       message: "User Found",
-      data: user,
+      data: userResponse,
     });
   } catch (error) {
     next(error);
@@ -57,17 +27,10 @@ const getUserById = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const userId = parseInt(req.params.id);
-    const {
-      fullName,
-      noTelp,
-      city,
-      country,
-      profilePicture,
-      fileId,
-      isAdmin,
-      googleId,
-    } = req.body;
+    const user = req.user;
+
+    const userId = user.id; 
+    const { fullName, noTelp, city, country, profilePicture } = req.body;
 
     const existingUser = await prisma.users.findUnique({
       where: { id: userId },
@@ -80,16 +43,20 @@ const updateUser = async (req, res, next) => {
     }
 
     let updatedProfilePicture = profilePicture;
+    let fileId;
+
     if (req.file) {
       const strFile = req.file.buffer.toString("base64");
-      const { url } = await imagekit.upload({
+      const { url: imageUrl, fileId: imageFileId } = await imagekit.upload({
         fileName: Date.now() + path.extname(req.file.originalname),
         file: strFile,
       });
-      updatedProfilePicture = url;
+
+      updatedProfilePicture = imageUrl;
+      fileId = imageFileId;
     }
 
-    const user = await prisma.users.update({
+    const updatedUser = await prisma.users.update({
       where: { id: userId },
       data: {
         fullName,
@@ -97,30 +64,30 @@ const updateUser = async (req, res, next) => {
         city,
         country,
         profilePicture: updatedProfilePicture,
-        fileId,
-        isAdmin: JSON.parse(isAdmin), // Konversi nilai isAdmin menjadi boolean
-        googleId,
+        fileId: fileId,
       },
     });
 
-    res
-      .status(200)
-      .json({ success: true, message: "User berhasil diperbarui", data: user });
+    res.status(200).json({
+      success: true,
+      message: "User berhasil diperbarui",
+      data: updatedUser,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-
 const deleteUser = async (req, res, next) => {
   try {
-    const userId = parseInt(req.params.id);
-    const user = await prisma.users.delete({
+    const user = req.user;
+    const deletedUser = await prisma.users.delete({
       where: {
-        id: userId,
+        id: user.id,
       },
     });
-    if (!user) {
+
+    if (!deletedUser) {
       return res.status(404).json({
         status: false,
         message: "User not found",
@@ -128,6 +95,7 @@ const deleteUser = async (req, res, next) => {
         data: null,
       });
     }
+
     return res.status(200).json({
       status: true,
       message: "User berhasil dihapus",
@@ -138,8 +106,8 @@ const deleteUser = async (req, res, next) => {
 };
 
 module.exports = {
-  getAllUsers,
   getUserById,
   updateUser,
   deleteUser,
 };
+

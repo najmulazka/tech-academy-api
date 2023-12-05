@@ -52,6 +52,8 @@ CREATE TABLE "Notifications" (
 CREATE TABLE "Categorys" (
     "id" SERIAL NOT NULL,
     "categoryName" TEXT NOT NULL,
+    "thumbnailPictureCategory" TEXT NOT NULL,
+    "fileId" TEXT NOT NULL,
 
     CONSTRAINT "Categorys_pkey" PRIMARY KEY ("id")
 );

@@ -1,13 +1,13 @@
 ### Get All transaction (ADMIN)
-GET http://localhost:3000/api/v1/paymentAdmin
+GET http://localhost:3000/api/v1/admin/payment
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
 
 ### Get Detail transaction (ADMIN)
-GET http://localhost:3000/api/v1/paymentAdmin/1
+GET http://localhost:3000/api/v1/admin/payment/1
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
 
 ### Delete Transaction (ADMIN)
-DELETE GET http://localhost:3000/api/v1/paymentAdmin/1
+DELETE GET http://localhost:3000/api/v1/admin/payment/1
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
 
 ######################################################

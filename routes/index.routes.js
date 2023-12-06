@@ -22,7 +22,7 @@ router.use('/class', classs);
 router.use('/category', categories);
 router.use('/chapter', chapter);
 router.use('/payment', restrict, payment);
-router.use('/paymentAdmin', isAdmin, paymentAdmin);
+router.use('/admin/payment', isAdmin, paymentAdmin);
 router.use('/admin', admin);
 router.use('/lesson', lesson)
 

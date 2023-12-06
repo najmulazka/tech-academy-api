@@ -1,0 +1,2162 @@
+openapi: 3.0.0
+x-stoplight:
+  id: zvpj576gvy7j9
+info:
+  title: Backend API Tech Academy
+  version: '1.0'
+  description: The API documentation here contains all the api documentation to support the Binar Academy Final Project Backend Developer
+  contact:
+    name: Annisa Nur
+    email: annisanoor014@gmail.com
+servers:
+  - url: 'https://techacademya.up.railway.app/'
+    description: Production Environtment
+  - url: 'http://localhost:3000/api/v1'
+    description: Staging Environtment
+paths:
+  /auth/register:
+    post:
+      summary: Create Student Register Endpoint
+      operationId: post-auth-register
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: null
+                  data:
+                    type: object
+                    properties:
+                      fullName:
+                        type: string
+                      email:
+                        type: string
+                      noTelp:
+                        type: string
+                      password:
+                        type:
+                          string
+                      token:
+                        type:
+                          string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Created
+                    err: null
+                    data:
+                      fullName: Nisa
+                      email: nisa02@gmail.com
+                      noTelp: 08587654311
+                      password: nisa123
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pc2EwMkBnbWFpbC5jb20iLCJpYXQiOjE3MDE4NjM2OTZ9.WGM1qYbqcQWy2zftjNkD09FCkB2wVubq8byH-3lKaek
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    message: Created
+                    err: null
+                    data:
+                      fullName: Nisa
+                      email: nisa02@gmail.com
+                      noTelp: 08587654311
+                      password: nisa123
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pc2EwMkBnbWFpbC5jb20iLCJpYXQiOjE3MDE4NjM2OTZ9.WGM1qYbqcQWy2zftjNkD09FCkB2wVubq8byH-3lKaek
+        '400':
+          description: email already used
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+              examples:
+                Example 1:
+                  value:
+                    status: false
+                    message: Bad Request
+                    err: user has already been used!
+                    data: null    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullName:
+                  type: string
+                email:
+                  type: string
+                noTelp:
+                  type: string
+                password:
+                  type: string
+              x-examples:
+                Example 1:
+                  fullName: Nisa
+                  email: nisa02@mail.com
+                  noTelp: '08587654311'
+                  password: nisa123
+            examples:
+              Example 1:
+                value:
+                  fullName: Nisa
+                  email: nisa02@mail.com
+                  noTelp: '08587654311'
+                  password: nisa123
+        description: In this body you can create new user
+      description: ''
+      tags:
+        - Auth Endpoint
+  /auth/login:
+    post:
+      summary: Login Student Endpoint
+      operationId: post-auth-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type:
+                      string
+                  err:
+                    type: 
+                      string
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type:
+                          object
+                      id:
+                        type: integer
+                      fullName:
+                        type: string
+                      email: 
+                        type:
+                          string
+                      password:
+                        type:
+                          string
+                      noTelp:
+                        type:
+                          string
+                      city: 
+                        type: 
+                          string
+                      country:
+                        type:
+                          string
+                      profilePicture:
+                        type:
+                          string
+                      fileId:
+                        type:
+                          string
+                      isActivated:
+                        type:
+                          boolean
+                      isAdmin:
+                        type:
+                          boolean
+                      googleId:
+                        type:
+                          string
+                      token:
+                        type:
+                          string
+                x-examples:
+                  Example 1:
+                    status: true
+                    data:
+                      user:
+                        type:
+                          object
+                      id:
+                        type: 2
+                      fullName: Nisa
+                      email: nisa02@gmail.com
+                      password: $2b$10$VMmnr.fyXKAkTxhg6c5skelLckv20B1VV8UmDnZowOnrRgzlg1t9S
+                      noTelp: 08587654311
+                      city: null
+                      country: null
+                      profilePicture: null
+                      fileId: null
+                      isActivated: false
+                      isAdmin: false
+                      googleId: null
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pc2EwMkBnbWFpbC5jb20iLCJpYXQiOjE3MDE4Njk0NjR9.7wezmuOBn-TQzQ91fn1Pkjczbn06kpuntH23mxY02lw
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data:
+                      user:
+                        type:
+                          object
+                      id:
+                        type: 2
+                      fullName: Nisa
+                      email: nisa02@gmail.com
+                      password: $2b$10$VMmnr.fyXKAkTxhg6c5skelLckv20B1VV8UmDnZowOnrRgzlg1t9S
+                      noTelp: 08587654311
+                      city: null
+                      country: null
+                      profilePicture: null
+                      fileId: null
+                      isActivated: false
+                      isAdmin: false
+                      googleId: null
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pc2EwMkBnbWFpbC5jb20iLCJpYXQiOjE3MDE4Njk0NjR9.7wezmuOBn-TQzQ91fn1Pkjczbn06kpuntH23mxY02lw
+        '400':
+          description: Email not found
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              x-examples:
+                Example 1:
+                  email: nisa02@mail.com
+                  password: 'nisa123'
+            examples:
+              Example 1:
+                value:
+                  email: nisa02@mail.com
+                  password: 'nisa123'
+        description: In this endpoint you can login to your application
+      tags:
+        - Auth Endpoint
+  /auth/forgot-password:
+    post:
+      summary: Forgot Password Endpoint
+      operationId: post-auth-forgot-password
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type:
+                      string
+                  err:
+                    type: 
+                      string
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type:
+                          object
+                      id:
+                        type: integer
+                      fullName:
+                        type: string
+                      email: 
+                        type:
+                          string
+                      password:
+                        type:
+                          string
+                      noTelp:
+                        type:
+                          string
+                      city: 
+                        type: 
+                          string
+                      country:
+                        type:
+                          string
+                      profilePicture:
+                        type:
+                          string
+                      fileId:
+                        type:
+                          string
+                      isActivated:
+                        type:
+                          boolean
+                      isAdmin:
+                        type:
+                          boolean
+                      googleId:
+                        type:
+                          string
+                      otp:
+                        type:
+                          integer
+                      token:
+                        type:
+                          string
+                x-examples:
+                  Example 1:
+                    status: true
+                    data:
+                      user:
+                        type:
+                          object
+                      id:
+                        type: 2
+                      fullName: Nisa
+                      email: nisa02@gmail.com
+                      password: $2b$10$VMmnr.fyXKAkTxhg6c5skelLckv20B1VV8UmDnZowOnrRgzlg1t9S
+                      noTelp: 08587654311
+                      city: null
+                      country: null
+                      profilePicture: null
+                      fileId: null
+                      isActivated: false
+                      isAdmin: false
+                      googleId: null
+                      otp: 943354
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pc2EwMkBnbWFpbC5jb20iLCJpYXQiOjE3MDE4Njk0NjR9.7wezmuOBn-TQzQ91fn1Pkjczbn06kpuntH23mxY02lw
+              examples:
+                Example 1:
+                  value:
+                    status: true
+                    data:
+                      user:
+                        type:
+                          object
+                      id:
+                        type: 2
+                      fullName: Nisa
+                      email: nisa02@gmail.com
+                      password: $2b$10$VMmnr.fyXKAkTxhg6c5skelLckv20B1VV8UmDnZowOnrRgzlg1t9S
+                      noTelp: 08587654311
+                      city: null
+                      country: null
+                      profilePicture: null
+                      fileId: null
+                      isActivated: false
+                      isAdmin: false
+                      googleId: null
+                      otp: 943354
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pc2EwMkBnbWFpbC5jb20iLCJpYXQiOjE3MDE4Njk0NjR9.7wezmuOBn-TQzQ91fn1Pkjczbn06kpuntH23mxY02lw
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              x-examples:
+                Example 1:
+                  email: user123@gmail.com
+            examples:
+              Example 1:
+                value:
+                  email: user123@gmail.com
+        description: 'Silahkan masukkan email user yang ingin diubah password nya'
+      tags:
+        - Auth Endpoint
+  /auth/reset-password:
+    post:
+      summary: Reset Password Endpoint
+      operationId: post-auth-reset-password
+      responses:
+        '200':
+          description: OK
+      tags:
+        - Auth Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newPassword:
+                  type: string
+                newPasswordConfirmation:
+                  type: string
+              x-examples:
+                Example 1:
+                  newPassword: 'User-1234'
+                  newPasswordConfirmation: 'User-1234'
+            examples:
+              Example 1:
+                value:
+                  newPassword: 'User-1234'
+                  newPasswordConfirmation: 'User-1234'
+        description: 'Endpoint untuk reset password, silahkan dimasukkan new password dan confirm new password nya'
+  /auth/verify-otp:
+    post:
+      summary: Verify OTP Endpoint
+      operationId: post-auth-verify-otp
+      tags:
+      - Auth Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                activationCode:
+                  type: string
+            required:
+              - email
+              - activationCode
+            x-examples:
+              Example 1:
+                email: 'nisa02@gmail.com'
+                activationCode: '629341'
+            examples:
+              Example 1:
+                value:
+                  email: 'nisa02@gmail.com'
+                  activationCode: '629341'  
+        description: 'Endpoint to verify OTP for user activation. Please provide the user email and activation code.'
+      responses:
+        '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+                message:
+                  type: string
+                err:
+                  type: string
+                data:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    activationCode:
+                      type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+                  
+  /auth/verify-otp-password:
+    post:
+      summary: Verify OTP and Set New Password
+      operationId: post-auth-verify-otp-password
+      tags:
+      - Auth Endpoint
+      parameters:
+        - in: query
+          name: token
+          required: true
+          description: The token received during the OTP verification process.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                otp:
+                  type: string
+              required:
+              - otp
+            x-examples:
+              Example 1:
+                otp: '479835'
+            examples:
+              Example 1:
+                value:
+                  otp: '479835'  
+        description: 'Endpoint to verify OTP and set a new password. Please provide the OTP received and the token.'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      activationCode:
+                        type: string
+  /auth/resend-otp:
+    get:
+      summary: Resend OTP for User Activation
+      operationId: get-auth-resend-otp
+      tags:
+        - Auth Endpoint
+      parameters:
+        - in: query
+          name: token
+          required: true
+          description: The token received during the previous OTP verification process.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      token:
+                        type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: null
+                    
+    post:
+      summary: Resend OTP for User Activation (Create New OTP)
+      operationId: post-auth-resend-otp
+      tags:
+        - Auth Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+              required:
+                - token
+            x-examples:
+              Example 1:
+                token: 'your_previous_token'
+            examples:
+              Example 1:
+                value:
+                  token: 'your_previous_token'
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: boolean
+                    message:
+                      type: string
+                    err:
+                      type: string
+                    data:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                        token:
+                          type: string
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: boolean
+                    message:
+                      type: string
+                    error:
+                      type: string
+                    data:
+                      type: null
+
+  /auth/resend-otp-password:
+    get:
+      summary: Resend OTP for Password Reset
+      operationId: get-auth-resend-otp-password
+      tags:
+        - Auth Endpoint
+      parameters:
+        - in: query
+          name: token
+          required: true
+          description: The token received during the previous OTP verification process.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      token:
+                        type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: null
+
+  /category:
+    get:
+      summary: Get All Data Category
+      tags:
+        - Category Endpoint
+      responses:
+        '200':
+          description: Ok.. Data Category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        categoryName:
+                          type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Data Category
+                    data:
+                      - categoryName: 'Programming'
+              examples: {}
+      operationId: get-category
+      description: Retrieve all categories.
+  '/category/{id}':
+    get:
+      summary: Get a category by ID
+      operationId: get-category-by-id
+      tags:
+        - Category Endpoint
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          description: ID of the category to retrieve
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/CategoryWithClasses'
+        '400':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+  
+  /chapter:
+    get:
+      summary: Get all chapters
+      operationId: get-chapters
+      tags:
+        - Chapter Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        chapterId:
+                          type: integer
+                        chapterName:
+                          type: string
+                        classCode:
+                          type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+  /chapter/{Id}:
+    get:
+      summary: Get a chapter by ID
+      operationId: get-chapter-by-id
+      tags:
+        - Chapter Endpoint
+      parameters:
+        - in: path
+          name: chapterId
+          required: true
+          description: ID of the chapter to retrieve
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      chapterId:
+                        type: integer
+                      chapterName:
+                        type: string
+                      classCode:
+                        type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+
+  '/class':
+    get:
+      summary: Get All Data Classess
+      tags:
+        - Class Endpoint
+      parameters:
+      - in: query
+        name: categoryId
+        description: Filter classes by category ID
+        schema:
+          type: integer
+      - in: query
+        name: levelName
+        description: Filter classes by level name
+        schema:
+          type: string
+      - in: query
+        name: isFree
+        description: Filter classes by whether they are free or not
+        schema:
+          type: boolean
+      - in: query
+        name: limit
+        description: The number of items to return per page
+        schema:
+          type: integer
+      - in: query
+        name: page
+        description: The page number
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+                message:
+                  type: string
+                err:
+                  type: string
+                data:
+                  type: object
+                  properties:
+                    pagination:
+                      $ref: '#/components/schemas/Pagination'
+                    result:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Class'
+      '404':
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+                message:
+                  type: string
+                err:
+                  type: string
+                data:
+                  type: null
+      operationId: getAllClasses
+  '/class/${id}':
+    get:
+      summary: Get Data Category By Id
+      parameters:
+      - in: path
+        name: classCode
+        required: true
+        description: Code of the class to retrieve
+        schema:
+          type: string
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+                message:
+                  type: string
+                err:
+                  type: string
+                data:
+                  $ref: '#/components/schemas/ClassWithChapters'
+      '400':
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+                message:
+                  type: string
+                err:
+                  type: string
+                data:
+                  type: null
+      '404':
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+                message:
+                  type: string
+                err:
+                  type: string
+                data:
+                  type: null
+      tags:
+        - Class Endpoint
+  '/class/${categoryid}':
+    get:
+      summary: Get Data Classes By category Id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        kategoriId:
+                          type: integer
+                        kodeKelas:
+                          type: string
+                        name:
+                          type: string
+                        chapter:
+                          type: string
+                        price:
+                          type: integer
+                        materi:
+                          type: string
+                        video:
+                          type: string
+                        field:
+                          type: string
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    data:
+                      - kategoriId: 1
+                        kodeKelas: 1 
+                        name: 'Introduction to JavaScript' 
+                        chapter: 'Basics' 
+                        price: 200000
+                        materi: 'variable and function'
+                        field: 'Programming'
+                        createdAt: '2023-01-01T00:00:00.000Z'
+                        updatedAt: '2023-01-01T00:00:00.000Z' 
+      operationId: getClassByCategoryId
+      description: This endpoint can show data class by category id
+      parameters:
+        - schema:
+            type: integer
+          in: path
+          name: categoryid
+          description: Category Id
+          required: true
+      tags:
+        - Class Endpoint
+  '/class/by-name':
+    get:
+      summary: Get Data Classes By Name 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        chapter:
+                          type: string
+                        price:
+                          type: string
+                        materi:
+                          type: string
+                        video:
+                          type: string
+                        field:
+                          type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    data:
+                      - name: 'Introduction to JavaScript' 
+                        chapter: 'Basics' 
+                        price: '20000'
+                        materi: 'variable and function'
+                        field: 'Programming'
+      operationId: getClassesByName
+      description: This endpoint can show data class by name of class
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: name
+          description: Class name
+          required: true
+      tags:
+        - Class Endpoint
+  /admin/class:
+    get:
+      summary: Get All Classes
+      tags:
+        - Admin Endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Kelas'
+      operationId: get-all-classes
+      description: Retrieve all classes
+
+    post:
+      summary: Create a new class
+      operationId: post-class
+      tags:
+        - Admin Endpoint
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                className:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                isFree:
+                  type: boolean
+                levelName:
+                  type: string
+                categoryId:
+                  type: number
+                thumbnailPicture:
+                  type: string
+            required:
+              - className
+              - price
+              - isFree
+              - levelName
+              - categoryId
+              - thumbnailPicture
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      classId:
+                        type: integer
+                      className:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: number
+                      isFree:
+                        type: boolean
+                      levelName:
+                        type: string
+                      categoryId:
+                        type: number
+                      thumbnailPicture:
+                        type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+
+  /admin/class/{id}:
+    get:
+      summary: Get Class by ID
+      tags:
+        - Admin Endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the class
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kelas'
+        '404':
+          description: Not Found
+      operationId: get-class-by-id
+      description: Retrieve a class by its ID
+
+    put:
+      summary: Update Class by ID
+      tags:
+        - Admin Endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the class
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Kelas'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: update-class-by-id
+      description: Update a class by its ID
+
+    delete:
+      summary: Delete Class by ID
+      tags:
+        - Admin Endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the class
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      operationId: delete-class-by-id
+      description: Delete a class by its ID
+  /admin/category:
+    post:
+      summary: Create a New Category
+      tags: 
+        - Admin Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+              required:
+                - categoryName
+            x-examples:
+              Example 1:
+                categoryName: 'Programming'
+            examples:
+              Example 1:
+                value:
+                  categoryName: 'Programming'
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  messange:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      categoryName:
+                        type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: null
+  /admin/category':
+    get:
+      summary: Get All Categories
+      tags:
+        - Admin Endpoint
+      responses:
+        '200':
+          description: OK.. Data Categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+      operationId: get-all-categories-admin
+      description: Retrieve all categories
+  /admin/category/${id}:
+    get:
+      summary: Get Category By Id
+      tags:
+        - Admin Endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the category
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDetailResponse'
+        '404':
+          description: Not Found
+      operationId: get-category-by-id-admin
+      description: Retrieve a category by its ID
+
+    put:
+      summary: Update Category By Id
+      tags:
+        - Admin Endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the category
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: update-category-by-id-admin
+      description: Update a category by its ID
+    
+    delete:
+      summary: Delete Category By Id
+      tags:
+        - Admin Endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the category
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      operationId: delete-category-by-id-admin
+      description: Delete a category by its ID
+
+  /admin/chapter:
+    post:
+      summary: Create a new chapter
+      operationId: post-chapter
+      tags:
+        - Admin Endpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                chapterName:
+                  type: string
+                classCode:
+                  type: string
+              required:
+                - chapterName
+                - classCode
+            x-examples:
+              Example 1:
+                chapterName: 'Chapter-1 Pendahuluan'
+                classCode: 'U0'
+            examples:
+              Example 1:
+                value:
+                  chapterName: 'Chapter-1 Pendahuluan'
+                  classCode: 'U0'
+        responses:
+          '201':
+            description: Created
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: boolean
+                    message:
+                      type: string
+                    err:
+                      type: string
+                    data:
+                      type: object
+                      properties:
+                        chapterId:
+                          type: integer
+                        chapterName:
+                          type: string
+                        classCode:
+                          type: string
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: boolean
+                    message:
+                      type: string
+                    error:
+                      type: string
+                    data:
+                      type: null
+    put:
+      summary: Update a chapter by ID
+      operationId: put-chapter-by-id
+      tags:
+        - Admin Endpoint
+      parameters:
+        - in: path
+          name: chapterId
+          required: true
+          description: ID of the chapter to update
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                chapterName:
+                  type: string
+                classCode:
+                  type: string
+              required:
+                - chapterName
+                - classCode
+            x-examples:
+              Example 1:
+                chapterName: 'Chapter-1 Pendahuluan'
+                classCode: 'UD0'
+            examples:
+              Example 1:
+                value:
+                  chapterName: 'Chapter-1 Pendahuluan'
+                  classCode: 'UD0'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      chapterId:
+                        type: integer
+                      chapterName:
+                        type: string
+                      classCode:
+                        type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: null
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+    delete:
+      summary: Delete a chapter by ID
+      operationId: delete-chapter-by-id
+      tags:
+        - Admin Endpoint
+      parameters:
+        - in: path
+          name: chapterId
+          required: true
+          description: ID of the chapter to delete
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: No Content
+        '40':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+  /admin/payment:
+    get:
+      summary: Get transactions made by the admin
+      operationId: get-transactions-admin
+      tags:
+        - Admin Endpoint
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token for user authentication
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+
+  /payment/{classCode}:
+    post:
+      summary: Make a payment for a class
+      operationId: post-payment
+      tags:
+        - Payment Endpoint
+      parameters:
+        - in: path
+          name: classCode
+          required: true
+          description: Code of the class for payment
+          schema:
+            type: string
+        - in: header
+          name: Authorization
+          description: Bearer token for user authentication
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                exampleField1:
+                  type: string
+                exampleField2:
+                  type: number
+              required:
+                - exampleField1
+                - exampleField2
+            examples:
+              Example 1:
+                value:
+                  exampleField1: 'exampleValue1'
+                  exampleField2: 123
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      transactionId:
+                        type: integer
+                      classCode:
+                        type: string
+                      userEmail:
+                        type: string
+                      amount:
+                        type: number
+                      paymentDate:
+                        type: string
+                      paymentStatus:
+                        type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+  /payment/{transactionId}:
+    get:
+      summary: Get transaction details by transaction ID
+      operationId: get-transaction-by-id
+      tags:
+        - Payment Endpoint
+      parameters:
+        - in: path
+          name: transactionId
+          required: true
+          description: ID of the transaction to retrieve
+          schema:
+            type: integer
+        - in: header
+          name: Authorization
+          description: Bearer token for user authentication
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Transaction'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                  err:
+                    type: string
+                  data:
+                    type: null
+  /notifications:
+    get:
+      summary: Get All Notifications
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Bearer {JWT token}
+          schema:
+            type: string
+            format: bearer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+      description: Retrieve all notifications.
+      tags:
+        - Notifications Endpoint
+  '/notifications/{id}':
+    get:
+      summary: Get Notification by ID
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Bearer {JWT token}
+          schema:
+            type: string
+            format: bearer
+        - name: id
+          in: path
+          required: true
+          description: Notification ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+      description: Retrieve a specific notification by ID.
+      tags:
+        - Notifications Endpoint
+
+  /lesson:
+    post:
+      summary: Create new Lesson
+      tags:
+        - Lesson Endpoint
+      operationId: 'post-transaction:class_id'
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    status: true
+                    message: Succes Create Transaction 
+      description: Endpoint ini digunakan untuk membuat transaksi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  transaction_id:
+                    type: integer
+                  class_id:
+                    type: integer
+                  amount:
+                    type: number
+                  transaction_method:
+                    type: string
+                  transaction_date:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+              x-examples:
+                Example 1:
+                  - name: Annisa
+                    transaction_id: 1
+                    class_id: 1
+                    amount: 50000
+                    transaction_method: 'credit_card'
+                    transaction_date: '2023-01-01T12:00:00.000Z'
+                    createdAt: '2023-01-01T12:00:00.000Z'
+                    updatedAt: '2023-01-01T12:00:00.000Z'
+            examples:
+              Example 1:
+                value:
+                  - name: string
+                    nationality: string
+                    identity_type: string
+        description: Data yang harus dimasukkan
+    
+    get:
+      summary: Create new Lesson
+      tags:
+        - Lesson Endpoint
+      operationId: 'post-transaction:class_id'
+
+components:
+  schemas:
+    Kelas:
+      type: object
+      properties:
+        classCode:
+          type: string
+        className:
+          type: string
+        description:
+          type: string
+        thumbnailPicture:
+          type: string
+        fileId:
+          type: string
+        price:
+          type: number
+          format: double
+        levelName:
+          type: string
+        isFree:
+          type: boolean
+        views:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        categoryId:
+          type: integer
+      required:
+        - classCode
+        - className
+        - description
+        - thumbnailPicture
+        - fileId
+        - price
+        - levelName
+        - isFree
+        - views
+        - createdAt
+        - categoryId
+      example:
+        classCode: "U0"
+        className: "Introduction to Programming"
+        description: "Learn the basics of programming"
+        thumbnailPicture: "https://example.com/image.jpg"
+        fileId: "abc123"
+        price: 29.99
+        levelName: "Beginner"
+        isFree: false
+        views: 100
+        createdAt: "2023-01-01T10:00:00Z"
+        categoryId: 1
+    
+    CategoryWithClasses:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        categoryName:
+          type: string
+        classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Kelas'
+      required:
+        - id
+        - categoryName
+        - classes
+      example:
+        id: 1
+        categoryName: "Programming"
+        classes:
+          - classCode: "U0"
+            className: "Introduction to Programming"
+            description: "Learn the basics of programming"
+            thumbnailPicture: "https://example.com/image.jpg"
+            fileId: "abc123"
+            price: 29.99
+            levelName: "Beginner"
+            isFree: false
+            views: 100
+            createdAt: "2023-01-01T10:00:00Z"
+            categoryId: 1
+
+    CategoryResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+      x-examples:
+        Example 1:
+          status: true
+          message: "OK.. Data Categories"
+          data:
+            - id: 1
+              namaKategori: "Category 1"
+    CategoryDetailResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+        data:
+          $ref: '#/component/schemas/Category'
+      x-examples:
+        Example 1:
+          status: true
+          data:
+            id: 1
+            namaKategori: "Category 1"
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        namaKategori:
+          type: string
+      required:
+        - id
+        - namaKategori
+      example:
+        id: 1
+        namaKategori: "Category 1"
+    
+    NotificationsResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Success
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationListItem'
+
+    NotificationListItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        title:
+          type: string
+          example: "Hello 3!!"
+        body:
+          type: string
+          example: "..."
+        deskripsi:
+          type: string
+          example: "Welcome to Tech Academy, Learn Everything"
+        dateTime:
+          type: string
+          format: date-time
+          example: "2022-12-11T04:17:02.103Z"
+        isRead:
+          type: boolean
+          example: false
+
+    NotificationResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Success
+        data:
+          $ref: '#/components/schemas/NotificationListItem'
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        status:
+          type: boolean
+        paymentMethod:
+          type: string
+        paymentDate:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        userId:
+          type: integer
+          format: int32
+        classCode:
+          type: string
+      required:
+        - status
+        - userId
+        - classCode
+      example:
+        id: 1
+        status: true
+        paymentMethod: "Credit Card"
+        paymentDate: "2023-01-01T12:00:00Z"
+        createdAt: "2023-01-01T10:00:00Z"
+        userId: 123
+        classCode: "U0"
+      
+    ErrorUnauthorized:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Unauthorized
+        data:
+          type: array
+          items: {}
+          example: []
+
+    ErrorNotFound:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Not Found
+        data:
+          type: array
+          items: {}
+          example: []

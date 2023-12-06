@@ -10,6 +10,8 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWls
 DELETE GET http://localhost:3000/api/v1/paymentAdmin/1
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
 
+######################################################
+
 ### Create Payment (USER)
 POST http://localhost:3000/api/v1/payment/U0
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlYXBhcmswMUBnbWFpbC5jb20iLCJpYXQiOjE3MDE4NzM4Nzl9.oe3MYh_FbPR8Uokg2lhpLeUxQOJyVlUfrZ0D8LKvdUo

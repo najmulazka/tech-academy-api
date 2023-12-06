@@ -47,6 +47,28 @@ const getNotifications = async (req, res, next) => {
   }
 };
 
+const getNotificationById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const notification = await prisma.notifications.findUnique({
+      where: { id: parseInt(id, 10) },
+    });
+
+    if (!notification) {
+      return res.status(404).json({
+        status: false,
+        message: "Notification not found",
+        data: null,
+      });
+    }
+
+    res.status(200).json(notification);
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 const updateNotification = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -103,6 +125,7 @@ const deleteNotification = async (req, res, next) => {
 module.exports = {
   createNotification,
   getNotifications,
+  getNotificationById,
   updateNotification,
   deleteNotification,
 };

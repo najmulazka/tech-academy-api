@@ -1,8 +1,15 @@
-const prisma = require('../utils/libs/prisma.libs');
+const prisma = require("../utils/libs/prisma.libs");
 
 const getLessons = async (req, res, next) => {
   try {
     const lessons = await prisma.lessons.findMany();
+    if (!lessons || lessons.length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: "No Lessons Found",
+        data: null,
+      });
+    }
     res.status(200).json({
       status: true,
       message: "Lessons retrieved successfully",
@@ -15,12 +22,14 @@ const getLessons = async (req, res, next) => {
 
 const createLesson = async (req, res, next) => {
   try {
-    const { title, learningMaterial, linkLearningMaterial, chapterId, classCode } = req.body;
+    const { title, learningMaterial, linkLearningMaterial, chapterId } =
+      req.body;
 
-    if (!title || !learningMaterial || !linkLearningMaterial || !chapterId || !classCode) {
+    // Validasi setiap bidang
+    if (!title || !learningMaterial || !linkLearningMaterial || !chapterId) {
       return res.status(400).json({
         status: false,
-        message: "All fields are required",
+        message: "All fields must be filled in",
         data: null,
       });
     }
@@ -38,15 +47,18 @@ const createLesson = async (req, res, next) => {
     }
 
     const newLesson = await prisma.lessons.create({
-      data: { title, learningMaterial, linkLearningMaterial, chapterId, classCode },
+      data: { title, learningMaterial, linkLearningMaterial, chapterId },
     });
 
     res.status(200).json({
       status: true,
       message: "Lesson created successfully",
-      data: newLesson,
+      data: {
+        lesson: newLesson,
+      },
     });
   } catch (err) {
+    console.error("Error creating lesson:", err);
     next(err);
   }
 };
@@ -79,11 +91,38 @@ const getLessonById = async (req, res, next) => {
 const updateLesson = async (req, res, next) => {
   try {
     const lessonId = parseInt(req.params.id);
-    const { title, learningMaterial, linkLearningMaterial } = req.body;
+    const { title, learningMaterial, linkLearningMaterial, chapterId } =
+      req.body;
 
+    // Periksa eksistensi pelajaran
+    const existingLesson = await prisma.lessons.findUnique({
+      where: { id: lessonId },
+    });
+
+    if (!existingLesson) {
+      return res.status(404).json({
+        status: false,
+        message: "Lesson with the provided ID not found",
+        data: null,
+      });
+    }
+    // Periksa eksistensi chapter
+    const existingChapter = await prisma.chapters.findUnique({
+      where: { id: chapterId },
+    });
+
+    if (!existingChapter) {
+      return res.status(400).json({
+        status: false,
+        message: "Chapter with the provided ID does not exist",
+        data: null,
+      });
+    }
+
+    // Update pelajaran
     const updatedLesson = await prisma.lessons.update({
       where: { id: lessonId },
-      data: { title, learningMaterial, linkLearningMaterial },
+      data: { title, learningMaterial, linkLearningMaterial, chapterId },
     });
 
     res.status(200).json({
@@ -96,9 +135,40 @@ const updateLesson = async (req, res, next) => {
   }
 };
 
+const deleteLesson = async (req, res, next) => {
+  try {
+    const lessonId = parseInt(req.params.id);
+
+    const existingLesson = await prisma.lessons.findUnique({
+      where: { id: lessonId },
+    });
+
+    if (!existingLesson) {
+      return res.status(404).json({
+        status: false,
+        message: "Lesson with the provided ID not found",
+        data: null,
+      });
+    }
+
+    await prisma.lessons.delete({
+      where: { id: lessonId },
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "Lesson deleted successfully",
+      data: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getLessons,
   createLesson,
   getLessonById,
   updateLesson,
+  deleteLesson,
 };

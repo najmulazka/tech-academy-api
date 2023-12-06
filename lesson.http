@@ -1,7 +1,7 @@
-###
+### GET ALL
 GET http://localhost:3000/api/v1/lesson
 
-### 
+### CREATE LESSON
 POST http://localhost:3000/api/v1/lesson
 Content-Type: application/json
 
@@ -9,18 +9,21 @@ Content-Type: application/json
   "title": "Lesson Title",
   "learningMaterial": "Lesson Material",
   "linkLearningMaterial": "http://example.com/material",
-  "chapterId": 1,
-  "classCode": "CS101"
+  "chapterId": 1
 }
-###
+### GET LESSON BY LESSON ID
 GET http://localhost:3000/api/v1/lesson/1
 
-###
-PUT http://localhost:3000/api/v1/lesson/1
+### UPDATE LESSON
+PUT http://localhost:3000/api/v1/lesson/4
 Content-Type: application/json
 
 {
   "title": "Updated Lesson Title",
   "learningMaterial": "Updated Lesson Material",
-  "linkLearningMaterial": "http://example.com/updated-material"
+  "linkLearningMaterial": "http://example.com/updated-material",
+  "chapterId": 3
 }
+
+### DELETE LESSON
+DELETE http://localhost:3000/api/v1/lesson/7

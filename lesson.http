@@ -1,0 +1,26 @@
+###
+GET http://localhost:3000/api/v1/lesson
+
+### 
+POST http://localhost:3000/api/v1/lesson
+Content-Type: application/json
+
+{
+  "title": "Lesson Title",
+  "learningMaterial": "Lesson Material",
+  "linkLearningMaterial": "http://example.com/material",
+  "chapterId": 1,
+  "classCode": "CS101"
+}
+###
+GET http://localhost:3000/api/v1/lesson/1
+
+###
+PUT http://localhost:3000/api/v1/lesson/1
+Content-Type: application/json
+
+{
+  "title": "Updated Lesson Title",
+  "learningMaterial": "Updated Lesson Material",
+  "linkLearningMaterial": "http://example.com/updated-material"
+}

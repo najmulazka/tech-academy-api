@@ -12,7 +12,6 @@ const lesson = require('./lesson.routes');
 
 // const admin = require('./admin.routes');
 // const { admin } = require('../middlewares/admin.midlewares');
-const { restrict } = require('../middlewares/auth.middlewares');
 
 router.use('/auth', auth);
 router.use('/user', user);

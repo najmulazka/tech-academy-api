@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "chapterName":"Chapter-1 Pendahuluan",
-    "classCode":"U0"
+    "classCode":"DA1"
 }
 
 ####
@@ -12,7 +12,7 @@ GET http://localhost:3000/api/v1/chapter
 
 
 ####
-GET http://localhost:3000/api/v1/chapter/35
+GET http://localhost:3000/api/v1/chapter/1
 
 ###
 PUT http://localhost:3000/api/v1/chapter/1

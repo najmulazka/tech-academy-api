@@ -1,10 +1,23 @@
+### Get All transaction (ADMIN)
+GET http://localhost:3000/api/v1/paymentAdmin
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
+
+### Get Detail transaction (ADMIN)
+GET http://localhost:3000/api/v1/paymentAdmin/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
+
+### Delete Transaction (ADMIN)
+DELETE GET http://localhost:3000/api/v1/paymentAdmin/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
+
+### Create Payment (USER)
 POST http://localhost:3000/api/v1/payment/U0
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxNDgyNjk0fQ.gDIOvVDLNI9itz5zHEVDVgYct3HJLkiM_j0bqs182VM
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlYXBhcmswMUBnbWFpbC5jb20iLCJpYXQiOjE3MDE4NzM4Nzl9.oe3MYh_FbPR8Uokg2lhpLeUxQOJyVlUfrZ0D8LKvdUo
 
-### Get transaction
-GET http://localhost:3000/api/v1/payment/admin
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxNDgyNjk0fQ.gDIOvVDLNI9itz5zHEVDVgYct3HJLkiM_j0bqs182VM
+### Get All Payment (USER)
+GET http://localhost:3000/api/v1/payment/
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlYXBhcmswMUBnbWFpbC5jb20iLCJpYXQiOjE3MDE4NzM4Nzl9.oe3MYh_FbPR8Uokg2lhpLeUxQOJyVlUfrZ0D8LKvdUo
 
-### Get transaction params
-GET http://localhost:3000/api/v1/payment/1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxNDgyNjk0fQ.gDIOvVDLNI9itz5zHEVDVgYct3HJLkiM_j0bqs182VM
+### Get Detail Payment (USER)
+GET http://localhost:3000/api/v1/payment/3
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlYXBhcmswMUBnbWFpbC5jb20iLCJpYXQiOjE3MDE4NzM4Nzl9.oe3MYh_FbPR8Uokg2lhpLeUxQOJyVlUfrZ0D8LKvdUo

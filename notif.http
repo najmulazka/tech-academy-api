@@ -1,0 +1,27 @@
+### CREATE NOTIFICATIONS
+POST http://localhost:3000/api/v1/notifications
+Content-Type: application/json
+
+{
+  "title": "Introduction to Basic JavaScript",
+  "body": "Belajar dasar-dasar bahasa pemrograman JavaScript.",
+  "deskripsi": "Kelas ini memberikan penjelasan mengenai fundamental dalam bahasa JavaScript beserta dengan video tutorial di setiap chapter.",
+  "userId": 1
+}
+
+### GET NOTIFICATIONS
+GET http://localhost:3000/api/v1/notifications
+
+### PUT NOTIFICATIONS
+PUT http://localhost:3000/api/v1/notifications/1
+Content-Type: application/json
+
+{
+  "title": "Notifikasi terbaru",
+  "body": "Selamat anda sudah masuk ke chapter 5.",
+  "deskripsi": "Anda telah menyelesaikan chapter 5.",
+  "userId": 1
+}
+
+### DELETE NOTIFICATIONS
+DELETE http://localhost:3000/api/v1/notifications/1

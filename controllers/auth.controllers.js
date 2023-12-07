@@ -348,12 +348,12 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
   try {
     const { otp } = req.body;
     let { token } = req.query;
-    
+
     if (!token) {
       return res.status(400).json({
         status: false,
-        message: "Bad Request",
-        error: "Token is required",
+        message: 'Bad Request',
+        error: 'Token is required',
         data: null,
       });
     }
@@ -420,6 +420,77 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
   }
 };
 
+const resetPassword = async (req, res, next) => {
+  try {
+    const { newPassword, newPasswordConfirmation } = req.body;
+    let { token } = req.query;
+
+    if (!newPassword || !newPasswordConfirmation) {
+      return res.status(400).json({
+        status: false,
+        message: 'Bad Request',
+        error: 'newPassword and newPasswordConfirmation are required',
+        data: null,
+      });
+    }
+
+    if (newPassword !== newPasswordConfirmation) {
+      return res.status(400).json({
+        status: false,
+        message: 'Bad Request',
+        error: 'new password and new password confirmation not same',
+        data: null,
+      });
+    }
+
+    jwt.verify(token, JWT_SECRET_KEY, async (err, decoded) => {
+      if (err) {
+        return res.status(400).json({
+          status: false,
+          message: 'Bad Request',
+          err: err.message,
+          data: null,
+        });
+      }
+
+      let existUser = await prisma.Users.findUnique({
+        where: { email: decoded.email },
+      });
+      if (!existUser) {
+        return res.status(400).json({
+          status: false,
+          message: 'Bad Request!',
+          err: 'User does not exist',
+          data: null,
+        });
+      }
+
+      const encryptedNewPassword = await bcrypt.hash(newPassword, 10);
+      const user = await prisma.users.update({
+        where: { email: existUser.email },
+        data: {
+          password: encryptedNewPassword,
+        },
+      });
+
+      const resetPasswordSucces = await nodemailer.getHtml('reset-password-success.ejs', {
+        fullName: user.fullName,
+      });
+      nodemailer.sendEmail(user.email, 'Reset Password Success', resetPasswordSucces);
+
+      return res.status(200).json({
+        status: true,
+        message: 'Reset password success',
+        err: null,
+        data: null,
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
 const changePassword = async (req, res, next) => {
   try {
     const { email, currentPassword, new_password, new_password_confirm } = req.body;
@@ -464,11 +535,11 @@ const changePassword = async (req, res, next) => {
       });
     }
 
-    const encryptednew_password = await bcrypt.hash(new_password, 10);
+    const encryptedNewPassword = await bcrypt.hash(new_password, 10);
 
     let user = await prisma.Users.update({
       where: { email },
-      data: { password: encryptednew_password },
+      data: { password: encryptedNewPassword },
     });
 
     const token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
@@ -499,4 +570,5 @@ module.exports = {
   forrgotPassword,
   resendOtpPassword,
   verifyOtpForrgotPassword,
+  resetPassword,
 };

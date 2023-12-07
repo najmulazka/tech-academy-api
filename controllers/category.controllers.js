@@ -1,4 +1,6 @@
 const prisma = require("../utils/libs/prisma.libs");
+const imagekit = require("../utils/libs/imagekit.libs");
+const path = require("path");
 
 const createCategory = async (req, res, next) => {
   try {
@@ -12,8 +14,14 @@ const createCategory = async (req, res, next) => {
       });
     }
 
+    let strFile = req.file.buffer.toString("base64");
+    const { url, fileId } = await imagekit.upload({
+      fileName: Date.now() + path.extname(req.file.originalname),
+      file: strFile,
+    });
+
     const newCategory = await prisma.categorys.create({
-      data: { categoryName },
+      data: { categoryName, thumbnailPictureCategory: url, fileId },
     });
     return res.status(201).json({
       status: true,

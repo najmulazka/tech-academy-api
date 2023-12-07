@@ -7,7 +7,12 @@ const categories = require('./category.routes');
 const chapter = require('./chapter.routes');
 const payment = require('./payment.routes');
 const admin = require('./admin.user.routes')
+const notifications = require('./notif.routes')
 const { restrict } = require("../middlewares/auth.middlewares");
+const lesson = require('./lesson.routes');
+
+// const admin = require('./admin.routes');
+// const { admin } = require('../middlewares/admin.midlewares');
 
 router.use('/auth', auth);
 router.use('/user', user);
@@ -17,5 +22,7 @@ router.use('/category', categories);
 router.use('/chapter', chapter);
 router.use('/payment', restrict, payment);
 router.use('/admin', admin);
+router.use('/notifications', notifications)
+router.use('/lesson', lesson)
 
 module.exports = router;

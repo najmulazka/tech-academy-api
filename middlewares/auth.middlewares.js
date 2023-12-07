@@ -25,6 +25,14 @@ module.exports = {
       }
 
       req.user = await prisma.Users.findUnique({ where: { email: decoded.email } });
+      if (!req.user.isActivated) {
+        return res.status(401).json({
+          status: false,
+          message: 'Unauthorized',
+          err: 'Your email is not activated',
+          data: null,
+        });
+      }
       next();
     });
   },

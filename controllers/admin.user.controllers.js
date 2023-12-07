@@ -64,7 +64,9 @@ const updateUser = async (req, res, next) => {
         city,
         country,
         profilePicture,
-        fileId
+        fileId,
+        isActivated, 
+        isAdmin
       } = req.body;
   
       const existingUser = await prisma.users.findUnique({
@@ -99,7 +101,9 @@ const updateUser = async (req, res, next) => {
           city,
           country,
           profilePicture: updatedProfilePicture,
-          fileId: updatedFileId
+          fileId: updatedFileId,
+          isActivated: JSON.parse(isActivated),
+          isAdmin: JSON.parse(isAdmin)
         },
       });
   

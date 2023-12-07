@@ -1,13 +1,9 @@
 const router = require('express').Router();
-const { transaction } = require('../middlewares/transactions.middlewares');
-const { createTransaction, getTransactions, getDetailTransaction, getTransactionsAdmin } = require('../controllers/payment.controllers');
-const { admin } = require('../middlewares/admin.midlewares');
+const { getTransactions, getDetailTransaction, createTransaction } = require('../controllers/payment.controllers');
+const { restrict } = require('../middlewares/auth.middlewares');
 
-router.post('/:classCode', transaction, createTransaction);
-router.get('/', getTransactions);
-router.get('/:id', getDetailTransaction);
-
-router.get('/admin', admin, getTransactionsAdmin);
-
+router.get('/', restrict, getTransactions);  // Endpoint untuk pengguna biasa
+router.get('/:id', restrict, getDetailTransaction);
+router.post('/:classCode', restrict, createTransaction);
 
 module.exports = router;

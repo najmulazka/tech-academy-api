@@ -45,8 +45,8 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email":"admin@gmail.com",
-    "password":"admin123"
+    "email":"najmulazka369@gmail.com",
+    "password":"admin"
 }
 
 ### REGISTER
@@ -55,7 +55,7 @@ Content-Type: application/json
 
 {
     "fullName":"admin",
-    "email":"admin6@gmail.com",
+    "email":"najmulazka369@gmail.com",
     "noTelp":"085326672543",
     "password":"admin"
 }
@@ -96,18 +96,18 @@ POST http://localhost:3000/api/v1/auth/forrgot-password
 Content-Type: application/json
 
 {
-    "email":"deapark01@gmail.com"
+    "email":"najmulazka369@gmail.com"
 }
 
 #### RESEND OTP PASSWORD
-GET http://localhost:3000/api/v1/auth/resend-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxMDg1NTYzfQ.4HdBeds0y4qClAHOiqS2B8cNLb_L2B51SCj8Ac5EmS8
+GET http://localhost:3000/api/v1/auth/resend-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxOTYzODIzfQ.ztatmQZQNDT-gqzGwlYqlvnLqMSYg-x-aUBj6O3wRxg
 
 #### VERIFY OTP PASSWORD
-POST http://localhost:3000/api/v1/auth/verify-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlYXBhcmswMUBnbWFpbC5jb20iLCJpYXQiOjE3MDE3Njc4MjN9.HuxMcF2KnkhbBhMbpgGBT1hcVEEYbgewz0WGb5dVwOQ
+POST http://localhost:3000/api/v1/auth/verify-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxOTYzODIzfQ.ztatmQZQNDT-gqzGwlYqlvnLqMSYg-x-aUBj6O3wRxg
 Content-Type: application/json
 
 {
-    "otp":"479835"
+    "otp":"816253"
 }
 
 #### RESET PASSWORD

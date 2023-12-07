@@ -21,6 +21,7 @@ Content-Type: application/json
 
 ### GET NOTIFICATIONS
 GET http://localhost:3000/api/v1/notifications
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY2OTk1fQ.jW3TZmGoYhjjGvkNxaWAa5DQouSO9mtRbVFAGVg2qiA
 
 ### PUT NOTIFICATIONS
 PUT http://localhost:3000/api/v1/notifications/1

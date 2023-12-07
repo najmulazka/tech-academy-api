@@ -1,4 +1,4 @@
-const prisma = require('../utils/libs/prisma.libs');
+const prisma = require("../utils/libs/prisma.libs");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -8,8 +8,8 @@ const createTransaction = async (req, res, next) => {
     if (!classExist) {
       return res.status(404).json({
         status: false,
-        message: 'Bad Request!',
-        err: 'Not Found',
+        message: "Bad Request!",
+        err: "Not Found",
         data: null,
       });
     }
@@ -23,24 +23,9 @@ const createTransaction = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'OK!',
+      message: "OK!",
       err: null,
       data: transaction,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getTransactionsAdmin = async (req, res, next) => {
-  try {
-    const classExist = await prisma.transactions.findMany();
-
-    res.status(200).json({
-      status: true,
-      message: 'OK!',
-      err: null,
-      data: classExist,
     });
   } catch (err) {
     next(err);
@@ -49,21 +34,22 @@ const getTransactionsAdmin = async (req, res, next) => {
 
 const getTransactions = async (req, res, next) => {
   try {
-    const classExist = await prisma.users.findUnique({
-      where: { id: req.user.id },
-      include: { transactions: { include: { class: true } } },
+    // Pengguna biasa melihat pembayarannya sendiri
+    const userTransactions = await prisma.transactions.findMany({
+      where: { userId: req.user.id },
+      include: { class: true },
     });
 
     res.status(200).json({
       status: true,
-      message: 'OK!',
-      err: null,
-      data: classExist,
+      message: "OK!",
+      data: userTransactions,
     });
   } catch (err) {
     next(err);
   }
 };
+
 
 const getDetailTransaction = async (req, res, next) => {
   try {
@@ -71,21 +57,21 @@ const getDetailTransaction = async (req, res, next) => {
 
     const transaction = await prisma.transactions.findUnique({
       where: { id: Number(id) },
-      include: { class: true, users: true },
+      include: { users: true, class: true },
     });
 
     if (!transaction) {
       return res.status(404).json({
         status: false,
-        message: 'Bad Request!',
-        err: 'Not Found',
+        message: "Bad Request!",
+        err: "Not Found",
         data: null,
       });
     }
 
     res.status(200).json({
       status: true,
-      message: 'OK!',
+      message: "OK!",
       err: null,
       data: transaction,
     });
@@ -94,4 +80,4 @@ const getDetailTransaction = async (req, res, next) => {
   }
 };
 
-module.exports = { createTransaction, getTransactionsAdmin, getDetailTransaction, getTransactions };
+module.exports = { createTransaction, getDetailTransaction, getTransactions };

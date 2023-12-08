@@ -76,7 +76,7 @@ const getNotifications = async (req, res, next) => {
   try {
     const notifications = await prisma.notifications.findMany({
       where: {
-        userId: req.users.id,
+        userId: req.user.id,
       },
     });
     res.status(200).json({ status: true, message: 'OK', err: null, data: notifications });

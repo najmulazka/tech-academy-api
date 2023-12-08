@@ -14,6 +14,26 @@ const createCategory = async (req, res, next) => {
       });
     }
 
+    if (!req.file || !req.file.buffer) {
+      return res.status(400).json({
+        status: false,
+        message: "file is required",
+        data: null,
+      });
+    }
+
+    let existingCategory = await prisma.categorys.findUnique({
+      where: { categoryName: categoryName },
+    });
+
+    if (existingCategory) {
+      return res.status(400).json({
+        status: false,
+        message: "category with the same name already exists",
+        data: null,
+      });
+    }
+
     let strFile = req.file.buffer.toString("base64");
     const { url, fileId } = await imagekit.upload({
       fileName: Date.now() + path.extname(req.file.originalname),

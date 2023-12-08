@@ -3,7 +3,8 @@ POST http://localhost:3000/api/v1/category
 Content-Type: application/json
 
 {
-    "categoryName":"UI/UX"
+    "categoryName":"Product Management",
+    "thumbnailPictureCategory"
 }
 
 #### GET ALL CATEGORY AND INCLUDE CLASS ALL
@@ -11,7 +12,7 @@ GET http://localhost:3000/api/v1/category
 
 
 ### CATEGORY BY ID
-GET http://localhost:3000/api/v1/category/1
+GET http://localhost:3000/api/v1/category/3
 
 
 ### CATEGORY UPDATE
@@ -31,7 +32,7 @@ DELETE http://localhost:3000/api/v1/category/1
 GET http://localhost:3000/api/v1/class/U0
 
 ####
-PUT http://localhost:3000/api/v1/class/WD2
+PUT http://localhost:3000/api/v1/class/UD0
 Content-Type: application/json
 
 {
@@ -40,7 +41,8 @@ Content-Type: application/json
     "price":2000,
     "levelName":"Beginner",
     "isFree":true,
-    "categoryId":"3"
+    "categoryId":"1",
+    "linkSosmed":"owkokw"
 }
 
 ####

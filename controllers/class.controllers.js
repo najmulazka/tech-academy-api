@@ -266,8 +266,15 @@ const getByIdClass = async (req, res, next) => {
 const updateClass = async (req, res, next) => {
   try {
     const { classCode } = req.params;
-    const { className, description, price, linkSosmed, isFree, levelName, categoryId } =
-      req.body;
+    const {
+      className,
+      description,
+      price,
+      linkSosmed,
+      isFree,
+      levelName,
+      categoryId,
+    } = req.body;
 
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
@@ -276,7 +283,7 @@ const updateClass = async (req, res, next) => {
     if (!existingClass) {
       return res.status(400).json({
         status: false,
-        message: "category id not exist",
+        message: "class with the provided classCode does not exist",
         data: null,
       });
     }

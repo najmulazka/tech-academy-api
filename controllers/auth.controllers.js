@@ -408,6 +408,10 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
         });
       }
 
+      await prisma.resetCodes.delete({
+        where: { userId: user.id },
+      });
+
       return res.status(200).json({
         status: true,
         message: 'OTP verified password successfully',

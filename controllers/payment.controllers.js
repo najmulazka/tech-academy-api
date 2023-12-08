@@ -50,7 +50,6 @@ const getTransactions = async (req, res, next) => {
   }
 };
 
-
 const getDetailTransaction = async (req, res, next) => {
   try {
     let { id } = req.params;

@@ -860,10 +860,7 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (popular) {
-      let categorys = categoryId.split("-").map(Number);
-      let levels = levelName.split("-");
-      isFree = JSON.parse(isFree);
+    }else if (latest) {
       const result = await prisma.class.findMany({
         orderBy:{
           createdAt: "desc"
@@ -879,9 +876,6 @@ const getAllClass = async (req, res, next) => {
         data: { pagination, result },
       });
     }else if (search) {
-      let categorys = categoryId.split("-").map(Number);
-      let levels = levelName.split("-");
-      isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
           className:{

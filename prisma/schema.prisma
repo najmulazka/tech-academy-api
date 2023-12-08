@@ -73,7 +73,9 @@ model Class {
   linkSosmed       String
   levelName        String
   isFree           Boolean
+  inProgres        Boolean        @default(false)
   views            Int            @default(0)
+  learn            Int            @default(0)
   createdAt        DateTime       @default(now())
   categoryId       Int
   categorys        Categorys      @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -85,6 +87,7 @@ model Chapters {
   id          Int       @id @default(autoincrement())
   chapterName String
   classCode   String
+  isFree      Boolean
   class       Class     @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
   Lessons     Lessons[]
 }

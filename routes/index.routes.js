@@ -25,7 +25,7 @@ router.use('/chapter', chapter);
 router.use('/payment', restrict, payment);
 router.use('/admin/payment', isAdmin, paymentAdmin);
 router.use('/admin', admin);
-router.use('/notifications', notifications)
+router.use('/notifications', restrict, notifications)
 router.use('/lesson', lesson)
 
 module.exports = router;

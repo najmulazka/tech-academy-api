@@ -1,3 +1,13 @@
+### CREATE NOTIFICATIONS ALL
+POST http://localhost:3000/api/v1/notifications/all
+Content-Type: application/json
+
+{
+  "title": "Introduction to Basic JavaScript",
+  "body": "Belajar dasar-dasar bahasa pemrograman JavaScript.",
+  "deskripsi": "Kelas ini memberikan penjelasan mengenai fundamental dalam bahasa JavaScript beserta dengan video tutorial di setiap chapter."
+}
+
 ### CREATE NOTIFICATIONS
 POST http://localhost:3000/api/v1/notifications
 Content-Type: application/json
@@ -11,6 +21,7 @@ Content-Type: application/json
 
 ### GET NOTIFICATIONS
 GET http://localhost:3000/api/v1/notifications
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY2OTk1fQ.jW3TZmGoYhjjGvkNxaWAa5DQouSO9mtRbVFAGVg2qiA
 
 ### PUT NOTIFICATIONS
 PUT http://localhost:3000/api/v1/notifications/1

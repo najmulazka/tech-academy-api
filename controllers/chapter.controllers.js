@@ -2,7 +2,7 @@ const prisma = require("../utils/libs/prisma.libs");
 
 const createChapter = async (req, res, next) => {
   try {
-    let { chapterName, classCode } = req.body;
+    let { chapterName, classCode, isFree } = req.body;
 
     if (!chapterName || !classCode) {
       return res.status(400).json({
@@ -25,7 +25,7 @@ const createChapter = async (req, res, next) => {
     }
 
     const newChapter = await prisma.chapters.create({
-      data: { chapterName, classCode },
+      data: { chapterName, classCode, isFree: JSON.parse(isFree) },
     });
 
     res.status(200).json({
@@ -89,7 +89,7 @@ const getByIdChapter = async (req, res, next) => {
 const updateChapter = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let { chapterName, classCode } = req.body;
+    let { chapterName, classCode, isFree } = req.body;
 
     const existingChapter = await prisma.chapters.findUnique({
       where: { id: Number(id) },
@@ -113,7 +113,7 @@ const updateChapter = async (req, res, next) => {
 
     const updatedChapter = await prisma.chapters.update({
       where: { id: Number(id) },
-      data: { chapterName, classCode },
+      data: { chapterName, classCode, isFree: JSON.parse(isFree) },
     });
 
     res.status(200).json({

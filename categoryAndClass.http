@@ -30,7 +30,7 @@ DELETE http://localhost:3000/api/v1/category/1
 #### CLASS ENDPOINT GetByClassCode AND PUT ###
 GET http://localhost:3000/api/v1/class?categoryId=1-3&levelName=1-4&isFree=true&search=pencarian&popular=true&latest=true
 ####
-GET http://localhost:3000/api/v1/class/U0
+GET http://localhost:3000/api/v1/class/UD0
 
 ####
 PUT http://localhost:3000/api/v1/class/UD0

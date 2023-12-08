@@ -104,8 +104,8 @@ model Lessons {
 model Transactions {
   id            Int       @id @default(autoincrement())
   status        Boolean   @default(false)
-  paymentMethod String?
-  paymentDate   DateTime?
+  paymentMethod String
+  cardNumber String
   createdAt     DateTime  @default(now())
   userId        Int
   classCode     String

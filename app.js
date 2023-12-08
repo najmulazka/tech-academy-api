@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1", require("./routes/index.routes"));
 
 // server error handling middleware
-app.use(notFoundHandler);
-app.use(errorHandler);
+// app.use(notFoundHandler);
+// app.use(errorHandler);
 
 app.listen(PORT, () => console.log("Running on port", PORT));

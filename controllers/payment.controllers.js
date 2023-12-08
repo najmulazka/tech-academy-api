@@ -3,6 +3,7 @@ const prisma = require('../utils/libs/prisma.libs');
 const createTransaction = async (req, res, next) => {
   try {
     let { classCode } = req.params;
+    let { paymentMethod, cardNumber } = req.body;
 
     const classExist = await prisma.class.findUnique({ where: { classCode } });
     if (!classExist) {
@@ -17,9 +18,31 @@ const createTransaction = async (req, res, next) => {
     const transaction = await prisma.transactions.create({
       data: {
         userId: req.user.id,
+        paymentMethod,
+        cardNumber,
         classCode,
       },
     });
+
+    if (!classExist.isFree) {
+      await prisma.class.update({
+        where: { classCode },
+        data: { isFree: true },
+      });
+    }
+
+    // const chapters = await prisma.chapters.findMany({
+    //   where: { classCode },
+    // });
+
+    // for (const chapter of chapters) {
+    //   if (chapter && !chapter.isFree) {
+    //     await prisma.chapters.update({
+    //       where: { id: chapter.id },
+    //       data: { isFree: true },
+    //     });
+    //   }
+    // }
 
     res.status(200).json({
       status: true,
@@ -79,42 +102,4 @@ const getDetailTransaction = async (req, res, next) => {
   }
 };
 
-const payment = async (req, res, next) => {
-  try {
-    let { id } = req.params;
-    let { paymentMethod } = req.body;
-
-    const transaction = await prisma.transactions.findUnique({
-      where: { id: Number(id) },
-      include: { users: true, class: true },
-    });
-
-    if (!transaction) {
-      return res.status(404).json({
-        status: false,
-        message: 'Bad Request!',
-        err: 'Not Found',
-        data: null,
-      });
-    }
-
-    let update = await prisma.transactions.update({
-      where: {
-        id,
-        status: true,
-        paymentDate: new Date(Date.now(), paymentMethod),
-      },
-    });
-
-    res.status(200).json({
-      status: true,
-      message: 'Payment success',
-      err: null,
-      data: update,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-module.exports = { createTransaction, getDetailTransaction, getTransactions, payment };
+module.exports = { createTransaction, getDetailTransaction, getTransactions };

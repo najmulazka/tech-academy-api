@@ -4,7 +4,8 @@ Content-Type: application/json
 
 {
     "chapterName":"Chapter-1 Pendahuluan",
-    "classCode":"DA1"
+    "classCode":"UD0",
+    "isFree":false
 }
 
 ####
@@ -20,7 +21,8 @@ Content-Type: application/json
 
 {
     "chapterName":"Chapter-1 Pendahuluan",
-    "classCode":"UD0"
+    "classCode":"UD0",
+    "isFree":true
 }
 
 ####

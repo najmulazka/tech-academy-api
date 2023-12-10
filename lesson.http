@@ -9,20 +9,22 @@ Content-Type: application/json
   "title": "Lesson Title",
   "learningMaterial": "Lesson Material",
   "linkLearningMaterial": "http://example.com/material",
-  "chapterId": 1
+  "chapterId": 2,
+  "duration": 60
 }
 ### GET LESSON BY LESSON ID
 GET http://localhost:3000/api/v1/lesson/1
 
 ### UPDATE LESSON
-PUT http://localhost:3000/api/v1/lesson/4
+PUT http://localhost:3000/api/v1/lesson/1
 Content-Type: application/json
 
 {
   "title": "Updated Lesson Title",
   "learningMaterial": "Updated Lesson Material",
   "linkLearningMaterial": "http://example.com/updated-material",
-  "chapterId": 3
+  "chapterId": 1,
+  "duration": 10
 }
 
 ### DELETE LESSON

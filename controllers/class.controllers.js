@@ -35,13 +35,13 @@ const createClass = async (req, res, next) => {
       select: { categoryName: true },
     });
 
-    if(!category){
+    if (!category) {
       return res.status(400).json({
-        status: false, 
-        message: 'Bad Request',
-        err: 'category id does not exist',
-        data : null
-      })
+        status: false,
+        message: "Bad Request",
+        err: "category id does not exist",
+        data: null,
+      });
     }
 
     let classCode = generateClassCode(category.categoryName);
@@ -77,7 +77,16 @@ const createClass = async (req, res, next) => {
 
 const getAllClass = async (req, res, next) => {
   try {
-    let {search, latest, popular, categoryId, levelName, isFree, limit = 10, page = 1 } = req.query;
+    let {
+      search,
+      latest,
+      popular,
+      categoryId,
+      levelName,
+      isFree,
+      limit = 10,
+      page = 1,
+    } = req.query;
     limit = Number(limit);
     page = Number(page);
 
@@ -90,15 +99,15 @@ const getAllClass = async (req, res, next) => {
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           categoryId: { in: categorys },
           levelName: { in: levels },
           isFree,
         },
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          createdAt: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -116,15 +125,15 @@ const getAllClass = async (req, res, next) => {
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           categoryId: { in: categorys },
           levelName: { in: levels },
           isFree,
         },
-        orderBy:{
-          views: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -136,7 +145,7 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (popular && categoryId && levelName && isFree) {
+    } else if (popular && categoryId && levelName && isFree) {
       let categorys = categoryId.split("-").map(Number);
       let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
@@ -146,8 +155,8 @@ const getAllClass = async (req, res, next) => {
           levelName: { in: levels },
           isFree,
         },
-        orderBy:{
-          views: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -159,7 +168,7 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (latest && categoryId && levelName && isFree) {
+    } else if (latest && categoryId && levelName && isFree) {
       let categorys = categoryId.split("-").map(Number);
       let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
@@ -169,8 +178,8 @@ const getAllClass = async (req, res, next) => {
           levelName: { in: levels },
           isFree,
         },
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          createdAt: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -182,19 +191,19 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && popular && levelName && isFree) {
+    } else if (search && popular && levelName && isFree) {
       let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           levelName: { in: levels },
           isFree,
         },
-        orderBy:{
-          views: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -206,19 +215,19 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && latest && levelName && isFree) {
+    } else if (search && latest && levelName && isFree) {
       let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           levelName: { in: levels },
           isFree,
         },
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          createdAt: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -230,19 +239,19 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && popular && categoryId && isFree) {
+    } else if (search && popular && categoryId && isFree) {
       let categorys = categoryId.split("-").map(Number);
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           categoryId: { in: categorys },
           isFree,
         },
-        orderBy:{
-          views: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -254,19 +263,19 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && latest && categoryId && isFree) {
+    } else if (search && latest && categoryId && isFree) {
       let categorys = categoryId.split("-").map(Number);
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           categoryId: { in: categorys },
           isFree,
         },
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          createdAt: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -278,19 +287,19 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && popular && categoryId && levelName) {
+    } else if (search && popular && categoryId && levelName) {
       let categorys = categoryId.split("-").map(Number);
       let levels = levelName.split("-");
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           categoryId: { in: categorys },
           levelName: { in: levels },
         },
-        orderBy:{
-          views: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -302,19 +311,19 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && latest && categoryId && levelName) {
+    } else if (search && latest && categoryId && levelName) {
       let categorys = categoryId.split("-").map(Number);
       let levels = levelName.split("-");
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           categoryId: { in: categorys },
           levelName: { in: levels },
         },
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          createdAt: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -326,7 +335,7 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (categoryId && levelName && isFree) {
+    } else if (categoryId && levelName && isFree) {
       let categorys = categoryId.split("-").map(Number);
       let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
@@ -346,7 +355,7 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (popular && levelName && isFree) {
+    } else if (popular && levelName && isFree) {
       let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
@@ -354,8 +363,8 @@ const getAllClass = async (req, res, next) => {
           levelName: { in: levels },
           isFree,
         },
-        orderBy:{
-          views: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -367,7 +376,7 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (latest && levelName && isFree) {
+    } else if (latest && levelName && isFree) {
       let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
@@ -375,8 +384,8 @@ const getAllClass = async (req, res, next) => {
           levelName: { in: levels },
           isFree,
         },
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          createdAt: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -388,28 +397,7 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (popular && categoryId && isFree) {
-      let categorys = categoryId.split("-").map(Number);
-      isFree = JSON.parse(isFree);
-      const result = await prisma.class.findMany({
-        where: {
-          categoryId: { in: categorys },
-          isFree,
-        },
-        orderBy:{
-          views: "desc"
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if (latest && categoryId && isFree) {
+    } else if (popular && categoryId && isFree) {
       let categorys = categoryId.split("-").map(Number);
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
@@ -417,8 +405,8 @@ const getAllClass = async (req, res, next) => {
           categoryId: { in: categorys },
           isFree,
         },
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -430,7 +418,28 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (popular && categoryId && levelName) {
+    } else if (latest && categoryId && isFree) {
+      let categorys = categoryId.split("-").map(Number);
+      isFree = JSON.parse(isFree);
+      const result = await prisma.class.findMany({
+        where: {
+          categoryId: { in: categorys },
+          isFree,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (popular && categoryId && levelName) {
       let categorys = categoryId.split("-").map(Number);
       let levels = levelName.split("-");
       const result = await prisma.class.findMany({
@@ -438,8 +447,8 @@ const getAllClass = async (req, res, next) => {
           categoryId: { in: categorys },
           levelName: { in: levels },
         },
-        orderBy:{
-          views: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -451,7 +460,7 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (latest && categoryId && levelName) {
+    } else if (latest && categoryId && levelName) {
       let categorys = categoryId.split("-").map(Number);
       let levels = levelName.split("-");
       const result = await prisma.class.findMany({
@@ -459,8 +468,8 @@ const getAllClass = async (req, res, next) => {
           categoryId: { in: categorys },
           levelName: { in: levels },
         },
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          createdAt: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -472,13 +481,13 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && levelName && isFree) {
+    } else if (search && levelName && isFree) {
       let levels = levelName.split("-");
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           levelName: { in: levels },
           isFree,
@@ -493,203 +502,14 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && categoryId && isFree) {
+    } else if (search && categoryId && isFree) {
       let categorys = categoryId.split("-").map(Number);
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
-          categoryId: { in: categorys },
-          isFree,
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if (search && categoryId && levelName) {
-      let categorys = categoryId.split("-").map(Number);
-      let levels = levelName.split("-");
-      const result = await prisma.class.findMany({
-        where: {
-          className:{
-            contains: search
-          },
-          categoryId: { in: categorys },
-          levelName: { in: levels },
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if (search && popular && isFree) {
-      isFree = JSON.parse(isFree);
-      const result = await prisma.class.findMany({
-        where: {
-          className:{
-            contains: search
-          },
-          isFree,
-        },
-        orderBy:{
-          views: "desc"
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if (search && latest && isFree) {
-      isFree = JSON.parse(isFree);
-      const result = await prisma.class.findMany({
-        where: {
-          className:{
-            contains: search
-          },
-          isFree,
-        },
-        orderBy:{
-          createdAt: "desc"
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if(search && popular && levelName) {
-      let levels = levelName.split("-");
-      const result = await prisma.class.findMany({
-        where: {
-          className:{
-            contains: search
-          },
-          levelName: { in: levels },
-        },
-        orderBy:{
-          views: "desc"
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if (search && latest && levelName) {
-      let levels = levelName.split("-");
-      const result = await prisma.class.findMany({
-        where: {
-          className:{
-            contains: search
-          },
-          levelName: { in: levels },
-        },
-        orderBy:{
-          createdAt: "desc"
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if (search && popular && categoryId) {
-      let categorys = categoryId.split("-").map(Number);
-      const result = await prisma.class.findMany({
-        where: {
-          className:{
-            contains: search
-          },
-          categoryId: { in: categorys },
-        },
-        orderBy:{
-          views: "desc"
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if (search && latest && categoryId ) {
-      let categorys = categoryId.split("-").map(Number);
-      const result = await prisma.class.findMany({
-        where: {
-          className:{
-            contains: search
-          },
-          categoryId: { in: categorys },
-        },
-        orderBy:{
-          createdAt: "desc"
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if (levelName && isFree) {
-      let levels = levelName.split("-");
-      isFree = JSON.parse(isFree);
-      const result = await prisma.class.findMany({
-        where: {
-          levelName: { in: levels },
-          isFree,
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        err: null,
-        data: { pagination, result },
-      });
-    }else if (categoryId && isFree) {
-      let categorys = categoryId.split("-").map(Number);
-      isFree = JSON.parse(isFree);
-      const result = await prisma.class.findMany({
-        where: {
           categoryId: { in: categorys },
           isFree,
         },
@@ -703,7 +523,196 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (categoryId && levelName) {
+    } else if (search && categoryId && levelName) {
+      let categorys = categoryId.split("-").map(Number);
+      let levels = levelName.split("-");
+      const result = await prisma.class.findMany({
+        where: {
+          className: {
+            contains: search,
+          },
+          categoryId: { in: categorys },
+          levelName: { in: levels },
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (search && popular && isFree) {
+      isFree = JSON.parse(isFree);
+      const result = await prisma.class.findMany({
+        where: {
+          className: {
+            contains: search,
+          },
+          isFree,
+        },
+        orderBy: {
+          views: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (search && latest && isFree) {
+      isFree = JSON.parse(isFree);
+      const result = await prisma.class.findMany({
+        where: {
+          className: {
+            contains: search,
+          },
+          isFree,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (search && popular && levelName) {
+      let levels = levelName.split("-");
+      const result = await prisma.class.findMany({
+        where: {
+          className: {
+            contains: search,
+          },
+          levelName: { in: levels },
+        },
+        orderBy: {
+          views: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (search && latest && levelName) {
+      let levels = levelName.split("-");
+      const result = await prisma.class.findMany({
+        where: {
+          className: {
+            contains: search,
+          },
+          levelName: { in: levels },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (search && popular && categoryId) {
+      let categorys = categoryId.split("-").map(Number);
+      const result = await prisma.class.findMany({
+        where: {
+          className: {
+            contains: search,
+          },
+          categoryId: { in: categorys },
+        },
+        orderBy: {
+          views: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (search && latest && categoryId) {
+      let categorys = categoryId.split("-").map(Number);
+      const result = await prisma.class.findMany({
+        where: {
+          className: {
+            contains: search,
+          },
+          categoryId: { in: categorys },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (levelName && isFree) {
+      let levels = levelName.split("-");
+      isFree = JSON.parse(isFree);
+      const result = await prisma.class.findMany({
+        where: {
+          levelName: { in: levels },
+          isFree,
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (categoryId && isFree) {
+      let categorys = categoryId.split("-").map(Number);
+      isFree = JSON.parse(isFree);
+      const result = await prisma.class.findMany({
+        where: {
+          categoryId: { in: categorys },
+          isFree,
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "OK",
+        err: null,
+        data: { pagination, result },
+      });
+    } else if (categoryId && levelName) {
       let categorys = categoryId.split("-").map(Number);
       let levels = levelName.split("-");
       const result = await prisma.class.findMany({
@@ -721,12 +730,12 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && isFree) {
+    } else if (search && isFree) {
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           isFree,
         },
@@ -740,12 +749,12 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && levelName) {
+    } else if (search && levelName) {
       let levels = levelName.split("-");
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
           levelName: { in: levels },
         },
@@ -759,15 +768,15 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && popular ) {
+    } else if (search && popular) {
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
         },
-        orderBy:{
-          views: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -779,15 +788,15 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search && latest) {
+    } else if (search && latest) {
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
         },
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          createdAt: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -799,7 +808,7 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if ( isFree) {
+    } else if (isFree) {
       isFree = JSON.parse(isFree);
       const result = await prisma.class.findMany({
         where: {
@@ -845,10 +854,10 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (popular) {
+    } else if (popular) {
       const result = await prisma.class.findMany({
-        orderBy:{
-          views: "desc"
+        orderBy: {
+          views: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -860,10 +869,10 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (latest) {
+    } else if (latest) {
       const result = await prisma.class.findMany({
-        orderBy:{
-          createdAt: "desc"
+        orderBy: {
+          createdAt: "desc",
         },
         skip: (page - 1) * limit,
         take: limit,
@@ -875,11 +884,11 @@ const getAllClass = async (req, res, next) => {
         err: null,
         data: { pagination, result },
       });
-    }else if (search) {
+    } else if (search) {
       const result = await prisma.class.findMany({
         where: {
-          className:{
-            contains: search
+          className: {
+            contains: search,
           },
         },
         skip: (page - 1) * limit,

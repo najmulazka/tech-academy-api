@@ -28,6 +28,15 @@ const createChapter = async (req, res, next) => {
       data: { chapterName, classCode, isFree: JSON.parse(isFree) },
     });
 
+    let currentChapterCount = await prisma.chapters.count({
+      where: { classCode: classCode },
+    });
+
+    let updatedClass = await prisma.class.update({
+      where: { classCode: classCode },
+      data: { module: currentChapterCount + 1 },
+    });
+
     res.status(200).json({
       status: true,
       message: "chapter created successfully",

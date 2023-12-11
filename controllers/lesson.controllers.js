@@ -22,11 +22,21 @@ const getLessons = async (req, res, next) => {
 
 const createLesson = async (req, res, next) => {
   try {
-    const { title, learningMaterial, linkLearningMaterial, chapterId } =
-      req.body;
+    const {
+      title,
+      learningMaterial,
+      linkLearningMaterial,
+      chapterId,
+      duration,
+    } = req.body;
 
-    // Validasi setiap bidang
-    if (!title || !learningMaterial || !linkLearningMaterial || !chapterId) {
+    if (
+      !title ||
+      !learningMaterial ||
+      !linkLearningMaterial ||
+      !chapterId ||
+      !duration
+    ) {
       return res.status(400).json({
         status: false,
         message: "All fields must be filled in",
@@ -35,7 +45,8 @@ const createLesson = async (req, res, next) => {
     }
 
     const existingChapter = await prisma.chapters.findUnique({
-      where: { id: chapterId },
+      where: { id: Number(chapterId) },
+      include: { class: true },
     });
 
     if (!existingChapter) {
@@ -47,15 +58,25 @@ const createLesson = async (req, res, next) => {
     }
 
     const newLesson = await prisma.lessons.create({
-      data: { title, learningMaterial, linkLearningMaterial, chapterId },
+      data: {
+        title,
+        learningMaterial,
+        linkLearningMaterial,
+        chapterId,
+        duration,
+      },
+    });
+
+    let totalDuration = existingChapter.class.totalDuration + duration;
+    await prisma.class.update({
+      where: { classCode: existingChapter.class.classCode },
+      data: { totalDuration },
     });
 
     res.status(200).json({
       status: true,
       message: "Lesson created successfully",
-      data: {
-        lesson: newLesson,
-      },
+      data: { lesson: newLesson },
     });
   } catch (err) {
     console.error("Error creating lesson:", err);
@@ -91,12 +112,18 @@ const getLessonById = async (req, res, next) => {
 const updateLesson = async (req, res, next) => {
   try {
     const lessonId = parseInt(req.params.id);
-    const { title, learningMaterial, linkLearningMaterial, chapterId } =
-      req.body;
+    const {
+      title,
+      learningMaterial,
+      linkLearningMaterial,
+      chapterId,
+      duration,
+    } = req.body;
 
     // Periksa eksistensi pelajaran
     const existingLesson = await prisma.lessons.findUnique({
       where: { id: lessonId },
+      include: { chapters: { include: { class: true } } },
     });
 
     if (!existingLesson) {
@@ -119,11 +146,29 @@ const updateLesson = async (req, res, next) => {
       });
     }
 
+    const durationChange = duration - existingLesson.duration;
+
     // Update pelajaran
     const updatedLesson = await prisma.lessons.update({
       where: { id: lessonId },
-      data: { title, learningMaterial, linkLearningMaterial, chapterId },
+      data: {
+        title,
+        learningMaterial,
+        linkLearningMaterial,
+        chapterId,
+        duration,
+      },
     });
+
+    if (durationChange !== 0) {
+      const updatedTotalDuration =
+        existingLesson.chapters.class.totalDuration + durationChange;
+
+      await prisma.class.update({
+        where: { classCode: existingLesson.chapters.class.classCode },
+        data: { totalDuration: updatedTotalDuration },
+      });
+    }
 
     res.status(200).json({
       status: true,

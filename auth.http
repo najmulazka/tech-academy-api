@@ -41,7 +41,7 @@ Content-Type: multipart/form-data
 DELETE http://localhost:3000/api/v1/admin/3
 
 ### LOGIN
-POST http://localhost:3000/api/v1/auth/login
+POST http://localhost:3000/api/v1/auth/login-admin
 Content-Type: application/json
 
 {
@@ -55,8 +55,8 @@ Content-Type: application/json
 
 {
     "fullName":"admin",
-    "email":"najmulazka369@gmail.com",
-    "noTelp":"085326672543",
+    "email":"admin@gmail.com",
+    "noTelp":"00000000000000",
     "password":"admin"
 }
 

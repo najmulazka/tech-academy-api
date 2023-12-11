@@ -191,6 +191,48 @@ const verifyOTP = async (req, res, next) => {
   }
 };
 
+const loginAdmin = async (req, res, next) => {
+  let { email, password } = req.body;
+
+  const existAdmin = await prisma.users.findUnique({ where: { email } });
+
+  if (!existAdmin) {
+    return res.status(400).json({
+      status: false,
+      message: 'Bad Request',
+      err: 'Email or password does not exist',
+      data: null,
+    });
+  }
+
+  if (!existAdmin.isAdmin) {
+    return res.status(400).json({
+      status: false,
+      message: 'Bad Request!',
+      err: 'You are not admin',
+      data: null,
+    });
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(password, existAdmin.password);
+  if (!isPasswordCorrect) {
+    return res.status(400).json({
+      status: false,
+      message: 'Bad Request',
+      err: 'Email or password does not exist',
+      data: null,
+    });
+  }
+
+  let token = await jwt.sign({ email: existAdmin.email }, JWT_SECRET_KEY);
+  res.status(200).json({
+    status: true,
+    message: 'OK',
+    err: null,
+    data: { existAdmin, token },
+  });
+};
+
 const login = async (req, res, next) => {
   try {
     let { email, password } = req.body;
@@ -569,6 +611,7 @@ module.exports = {
   register,
   resendOTP,
   verifyOTP,
+  loginAdmin,
   login,
   changePassword,
   forrgotPassword,

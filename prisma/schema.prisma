@@ -72,6 +72,7 @@ model Class {
   price            Decimal
   linkSosmed       String
   levelName        String
+  createdBy        String
   isFree           Boolean
   inProgres        Boolean        @default(false)
   views            Int            @default(0)

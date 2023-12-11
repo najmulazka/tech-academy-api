@@ -13,6 +13,7 @@ const createClass = async (req, res, next) => {
       linkSosmed,
       isFree,
       levelName,
+      createdBy,
       categoryId,
     } = req.body;
     if (!req.file) {
@@ -56,6 +57,7 @@ const createClass = async (req, res, next) => {
         description,
         thumbnailPicture: url,
         fileId,
+        createdBy,
         price: Number(price),
         linkSosmed,
         isFree: JSON.parse(isFree),
@@ -979,6 +981,7 @@ const updateClass = async (req, res, next) => {
       description,
       price,
       linkSosmed,
+      createdBy,
       isFree,
       levelName,
       categoryId,
@@ -1003,6 +1006,7 @@ const updateClass = async (req, res, next) => {
         description,
         price: Number(price),
         linkSosmed,
+        createdBy,
         isFree: JSON.parse(isFree),
         levelName,
         categoryId: Number(categoryId),

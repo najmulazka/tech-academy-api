@@ -6,7 +6,16 @@ const { generateClassCode } = require('../utils/libs/classcode.libs');
 
 const createClass = async (req, res, next) => {
   try {
-    let { className, description, price, linkSosmed, isFree, levelName, categoryId } = req.body;
+    let {
+      className,
+      description,
+      price,
+      linkSosmed,
+      isFree,
+      levelName,
+      createdBy,
+      categoryId,
+    } = req.body;
     if (!req.file) {
       return res.status(400).json({
         status: false,
@@ -30,8 +39,8 @@ const createClass = async (req, res, next) => {
     if (!category) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        err: 'category id does not exist',
+        message: "Bad Request",
+        err: "category id does not exist",
         data: null,
       });
     }
@@ -48,6 +57,7 @@ const createClass = async (req, res, next) => {
         description,
         thumbnailPicture: url,
         fileId,
+        createdBy,
         price: Number(price),
         linkSosmed,
         isFree: JSON.parse(isFree),
@@ -69,7 +79,16 @@ const createClass = async (req, res, next) => {
 
 const getAllClass = async (req, res, next) => {
   try {
-    let { search, latest, popular, categoryId, levelName, isFree, limit = 1, page = 2 } = req.query;
+    let {
+      search,
+      latest,
+      popular,
+      categoryId,
+      levelName,
+      isFree,
+      limit = 10,
+      page = 1,
+    } = req.query;
     limit = Number(limit);
     page = Number(page);
 
@@ -186,7 +205,16 @@ const getByIdClass = async (req, res, next) => {
 const updateClass = async (req, res, next) => {
   try {
     const { classCode } = req.params;
-    const { className, description, price, linkSosmed, isFree, levelName, categoryId } = req.body;
+    const {
+      className,
+      description,
+      price,
+      linkSosmed,
+      createdBy,
+      isFree,
+      levelName,
+      categoryId,
+    } = req.body;
 
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
@@ -207,6 +235,7 @@ const updateClass = async (req, res, next) => {
         description,
         price: Number(price),
         linkSosmed,
+        createdBy,
         isFree: JSON.parse(isFree),
         levelName,
         categoryId: Number(categoryId),

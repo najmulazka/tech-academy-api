@@ -59,6 +59,17 @@ CREATE TABLE "Categorys" (
 );
 
 -- CreateTable
+CREATE TABLE "Learning" (
+    "id" SERIAL NOT NULL,
+    "inProgress" BOOLEAN NOT NULL DEFAULT false,
+    "presentase" INTEGER NOT NULL DEFAULT 0,
+    "classCode" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "Learning_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Class" (
     "classCode" TEXT NOT NULL,
     "className" TEXT NOT NULL,
@@ -68,10 +79,11 @@ CREATE TABLE "Class" (
     "price" DECIMAL(65,30) NOT NULL,
     "linkSosmed" TEXT NOT NULL,
     "levelName" TEXT NOT NULL,
+    "createdBy" TEXT NOT NULL,
     "isFree" BOOLEAN NOT NULL,
-    "inProgres" BOOLEAN NOT NULL DEFAULT false,
     "views" INTEGER NOT NULL DEFAULT 0,
-    "learn" INTEGER NOT NULL DEFAULT 0,
+    "module" INTEGER NOT NULL DEFAULT 0,
+    "totalDuration" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "categoryId" INTEGER NOT NULL,
 
@@ -94,6 +106,7 @@ CREATE TABLE "Lessons" (
     "title" TEXT NOT NULL,
     "learningMaterial" TEXT NOT NULL,
     "linkLearningMaterial" TEXT NOT NULL,
+    "duration" INTEGER NOT NULL,
     "chapterId" INTEGER NOT NULL,
 
     CONSTRAINT "Lessons_pkey" PRIMARY KEY ("id")
@@ -135,6 +148,12 @@ ALTER TABLE "ResetCodes" ADD CONSTRAINT "ResetCodes_userId_fkey" FOREIGN KEY ("u
 
 -- AddForeignKey
 ALTER TABLE "Notifications" ADD CONSTRAINT "Notifications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "Learning" ADD CONSTRAINT "Learning_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Learning" ADD CONSTRAINT "Learning_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Class" ADD CONSTRAINT "Class_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Categorys"("id") ON DELETE CASCADE ON UPDATE CASCADE;

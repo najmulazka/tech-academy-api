@@ -6,16 +6,7 @@ const { generateClassCode } = require('../utils/libs/classcode.libs');
 
 const createClass = async (req, res, next) => {
   try {
-    let {
-      className,
-      description,
-      price,
-      linkSosmed,
-      isFree,
-      levelName,
-      createdBy,
-      categoryId,
-    } = req.body;
+    let { className, description, price, linkSosmed, isFree, levelName, createdBy, categoryId } = req.body;
     if (!req.file) {
       return res.status(400).json({
         status: false,
@@ -39,8 +30,8 @@ const createClass = async (req, res, next) => {
     if (!category) {
       return res.status(400).json({
         status: false,
-        message: "Bad Request",
-        err: "category id does not exist",
+        message: 'Bad Request',
+        err: 'category id does not exist',
         data: null,
       });
     }
@@ -79,16 +70,7 @@ const createClass = async (req, res, next) => {
 
 const getAllClass = async (req, res, next) => {
   try {
-    let {
-      search,
-      latest,
-      popular,
-      categoryId,
-      levelName,
-      isFree,
-      limit = 10,
-      page = 1,
-    } = req.query;
+    let { search, latest, popular, categoryId, levelName, isFree, limit = 10, page = 1 } = req.query;
     limit = Number(limit);
     page = Number(page);
 
@@ -124,6 +106,9 @@ const getAllClass = async (req, res, next) => {
 
     const result = await prisma.class.findMany({
       where,
+      include: {
+        categorys: true,
+      },
       orderBy,
       skip: (page - 1) * limit,
       take: limit,
@@ -172,24 +157,24 @@ const getByIdClass = async (req, res, next) => {
 
     // mapping is_preview = true for chapter 1
     const previewChapter = await prisma.chapter.map((chapter) => {
-      if (chapter.id = id) {
+      if ((chapter.id = id)) {
         return { ...chapter, is_preview: true };
       }
       return chapter;
     });
 
-
     let isBuy = false;
     // find transaction where user_id = user.id(kalo user login) and class_id = class.fileId
     let transactions = await prisma.transactions.findUnique({
-      where:{
-        userId : req.user.id,
-        classCode
-      }})
+      where: {
+        userId: req.user.id,
+        classCode,
+      },
+    });
 
     // if transaction ada -> then -> isBuy = true
-    if(transactions){
-      isBuy = true
+    if (transactions) {
+      isBuy = true;
     }
 
     res.status(200).json({
@@ -205,16 +190,7 @@ const getByIdClass = async (req, res, next) => {
 const updateClass = async (req, res, next) => {
   try {
     const { classCode } = req.params;
-    const {
-      className,
-      description,
-      price,
-      linkSosmed,
-      createdBy,
-      isFree,
-      levelName,
-      categoryId,
-    } = req.body;
+    const { className, description, price, linkSosmed, createdBy, isFree, levelName, categoryId } = req.body;
 
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },

@@ -45,7 +45,7 @@ Content-Type: application/json
     "description":"update",
     "price":2000,
     "levelName":"Beginner",
-    "createdBy":"by joe doel",
+    "author":"by joe doel",
     "isFree":true,
     "categoryId":"1",
     "linkSosmed":"owkokw"

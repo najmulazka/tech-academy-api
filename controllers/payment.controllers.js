@@ -1,4 +1,4 @@
-const prisma = require('../utils/libs/prisma.libs');
+const prisma = require("../utils/libs/prisma.libs");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -9,8 +9,8 @@ const createTransaction = async (req, res, next) => {
     if (!classExist) {
       return res.status(404).json({
         status: false,
-        message: 'Bad Request!',
-        err: 'Not Found',
+        message: "Bad Request!",
+        err: "Not Found",
         data: null,
       });
     }
@@ -31,22 +31,9 @@ const createTransaction = async (req, res, next) => {
       });
     }
 
-    // const chapters = await prisma.chapters.findMany({
-    //   where: { classCode },
-    // });
-
-    // for (const chapter of chapters) {
-    //   if (chapter && !chapter.isFree) {
-    //     await prisma.chapters.update({
-    //       where: { id: chapter.id },
-    //       data: { isFree: true },
-    //     });
-    //   }
-    // }
-
     res.status(200).json({
       status: true,
-      message: 'OK!',
+      message: "OK!",
       err: null,
       data: transaction,
     });
@@ -65,7 +52,7 @@ const getTransactions = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'OK!',
+      message: "OK!",
       data: userTransactions,
     });
   } catch (err) {
@@ -85,15 +72,15 @@ const getDetailTransaction = async (req, res, next) => {
     if (!transaction) {
       return res.status(404).json({
         status: false,
-        message: 'Bad Request!',
-        err: 'Not Found',
+        message: "Bad Request!",
+        err: "Not Found",
         data: null,
       });
     }
 
     res.status(200).json({
       status: true,
-      message: 'OK!',
+      message: "OK!",
       err: null,
       data: transaction,
     });

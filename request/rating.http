@@ -1,0 +1,9 @@
+####
+POST http://your-api-endpoint/api/v1/rating
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "classCode": "AD1",
+  "value": 4
+}

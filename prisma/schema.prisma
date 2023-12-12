@@ -28,6 +28,7 @@ model Users {
   activationCodes ActivationCodes[]
   resetCodes      ResetCodes[]
   learning        Learning[]
+  ratings         Rating[]
 }
 
 model ActivationCodes {
@@ -83,17 +84,28 @@ model Class {
   price            Decimal
   linkSosmed       String
   levelName        String
-  createdBy        String
+  author           String
   isFree           Boolean
   views            Int            @default(0)
   module           Int            @default(0)
   totalDuration    Int            @default(0)
+  averageRating    Float          @default(0)
   createdAt        DateTime       @default(now())
   categoryId       Int
   categorys        Categorys      @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  ratings          Rating[]
   learning         Learning[]
   chapters         Chapters[]
   transactions     Transactions[]
+}
+
+model Rating {
+  id        Int    @id @default(autoincrement())
+  value     Int
+  userId    Int
+  classCode String
+  users     Users  @relation(fields: [userId], references: [id])
+  class     Class  @relation(fields: [classCode], references: [classCode])
 }
 
 model Chapters {

@@ -12,6 +12,7 @@ const notifications = require('./notif.routes')
 const { restrict } = require("../middlewares/auth.middlewares");
 const { isAdmin } = require("../middlewares/admin.midlewares");
 const lesson = require('./lesson.routes');
+const learning = require('./learning.routes');
 
 // const admin = require('./admin.routes');
 // const { admin } = require('../middlewares/admin.midlewares');
@@ -27,5 +28,6 @@ router.use('/admin/payment', isAdmin, paymentAdmin);
 router.use('/admin', admin);
 router.use('/notifications', restrict, notifications)
 router.use('/lesson', lesson)
+router.use('/learning', learning)
 
 module.exports = router;

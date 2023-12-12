@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "chapterName":"Chapter-2 Pendahuluan",
-    "classCode":"AD0",
+    "classCode":"DA0",
     "isFree":false
 }
 

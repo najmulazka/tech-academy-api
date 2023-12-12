@@ -175,6 +175,13 @@ const verifyOTP = async (req, res, next) => {
       where: { userId: user.id },
     });
 
+    await prisma.users.update({
+      where:{id : user.id},
+      data:{
+        isActivated : true
+      }
+    });
+
     const htmlOtp = await nodemailer.getHtml('welcome-message.ejs', {
       user: { fullName: user.fullName },
     });

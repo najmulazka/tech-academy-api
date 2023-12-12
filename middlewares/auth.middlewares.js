@@ -24,7 +24,16 @@ module.exports = {
         });
       }
 
-      req.user = await prisma.Users.findUnique({ where: { email: decoded.email } });
+      req.user = await prisma.users.findUnique({ where: { email: decoded.email } });
+      if (!req.user) {
+        return res.status(400).json({
+          status: false,
+          message: 'Bad Request',
+          err: 'User does not exist',
+          data: null,
+        });
+      }
+
       if (!req.user.isActivated) {
         return res.status(401).json({
           status: false,

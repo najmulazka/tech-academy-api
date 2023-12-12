@@ -4,11 +4,11 @@ const createRating = async (req, res, next) => {
   try {
     const { classCode, value } = req.body;
 
-    let existingRating = await prisma.rating.findUnique({
-      where: { classCode: { classCode } },
+    let existClass = await prisma.class.findUnique({
+      where: { classCode },
     });
 
-    if (existingRating) {
+    if (!existClass) {
       return res.status(400).json({
         status: false,
         message: "class not found",

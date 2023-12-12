@@ -28,6 +28,6 @@ router.use("/admin/payment", isAdmin, paymentAdmin);
 router.use("/admin", admin);
 router.use("/notifications", restrict, notifications);
 router.use("/lesson", lesson);
-router.use("/rating", rating);
+router.use("/rating", restrict, rating);
 
 module.exports = router;

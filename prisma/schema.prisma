@@ -84,6 +84,7 @@ model Class {
   linkSosmed       String
   levelName        String
   createdBy        String
+  is_preview       String
   isFree           Boolean
   views            Int            @default(0)
   module           Int            @default(0)

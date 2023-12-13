@@ -30,11 +30,12 @@ DELETE http://localhost:3000/api/v1/category/1
 #### CLASS ENDPOINT GetByClassCode AND PUT ###
 GET http://localhost:3000/api/v1/class?promo=true
 
-#####
-GET http://localhost:3000/api/v1/class/AD0
+##### GET CLASS INPROGRESS
+GET http://localhost:3000/api/v1/class/inprogress/DA0
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwuY29tIiwiaWF0IjoxNzAyMzgwMjU2fQ.9rA3AjVVZ76UduqvI-vZ1ITj0PVaEkYss94mQsPY2lI
 
 #####
-GET http://localhost:3000/api/v1/class/AD0
+GET http://localhost:3000/api/v1/class/DA0
 
 ####
 PUT http://localhost:3000/api/v1/class/PM0

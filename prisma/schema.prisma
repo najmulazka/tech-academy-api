@@ -66,13 +66,15 @@ model Categorys {
 }
 
 model Learning {
-  id         Int     @id @default(autoincrement())
-  inProgress Boolean @default(false)
-  presentase Int     @default(0)
+  id         Int      @id @default(autoincrement())
+  inProgress Boolean  @default(false)
+  presentase Int      @default(0)
   classCode  String
+  chapterId  Int
   userId     Int
-  class      Class   @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
-  users      Users   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  class      Class    @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  chapter    Chapters @relation(fields: [chapterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  users      Users    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Class {
@@ -82,7 +84,7 @@ model Class {
   thumbnailPicture String
   fileId           String
   price            Int
-  promo            Int        @default(0)
+  promo            Int            @default(0)
   linkSosmed       String
   levelName        String
   author           String
@@ -110,11 +112,12 @@ model Rating {
 }
 
 model Chapters {
-  id          Int       @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   chapterName String
   classCode   String
   isFree      Boolean
-  class       Class     @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  class       Class      @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  learning    Learning[]
   Lessons     Lessons[]
 }
 

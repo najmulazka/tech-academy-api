@@ -162,15 +162,7 @@ const getByIdClass = async (req, res, next) => {
       });
     }
 
-    // mapping is_preview = true for chapter 1
-    const previewChapter = await prisma.chapter.map((chapter) => {
-      if ((chapter.id = id)) {
-        return { ...chapter, is_preview: true };
-      }
-      return chapter;
-    });
 
-    let isBuy = false;
     // find transaction where user_id = user.id(kalo user login) and class_id = class.fileId
     let transactions = await prisma.transactions.findUnique({
       where: {
@@ -184,11 +176,28 @@ const getByIdClass = async (req, res, next) => {
       isBuy = true;
     }
 
+    let isBuy = await prisma.transactions.findFirst({
+      where: {
+        userId: req.user.id,
+        classCode: classCode,
+      },
+    });
+    
+    let chaptersWithPreview = existingClass.chapters.map((chapter, index) => ({
+      ...chapter,
+      is_preview: index === 0, 
+    }));
+    
     res.status(200).json({
       status: true,
-      message: 'getById class successfully',
-      data: { ...existingClass, is_buy: isBuy },
+      message: "getById class successfully",
+      data: {
+        ...existingClass,
+        is_buy: Boolean(isBuy),
+        chapters: chaptersWithPreview,
+      },
     });
+
   } catch (err) {
     next(err);
   }

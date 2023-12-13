@@ -82,10 +82,11 @@ model Class {
   thumbnailPicture String
   fileId           String
   price            Int
-  promo            Int        @default(0)
+  promo            Int            @default(0)
   linkSosmed       String
   levelName        String
   author           String
+  is_preview       String
   isFree           Boolean
   views            Int            @default(0)
   module           Int            @default(0)

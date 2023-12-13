@@ -76,18 +76,30 @@ CREATE TABLE "Class" (
     "description" TEXT NOT NULL,
     "thumbnailPicture" TEXT NOT NULL,
     "fileId" TEXT NOT NULL,
-    "price" DECIMAL(65,30) NOT NULL,
+    "price" INTEGER NOT NULL,
+    "promo" INTEGER NOT NULL DEFAULT 0,
     "linkSosmed" TEXT NOT NULL,
     "levelName" TEXT NOT NULL,
-    "createdBy" TEXT NOT NULL,
+    "author" TEXT NOT NULL,
     "isFree" BOOLEAN NOT NULL,
     "views" INTEGER NOT NULL DEFAULT 0,
     "module" INTEGER NOT NULL DEFAULT 0,
     "totalDuration" INTEGER NOT NULL DEFAULT 0,
+    "averageRating" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "categoryId" INTEGER NOT NULL,
 
     CONSTRAINT "Class_pkey" PRIMARY KEY ("classCode")
+);
+
+-- CreateTable
+CREATE TABLE "Rating" (
+    "id" SERIAL NOT NULL,
+    "value" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "classCode" TEXT NOT NULL,
+
+    CONSTRAINT "Rating_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -157,6 +169,12 @@ ALTER TABLE "Learning" ADD CONSTRAINT "Learning_userId_fkey" FOREIGN KEY ("userI
 
 -- AddForeignKey
 ALTER TABLE "Class" ADD CONSTRAINT "Class_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Categorys"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Rating" ADD CONSTRAINT "Rating_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Rating" ADD CONSTRAINT "Rating_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Chapters" ADD CONSTRAINT "Chapters_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE CASCADE ON UPDATE CASCADE;

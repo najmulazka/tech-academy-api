@@ -28,7 +28,7 @@ DELETE http://localhost:3000/api/v1/category/1
 
 
 #### CLASS ENDPOINT GetByClassCode AND PUT ###
-GET http://localhost:3000/api/v1/class
+GET http://localhost:3000/api/v1/class?promo=true
 
 #####
 GET http://localhost:3000/api/v1/class/AD0
@@ -37,16 +37,17 @@ GET http://localhost:3000/api/v1/class/AD0
 GET http://localhost:3000/api/v1/class/AD0
 
 ####
-PUT http://localhost:3000/api/v1/class/AD0
+PUT http://localhost:3000/api/v1/class/PM0
 Content-Type: application/json
 
 {
     "className":"update",
     "description":"update",
     "price":2000,
+    "isFree":"true",
     "levelName":"Beginner",
-    "createdBy":"by joe doel",
-    "isFree":true,
+    "author":"by joe doel",
+    "promo":0,
     "categoryId":"1",
     "linkSosmed":"owkokw"
 }

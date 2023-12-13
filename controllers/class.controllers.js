@@ -6,7 +6,7 @@ const { generateClassCode } = require('../utils/libs/classcode.libs');
 
 const createClass = async (req, res, next) => {
   try {
-    let { className, description, price, linkSosmed, isFree, levelName, createdBy, categoryId } = req.body;
+    let { className, description, price, promo, linkSosmed, isFree, levelName, author, categoryId } = req.body;
     if (!req.file) {
       return res.status(400).json({
         status: false,
@@ -48,8 +48,9 @@ const createClass = async (req, res, next) => {
         description,
         thumbnailPicture: url,
         fileId,
-        createdBy,
+        author,
         price: Number(price),
+        promo: Number(promo),
         linkSosmed,
         isFree: JSON.parse(isFree),
         levelName,
@@ -70,7 +71,7 @@ const createClass = async (req, res, next) => {
 
 const getAllClass = async (req, res, next) => {
   try {
-    let { search, latest, popular, categoryId, levelName, isFree, limit = 10, page = 1 } = req.query;
+    let { search, latest, popular, promo, categoryId, levelName, isFree, limit = 10, page = 1 } = req.query;
     limit = Number(limit);
     page = Number(page);
 
@@ -79,6 +80,7 @@ const getAllClass = async (req, res, next) => {
 
     // cara yng gak nyusahin umat
     let where = {};
+    let gt = { gt: 0 };
     let orderBy = {};
     if (search) {
       where.className = {
@@ -90,6 +92,9 @@ const getAllClass = async (req, res, next) => {
     }
     if (popular) {
       orderBy.views = 'desc';
+    }
+    if (promo) {
+      where.promo = gt;
     }
     if (categoryId) {
       let categorys = categoryId.split('-').map(Number);
@@ -103,6 +108,8 @@ const getAllClass = async (req, res, next) => {
       isFree = JSON.parse(isFree);
       where.isFree = isFree;
     }
+
+    console.log(where);
 
     const result = await prisma.class.findMany({
       where,
@@ -190,7 +197,7 @@ const getByIdClass = async (req, res, next) => {
 const updateClass = async (req, res, next) => {
   try {
     const { classCode } = req.params;
-    const { className, description, price, linkSosmed, createdBy, isFree, levelName, categoryId } = req.body;
+    const { className, description, price, promo, linkSosmed, author, isFree, levelName, categoryId } = req.body;
 
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
@@ -203,6 +210,7 @@ const updateClass = async (req, res, next) => {
         data: null,
       });
     }
+    console.log(typeof isFree);
 
     console.log(typeof className);
     console.log(typeof description);
@@ -228,9 +236,10 @@ const updateClass = async (req, res, next) => {
         className,
         description,
         price: Number(price),
+        promo: Number(promo),
         linkSosmed,
-        createdBy,
-        isFree : JSON.parse(isFree),
+        author,
+        isFree: JSON.parse(isFree),
         levelName,
         categoryId: Number(categoryId),
       },

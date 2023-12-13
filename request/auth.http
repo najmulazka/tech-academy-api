@@ -41,12 +41,12 @@ Content-Type: multipart/form-data
 DELETE http://localhost:3000/api/v1/admin/3
 
 ### LOGIN
-POST http://localhost:3000/api/v1/auth/login-admin
+POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email":"admin@gmail.com",
-    "password":"admin"
+    "email":"user3@gmail.com",
+    "password":"user3"
 }
 
 ### REGISTER
@@ -54,10 +54,10 @@ POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "fullName":"admin",
-    "email":"admin@gmail.com",
-    "noTelp":"00000000000000",
-    "password":"admin"
+    "fullName":"user3",
+    "email":"user3@gmail.com",
+    "noTelp":"000000000",
+    "password":"user3"
 }
 
 ### change-password

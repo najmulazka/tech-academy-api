@@ -7,6 +7,7 @@ const { generateClassCode } = require('../utils/libs/classcode.libs');
 const createClass = async (req, res, next) => {
   try {
     let { className, description, price, linkSosmed, isFree, levelName, createdBy, categoryId } = req.body;
+    console.log(req.body);
     if (!req.file) {
       return res.status(400).json({
         status: false,

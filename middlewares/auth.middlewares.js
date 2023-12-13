@@ -33,7 +33,7 @@ module.exports = {
           data: null,
         });
       }
-
+      
       if (!req.user.isActivated) {
         return res.status(401).json({
           status: false,

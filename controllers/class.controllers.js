@@ -239,7 +239,7 @@ const updateClass = async (req, res, next) => {
         promo: Number(promo),
         linkSosmed,
         author,
-        isFree: JSON.parse(isFree),
+        isFree,
         levelName,
         categoryId: Number(categoryId),
       },

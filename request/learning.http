@@ -1,0 +1,3 @@
+### Update inProgress
+GET http://localhost:3000/api/v1/learning/MD1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwuY29tIiwiaWF0IjoxNzAyNDc1MjMyfQ.sZkUETxFWAsvf32k__hI9rcLc1o6B_DjAeykVTlh0mE

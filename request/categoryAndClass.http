@@ -35,7 +35,7 @@ GET http://localhost:3000/api/v1/class/inprogress/DA0
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwuY29tIiwiaWF0IjoxNzAyMzgwMjU2fQ.9rA3AjVVZ76UduqvI-vZ1ITj0PVaEkYss94mQsPY2lI
 
 #####
-GET http://localhost:3000/api/v1/class/DA0
+GET http://localhost:3000/api/v1/class/MD1
 
 ####
 PUT http://localhost:3000/api/v1/class/PM0

@@ -3,7 +3,7 @@ POST http://localhost:3000/api/v1/chapter
 Content-Type: application/json
 
 {
-    "chapterName":"Chapter-2 Pendahuluan",
+    "chapterName":"Chapter-5 Pendahuluan ",
     "classCode":"DA0",
     "isFree":false
 }
@@ -14,6 +14,10 @@ GET http://localhost:3000/api/v1/chapter
 
 ####
 GET http://localhost:3000/api/v1/chapter/1
+
+#### PRESENTASE
+GET http://localhost:3000/api/v1/chapter/presentase/DA0/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwuY29tIiwiaWF0IjoxNzAyNDc1MjMyfQ.sZkUETxFWAsvf32k__hI9rcLc1o6B_DjAeykVTlh0mE
 
 ###
 PUT http://localhost:3000/api/v1/chapter/1
@@ -26,4 +30,4 @@ Content-Type: application/json
 }
 
 ####
-DELETE http://localhost:3000/api/v1/chapter/35
+DELETE http://localhost:3000/api/v1/chapter/7

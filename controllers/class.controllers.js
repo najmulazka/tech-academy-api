@@ -218,7 +218,7 @@ const getIdClassProgress = async (req, res, next) => {
 
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
-      include: { chapters: true},
+      include: { chapters: true },
     });
 
     if (!existingClass) {
@@ -229,27 +229,35 @@ const getIdClassProgress = async (req, res, next) => {
       });
     }
 
-    // Create learning entry for the user
+    // Create learning entries for each chapter
     const userId = req.user.id;
 
-    const learningEntry = await prisma.learning.create({
-      data: {
-        inProgress: false,
-        presentase: 0,
-        classCode: classCode,
-        userId: userId,
-      },
-    });
+    const learningEntries = await Promise.all(
+      existingClass.chapters.map(async (chapter) => {
+        const learningEntry = await prisma.learning.create({
+          data: {
+            inProgress: true,
+            presentase: 0,
+            class: { connect: { classCode: classCode } },
+            chapter: { connect: { id: chapter.id } },
+            users: { connect: { id: userId } },
+          },
+        });
+        return learningEntry;
+      })
+    );
 
     res.status(200).json({
       status: true,
       message: 'getById class successfully',
-      data: { existingClass, learningEntry },
+      data: { existingClass, learningEntries },
     });
   } catch (err) {
     next(err);
   }
 };
+
+
 
 
 const updateClass = async (req, res, next) => {

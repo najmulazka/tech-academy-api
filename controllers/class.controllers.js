@@ -197,7 +197,7 @@ const getByIdClass = async (req, res, next) => {
 const updateClass = async (req, res, next) => {
   try {
     const { classCode } = req.params;
-    const { className, description, price, promo, linkSosmed, author, isFree, levelName, categoryId } = req.body;
+    let { className, description, price, promo, linkSosmed, author, isFree, levelName, categoryId } = req.body;
 
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },

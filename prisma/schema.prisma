@@ -81,7 +81,8 @@ model Class {
   description      String
   thumbnailPicture String
   fileId           String
-  price            Decimal
+  price            Int
+  promo            Int        @default(0)
   linkSosmed       String
   levelName        String
   author           String

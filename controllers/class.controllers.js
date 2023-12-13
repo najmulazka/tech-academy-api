@@ -216,7 +216,7 @@ const updateClass = async (req, res, next) => {
     console.log(typeof description);
     console.log(typeof price);
     console.log(typeof linkSosmed);
-    console.log(typeof createdBy);
+    console.log(typeof author);
     console.log(typeof isFree);
     console.log(typeof levelName);
     console.log(typeof categoryId);
@@ -224,7 +224,7 @@ const updateClass = async (req, res, next) => {
     console.log( description);
     console.log( price);
     console.log( linkSosmed);
-    console.log( createdBy);
+    console.log( author);
     console.log( isFree);
     console.log( levelName);
     console.log( categoryId);

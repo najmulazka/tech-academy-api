@@ -19,13 +19,13 @@ const lesson = require("./lesson.routes");
 
 router.use("/auth", auth);
 router.use("/user", user);
-router.use("/password", password);
+router.use("/password", restrict, password);
 router.use("/class", classs);
 router.use("/category", categories);
 router.use("/chapter", chapter);
 router.use("/payment", restrict, payment);
 router.use("/admin/payment", isAdmin, paymentAdmin);
-router.use("/admin", admin);
+router.use("/admin/user", isAdmin, admin);
 router.use("/notifications", restrict, notifications);
 router.use("/lesson", lesson);
 router.use("/rating", restrict, rating);

@@ -1,9 +1,9 @@
-const prisma = require('../utils/libs/prisma.libs');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const prisma = require("../utils/libs/prisma.libs");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { JWT_SECRET_KEY } = process.env;
-const { generateOTP } = require('../utils/libs/otp.libs');
-const nodemailer = require('../utils/libs/nodemailer.libs');
+const { generateOTP } = require("../utils/libs/otp.libs");
+const nodemailer = require("../utils/libs/nodemailer.libs");
 
 const register = async (req, res, next) => {
   try {
@@ -12,8 +12,8 @@ const register = async (req, res, next) => {
     if (!email) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'Email is required',
+        message: "Bad Request",
+        error: "Email is required",
         data: null,
       });
     }
@@ -22,8 +22,8 @@ const register = async (req, res, next) => {
     if (userExist) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        err: 'user has already been used!',
+        message: "Bad Request",
+        err: "user has already been used!",
         data: null,
       });
     }
@@ -53,14 +53,14 @@ const register = async (req, res, next) => {
     });
 
     let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
-    const htmlOtp = await nodemailer.getHtml('otp-message.ejs', {
+    const htmlOtp = await nodemailer.getHtml("otp-message.ejs", {
       user: { activationCode: otp },
     });
-    nodemailer.sendEmail(email, 'Activation Code Verification', htmlOtp);
+    nodemailer.sendEmail(email, "Activation Code Verification", htmlOtp);
 
     return res.status(200).json({
       status: true,
-      message: 'Created',
+      message: "Created",
       err: null,
       data: { fullName, email, noTelp, password, token },
     });
@@ -76,8 +76,8 @@ const resendOTP = async (req, res, next) => {
     if (!token) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'Token is required',
+        message: "Bad Request",
+        error: "Token is required",
         data: null,
       });
     }
@@ -91,8 +91,8 @@ const resendOTP = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({
         status: false,
-        message: 'Not Found',
-        err: 'User not found',
+        message: "Not Found",
+        err: "User not found",
         data: null,
       });
     }
@@ -115,14 +115,14 @@ const resendOTP = async (req, res, next) => {
       where: { userId: user.id },
     });
 
-    const htmlOtp = await nodemailer.getHtml('otp-message.ejs', {
+    const htmlOtp = await nodemailer.getHtml("otp-message.ejs", {
       user: { activationCode: otp },
     });
-    nodemailer.sendEmail(email, 'Activation Code Resent', htmlOtp);
+    nodemailer.sendEmail(email, "Activation Code Resent", htmlOtp);
 
     return res.status(200).json({
       status: true,
-      message: 'OTP resent successfully',
+      message: "OTP resent successfully",
       err: null,
       data: { email, token },
     });
@@ -138,8 +138,8 @@ const verifyOTP = async (req, res, next) => {
     if (!email || !activationCode) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'Email and OTP are required',
+        message: "Bad Request",
+        error: "Email and OTP are required",
         data: null,
       });
     }
@@ -148,8 +148,8 @@ const verifyOTP = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({
         status: false,
-        message: 'Not Found',
-        err: 'User not found',
+        message: "Not Found",
+        err: "User not found",
         data: null,
       });
     }
@@ -165,8 +165,8 @@ const verifyOTP = async (req, res, next) => {
     if (!userActivationCode) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        err: 'Invalid Activation Code or Code Expired',
+        message: "Bad Request",
+        err: "Invalid Activation Code or Code Expired",
         data: null,
       });
     }
@@ -176,20 +176,28 @@ const verifyOTP = async (req, res, next) => {
     });
 
     await prisma.users.update({
-      where:{id : user.id},
-      data:{
-        isActivated : true
-      }
+      where: { id: user.id },
+      data: {
+        isActivated: true,
+      },
     });
 
-    const htmlOtp = await nodemailer.getHtml('welcome-message.ejs', {
+    const htmlOtp = await nodemailer.getHtml("welcome-message.ejs", {
       user: { fullName: user.fullName },
     });
-    nodemailer.sendEmail(email, 'Welcome to TechAcademy', htmlOtp);
+    nodemailer.sendEmail(email, "Welcome to TechAcademy", htmlOtp);
 
-    return res.status(200).json({
+    await prisma.notifications.create({
+      data: {
+        title: "Account Activation",
+        body: "Account activation successful",
+        userId: user.id,
+      },
+    });
+
+    res.status(200).json({
       status: true,
-      message: 'Activation Code verified successfully',
+      message: "Activation Code verified successfully",
       err: null,
       data: { email, activationCode },
     });
@@ -206,8 +214,8 @@ const loginAdmin = async (req, res, next) => {
   if (!existAdmin) {
     return res.status(400).json({
       status: false,
-      message: 'Bad Request',
-      err: 'Email or password does not exist',
+      message: "Bad Request",
+      err: "Email or password does not exist",
       data: null,
     });
   }
@@ -215,8 +223,8 @@ const loginAdmin = async (req, res, next) => {
   if (!existAdmin.isAdmin) {
     return res.status(400).json({
       status: false,
-      message: 'Bad Request!',
-      err: 'You are not admin',
+      message: "Bad Request!",
+      err: "You are not admin",
       data: null,
     });
   }
@@ -225,8 +233,8 @@ const loginAdmin = async (req, res, next) => {
   if (!isPasswordCorrect) {
     return res.status(400).json({
       status: false,
-      message: 'Bad Request',
-      err: 'Email or password does not exist',
+      message: "Bad Request",
+      err: "Email or password does not exist",
       data: null,
     });
   }
@@ -234,7 +242,7 @@ const loginAdmin = async (req, res, next) => {
   let token = await jwt.sign({ email: existAdmin.email }, JWT_SECRET_KEY);
   res.status(200).json({
     status: true,
-    message: 'OK',
+    message: "OK",
     err: null,
     data: { existAdmin, token },
   });
@@ -247,8 +255,8 @@ const login = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        err: 'Email atau password salah',
+        message: "Bad Request",
+        err: "Email atau password salah",
         data: null,
       });
     }
@@ -257,8 +265,8 @@ const login = async (req, res, next) => {
     if (!isPasswordCorrect) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        err: 'Email atau password salah',
+        message: "Bad Request",
+        err: "Email atau password salah",
         data: null,
       });
     }
@@ -266,7 +274,7 @@ const login = async (req, res, next) => {
     let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
     res.status(200).json({
       status: true,
-      message: 'OK',
+      message: "OK",
       err: null,
       data: { user, token },
     });
@@ -281,8 +289,8 @@ const forrgotPassword = async (req, res, next) => {
     if (!email) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'Email  are required',
+        message: "Bad Request",
+        error: "Email  are required",
         data: null,
       });
     }
@@ -291,8 +299,8 @@ const forrgotPassword = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request!',
-        err: 'User does not exist',
+        message: "Bad Request!",
+        err: "User does not exist",
         data: null,
       });
     }
@@ -313,15 +321,15 @@ const forrgotPassword = async (req, res, next) => {
 
     let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
 
-    const htmlOtp = await nodemailer.getHtml('forrgot-password.ejs', {
+    const htmlOtp = await nodemailer.getHtml("forrgot-password.ejs", {
       otp,
       fullName: user.fullName,
     });
-    nodemailer.sendEmail(email, 'Lupa Password', htmlOtp);
+    nodemailer.sendEmail(email, "Lupa Password", htmlOtp);
 
     return res.status(200).json({
       status: true,
-      message: 'OK!',
+      message: "OK!",
       err: null,
       data: { user, otp, token },
     });
@@ -336,8 +344,8 @@ const resendOtpPassword = async (req, res, next) => {
     if (!token) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'Token is required',
+        message: "Bad Request",
+        error: "Token is required",
         data: null,
       });
     }
@@ -346,7 +354,7 @@ const resendOtpPassword = async (req, res, next) => {
       if (err) {
         return res.status(400).json({
           status: false,
-          message: 'Bad Request',
+          message: "Bad Request",
           err: err.message,
           data: null,
         });
@@ -360,8 +368,8 @@ const resendOtpPassword = async (req, res, next) => {
       if (!user) {
         return res.status(400).json({
           status: false,
-          message: 'Bad Request',
-          err: 'User does not exist',
+          message: "Bad Request",
+          err: "User does not exist",
           data: null,
         });
       }
@@ -375,15 +383,15 @@ const resendOtpPassword = async (req, res, next) => {
         },
       });
 
-      const htmlOtp = await nodemailer.getHtml('forrgot-password.ejs', {
+      const htmlOtp = await nodemailer.getHtml("forrgot-password.ejs", {
         otp,
         fullName: user.fullName,
       });
-      nodemailer.sendEmail(decoded.email, 'Lupa Password', htmlOtp);
+      nodemailer.sendEmail(decoded.email, "Lupa Password", htmlOtp);
 
       return res.status(200).json({
         status: true,
-        message: 'resend OTP forrgot password resent successfully',
+        message: "resend OTP forrgot password resent successfully",
         err: null,
         data: { user, otp },
       });
@@ -401,8 +409,8 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
     if (!token) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'Token is required',
+        message: "Bad Request",
+        error: "Token is required",
         data: null,
       });
     }
@@ -411,7 +419,7 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
       if (err) {
         return res.status(400).json({
           status: false,
-          message: 'Bad Request',
+          message: "Bad Request",
           err: err.message,
           data: null,
         });
@@ -420,8 +428,8 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
       if (!otp) {
         return res.status(400).json({
           status: false,
-          message: 'Bad Request',
-          error: 'OTP are required',
+          message: "Bad Request",
+          error: "OTP are required",
           data: null,
         });
       }
@@ -432,8 +440,8 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
       if (!user) {
         return res.status(400).json({
           status: false,
-          message: 'Bad Request!',
-          err: 'User does not exist',
+          message: "Bad Request!",
+          err: "User does not exist",
           data: null,
         });
       }
@@ -451,8 +459,8 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
       if (!result) {
         return res.status(400).json({
           status: false,
-          message: 'Bad Request',
-          err: 'Invalid OTP',
+          message: "Bad Request",
+          err: "Invalid OTP",
           data: null,
         });
       }
@@ -461,9 +469,17 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
         where: { userId: user.id },
       });
 
-      return res.status(200).json({
+      await prisma.notifications.create({
+        data: {
+          title: "Password Reset",
+          body: "Password reset was successful",
+          userId: user.id,
+        },
+      });
+
+      res.status(200).json({
         status: true,
-        message: 'OTP verified password successfully',
+        message: "OTP verified password successfully",
         err: null,
         data: { user },
       });
@@ -481,8 +497,8 @@ const resetPassword = async (req, res, next) => {
     if (!newPassword || !newPasswordConfirmation) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'newPassword and newPasswordConfirmation are required',
+        message: "Bad Request",
+        error: "newPassword and newPasswordConfirmation are required",
         data: null,
       });
     }
@@ -490,8 +506,8 @@ const resetPassword = async (req, res, next) => {
     if (newPassword !== newPasswordConfirmation) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'new password and new password confirmation not same',
+        message: "Bad Request",
+        error: "new password and new password confirmation not same",
         data: null,
       });
     }
@@ -500,7 +516,7 @@ const resetPassword = async (req, res, next) => {
       if (err) {
         return res.status(400).json({
           status: false,
-          message: 'Bad Request',
+          message: "Bad Request",
           err: err.message,
           data: null,
         });
@@ -512,8 +528,8 @@ const resetPassword = async (req, res, next) => {
       if (!existUser) {
         return res.status(400).json({
           status: false,
-          message: 'Bad Request!',
-          err: 'User does not exist',
+          message: "Bad Request!",
+          err: "User does not exist",
           data: null,
         });
       }
@@ -526,14 +542,21 @@ const resetPassword = async (req, res, next) => {
         },
       });
 
-      const resetPasswordSucces = await nodemailer.getHtml('reset-password-success.ejs', {
-        fullName: user.fullName,
-      });
-      nodemailer.sendEmail(user.email, 'Reset Password Success', resetPasswordSucces);
+      const resetPasswordSucces = await nodemailer.getHtml(
+        "reset-password-success.ejs",
+        {
+          fullName: user.fullName,
+        }
+      );
+      nodemailer.sendEmail(
+        user.email,
+        "Reset Password Success",
+        resetPasswordSucces
+      );
 
       return res.status(200).json({
         status: true,
-        message: 'Reset password success',
+        message: "Reset password success",
         err: null,
         data: null,
       });
@@ -546,13 +569,15 @@ const resetPassword = async (req, res, next) => {
 
 const changePassword = async (req, res, next) => {
   try {
-    const { email, currentPassword, new_password, new_password_confirm } = req.body;
+    const { email, currentPassword, new_password, new_password_confirm } =
+      req.body;
 
     if (!email || !currentPassword || !new_password || !new_password_confirm) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'Email, currentPassword, new_password, and new_password_confirm are required',
+        message: "Bad Request",
+        error:
+          "Email, currentPassword, new_password, and new_password_confirm are required",
         data: null,
       });
     }
@@ -560,8 +585,8 @@ const changePassword = async (req, res, next) => {
     if (new_password !== new_password_confirm) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        error: 'New password and repeat password do not match',
+        message: "Bad Request",
+        error: "New password and repeat password do not match",
         data: null,
       });
     }
@@ -571,19 +596,22 @@ const changePassword = async (req, res, next) => {
     if (!userExist) {
       return res.status(404).json({
         status: false,
-        message: 'Not Found',
-        err: 'User not found',
+        message: "Not Found",
+        err: "User not found",
         data: null,
       });
     }
 
-    const isPasswordValid = await bcrypt.compare(currentPassword, userExist.password);
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      userExist.password
+    );
 
     if (!isPasswordValid) {
       return res.status(401).json({
         status: false,
-        message: 'Unauthorized',
-        err: 'Invalid current password',
+        message: "Unauthorized",
+        err: "Invalid current password",
         data: null,
       });
     }
@@ -595,11 +623,19 @@ const changePassword = async (req, res, next) => {
       data: { password: encryptedNewPassword },
     });
 
+    await prisma.notifications.create({
+      data: {
+        title: "Change Password",
+        body: "Successfully changed the password",
+        userId: user.id,
+      },
+    });
+
     const token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
 
     return res.status(200).json({
       status: true,
-      message: 'Password changed successfully',
+      message: "Password changed successfully",
       err: null,
       data: {
         email,

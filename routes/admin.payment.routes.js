@@ -6,8 +6,8 @@ const {
 } = require("../controllers/admin.payment.controllers");
 const { isAdmin } = require("../middlewares/admin.midlewares"); 
 
-router.get("/", isAdmin, getTransactionsAdmin);
-router.get("/:id", isAdmin, getDetailTransaction);
-router.delete("/:id", isAdmin, deleteTransaction);
+router.get("/", getTransactionsAdmin);
+router.get("/:id", getDetailTransaction);
+router.delete("/:id", deleteTransaction);
 
 module.exports = router;

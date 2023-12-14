@@ -176,10 +176,10 @@ const verifyOTP = async (req, res, next) => {
     });
 
     await prisma.users.update({
-      where:{id : user.id},
-      data:{
-        isActivated : true
-      }
+      where: { id: user.id },
+      data: {
+        isActivated: true,
+      },
     });
 
     const htmlOtp = await nodemailer.getHtml('welcome-message.ejs', {
@@ -187,7 +187,15 @@ const verifyOTP = async (req, res, next) => {
     });
     nodemailer.sendEmail(email, 'Welcome to TechAcademy', htmlOtp);
 
-    return res.status(200).json({
+    await prisma.notifications.create({
+      data: {
+        title: 'Account Activation',
+        body: 'Account activation successful',
+        userId: user.id,
+      },
+    });
+
+    res.status(200).json({
       status: true,
       message: 'Activation Code verified successfully',
       err: null,
@@ -461,7 +469,15 @@ const verifyOtpForrgotPassword = async (req, res, next) => {
         where: { userId: user.id },
       });
 
-      return res.status(200).json({
+      await prisma.notifications.create({
+        data: {
+          title: 'Password Reset',
+          body: 'Password reset was successful',
+          userId: user.id,
+        },
+      });
+
+      res.status(200).json({
         status: true,
         message: 'OTP verified password successfully',
         err: null,
@@ -593,6 +609,14 @@ const changePassword = async (req, res, next) => {
     let user = await prisma.Users.update({
       where: { email },
       data: { password: encryptedNewPassword },
+    });
+
+    await prisma.notifications.create({
+      data: {
+        title: 'Change Password',
+        body: 'Successfully changed the password',
+        userId: user.id,
+      },
     });
 
     const token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);

@@ -217,8 +217,7 @@ const getByIdClass = async (req, res, next) => {
 const updateClass = async (req, res, next) => {
   try {
     const { classCode } = req.params;
-<<<<<<< HEAD
-    const {
+    let {
       className,
       description,
       price,
@@ -229,9 +228,6 @@ const updateClass = async (req, res, next) => {
       levelName,
       categoryId,
     } = req.body;
-=======
-    let { className, description, price, promo, linkSosmed, author, isFree, levelName, categoryId } = req.body;
->>>>>>> eef1d6a4836e569b7b587a4eb12cf57606aca179
 
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
@@ -246,22 +242,6 @@ const updateClass = async (req, res, next) => {
     }
     // console.log(typeof isFree);
 
-<<<<<<< HEAD
-    // console.log(typeof className);
-    // console.log(typeof description);
-    // console.log(typeof price);
-    // console.log(typeof linkSosmed);
-    // console.log(typeof isFree);
-    // console.log(typeof levelName);
-    // console.log(typeof categoryId);
-    // console.log(className);
-    // console.log(description);
-    // console.log(price);
-    // console.log(linkSosmed);
-    // console.log(isFree);
-    // console.log(levelName);
-    // console.log(categoryId);
-=======
     console.log(typeof className);
     console.log(typeof description);
     console.log(typeof price);
@@ -270,16 +250,14 @@ const updateClass = async (req, res, next) => {
     console.log(typeof isFree);
     console.log(typeof levelName);
     console.log(typeof categoryId);
-    console.log( className);
-    console.log( description);
-    console.log( price);
-    console.log( linkSosmed);
-    console.log( author);
-    console.log( isFree);
-    console.log( levelName);
-    console.log( categoryId);
-    
->>>>>>> eef1d6a4836e569b7b587a4eb12cf57606aca179
+    console.log(className);
+    console.log(description);
+    console.log(price);
+    console.log(linkSosmed);
+    console.log(author);
+    console.log(isFree);
+    console.log(levelName);
+    console.log(categoryId);
 
     const updatedClass = await prisma.class.update({
       where: { classCode: classCode },

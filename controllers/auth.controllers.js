@@ -271,6 +271,15 @@ const login = async (req, res, next) => {
       });
     }
 
+    if (!user.isActivated) {
+      return res.status(400).json({
+        status: false,
+        message: 'Bad Request',
+        err: 'You are not activated',
+        data: null,
+      });
+    }
+
     let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
     res.status(200).json({
       status: true,

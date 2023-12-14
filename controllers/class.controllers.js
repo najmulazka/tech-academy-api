@@ -1,22 +1,32 @@
-const prisma = require('../utils/libs/prisma.libs');
-const imagekit = require('../utils/libs/imagekit.libs');
-const path = require('path');
-const { getPagination } = require('../utils/libs/pagination.libs');
-const { generateClassCode } = require('../utils/libs/classcode.libs');
+const prisma = require("../utils/libs/prisma.libs");
+const imagekit = require("../utils/libs/imagekit.libs");
+const path = require("path");
+const { getPagination } = require("../utils/libs/pagination.libs");
+const { generateClassCode } = require("../utils/libs/classcode.libs");
 
 const createClass = async (req, res, next) => {
   try {
-    let { className, description, price, promo, linkSosmed, isFree, levelName, author, categoryId } = req.body;
+    let {
+      className,
+      description,
+      price,
+      promo,
+      linkSosmed,
+      isFree,
+      levelName,
+      author,
+      categoryId,
+    } = req.body;
     if (!req.file) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        err: 'File is required',
+        message: "Bad Request",
+        err: "File is required",
         data: null,
       });
     }
 
-    let strFile = req.file.buffer.toString('base64');
+    let strFile = req.file.buffer.toString("base64");
     const { url, fileId } = await imagekit.upload({
       fileName: Date.now() + path.extname(req.file.originalname),
       file: strFile,
@@ -30,8 +40,8 @@ const createClass = async (req, res, next) => {
     if (!category) {
       return res.status(400).json({
         status: false,
-        message: 'Bad Request',
-        err: 'category id does not exist',
+        message: "Bad Request",
+        err: "category id does not exist",
         data: null,
       });
     }
@@ -60,7 +70,7 @@ const createClass = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'OK',
+      message: "OK",
       err: null,
       data: classs,
     });
@@ -71,7 +81,17 @@ const createClass = async (req, res, next) => {
 
 const getAllClass = async (req, res, next) => {
   try {
-    let { search, latest, popular, promo, categoryId, levelName, isFree, limit = 10, page = 1 } = req.query;
+    let {
+      search,
+      latest,
+      popular,
+      promo,
+      categoryId,
+      levelName,
+      isFree,
+      limit = 10,
+      page = 1,
+    } = req.query;
     limit = Number(limit);
     page = Number(page);
 
@@ -88,20 +108,20 @@ const getAllClass = async (req, res, next) => {
       };
     }
     if (latest) {
-      orderBy.createdAt = 'desc';
+      orderBy.createdAt = "desc";
     }
     if (popular) {
-      orderBy.views = 'desc';
+      orderBy.views = "desc";
     }
     if (promo) {
       where.promo = gt;
     }
     if (categoryId) {
-      let categorys = categoryId.split('-').map(Number);
+      let categorys = categoryId.split("-").map(Number);
       where.categoryId = { in: categorys };
     }
     if (levelName) {
-      let levels = levelName.split('-');
+      let levels = levelName.split("-");
       where.levelName = { in: levels };
     }
     if (isFree) {
@@ -123,7 +143,7 @@ const getAllClass = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'OK',
+      message: "OK",
       err: null,
       data: { pagination, result },
     });
@@ -139,7 +159,7 @@ const getByIdClass = async (req, res, next) => {
     if (!classCode) {
       return res.status(400).json({
         status: false,
-        message: 'classcode is required',
+        message: "classcode is required",
         data: null,
       });
     }
@@ -157,7 +177,7 @@ const getByIdClass = async (req, res, next) => {
     if (!existingClass) {
       return res.status(400).json({
         status: false,
-        message: 'classCode not exist',
+        message: "classCode not exist",
         data: null,
       });
     }
@@ -186,7 +206,7 @@ const getByIdClass = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'getById class successfully',
+      message: "getById class successfully",
       data: { ...existingClass, is_buy: isBuy },
     });
   } catch (err) {
@@ -197,7 +217,17 @@ const getByIdClass = async (req, res, next) => {
 const updateClass = async (req, res, next) => {
   try {
     const { classCode } = req.params;
-    const { className, description, price, promo, linkSosmed, author, isFree, levelName, categoryId } = req.body;
+    const {
+      className,
+      description,
+      price,
+      promo,
+      linkSosmed,
+      author,
+      isFree,
+      levelName,
+      categoryId,
+    } = req.body;
 
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
@@ -206,29 +236,26 @@ const updateClass = async (req, res, next) => {
     if (!existingClass) {
       return res.status(400).json({
         status: false,
-        message: 'class with the provided classCode does not exist',
+        message: "class with the provided classCode does not exist",
         data: null,
       });
     }
-    console.log(typeof isFree);
+    // console.log(typeof isFree);
 
-    console.log(typeof className);
-    console.log(typeof description);
-    console.log(typeof price);
-    console.log(typeof linkSosmed);
-    console.log(typeof createdBy);
-    console.log(typeof isFree);
-    console.log(typeof levelName);
-    console.log(typeof categoryId);
-    console.log( className);
-    console.log( description);
-    console.log( price);
-    console.log( linkSosmed);
-    console.log( createdBy);
-    console.log( isFree);
-    console.log( levelName);
-    console.log( categoryId);
-    
+    // console.log(typeof className);
+    // console.log(typeof description);
+    // console.log(typeof price);
+    // console.log(typeof linkSosmed);
+    // console.log(typeof isFree);
+    // console.log(typeof levelName);
+    // console.log(typeof categoryId);
+    // console.log(className);
+    // console.log(description);
+    // console.log(price);
+    // console.log(linkSosmed);
+    // console.log(isFree);
+    // console.log(levelName);
+    // console.log(categoryId);
 
     const updatedClass = await prisma.class.update({
       where: { classCode: classCode },
@@ -247,7 +274,7 @@ const updateClass = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'OK',
+      message: "OK",
       err: null,
       data: updatedClass,
     });
@@ -263,7 +290,7 @@ const deleteClass = async (req, res, next) => {
     if (!classCode) {
       return res.status(400).json({
         status: false,
-        message: 'classCode is required',
+        message: "classCode is required",
         data: null,
       });
     }
@@ -276,7 +303,7 @@ const deleteClass = async (req, res, next) => {
     if (!existingClass) {
       return res.status(400).json({
         status: false,
-        message: 'class with the provided classCode does not exist',
+        message: "class with the provided classCode does not exist",
         data: null,
       });
     }
@@ -288,7 +315,7 @@ const deleteClass = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'class deleted successfully',
+      message: "class deleted successfully",
       data: deletedClass,
     });
   } catch (err) {

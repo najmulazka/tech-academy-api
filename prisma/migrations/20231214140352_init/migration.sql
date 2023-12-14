@@ -128,13 +128,23 @@ CREATE TABLE "Lessons" (
 CREATE TABLE "Transactions" (
     "id" SERIAL NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT false,
-    "paymentMethod" TEXT NOT NULL,
-    "cardNumber" TEXT NOT NULL,
+    "paymentMethod" TEXT,
+    "bankId" INTEGER,
+    "cardNumber" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" INTEGER NOT NULL,
     "classCode" TEXT NOT NULL,
 
     CONSTRAINT "Transactions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Bank" (
+    "id" SERIAL NOT NULL,
+    "bankType" TEXT NOT NULL,
+    "bankNumber" TEXT,
+
+    CONSTRAINT "Bank_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -151,6 +161,9 @@ CREATE UNIQUE INDEX "Categorys_categoryName_key" ON "Categorys"("categoryName");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Class_classCode_key" ON "Class"("classCode");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Bank_bankType_key" ON "Bank"("bankType");
 
 -- AddForeignKey
 ALTER TABLE "ActivationCodes" ADD CONSTRAINT "ActivationCodes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
@@ -187,3 +200,6 @@ ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_userId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_bankId_fkey" FOREIGN KEY ("bankId") REFERENCES "Bank"("id") ON DELETE SET NULL ON UPDATE CASCADE;

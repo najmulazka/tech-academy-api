@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const { getTransactions, getDetailTransaction, createTransaction} = require('../controllers/payment.controllers');
-const { restrict } = require('../middlewares/auth.middlewares');
+const { getTransactions, getDetailTransaction, createTransaction, payment} = require('../controllers/payment.controllers');
 
-router.get('/', restrict, getTransactions);  // Endpoint untuk pengguna biasa
-router.get('/:id', restrict, getDetailTransaction);
-router.post('/:classCode', restrict, createTransaction);
+router.get('/', getTransactions);  // Endpoint untuk pengguna biasa
+router.get('/:id', getDetailTransaction);
+router.post('/:classCode', createTransaction);
+router.put('/:id', payment);
 
 module.exports = router;

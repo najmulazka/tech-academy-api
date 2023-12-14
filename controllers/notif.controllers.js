@@ -89,7 +89,7 @@ const getNotificationById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const notification = await prisma.notifications.findUnique({
-      where: { id: parseInt(id, 10) },
+      where: { id: Number(id), userId: req.user.id },
     });
 
     if (!notification) {
@@ -100,7 +100,12 @@ const getNotificationById = async (req, res, next) => {
       });
     }
 
-    res.status(200).json(notification);
+    res.status(200).json({
+      status: true,
+      message: 'OK',
+      err: null,
+      data: notification,
+    });
   } catch (err) {
     next(err);
   }
@@ -139,6 +144,7 @@ const updateNotification = async (req, res, next) => {
     res.status(200).json({
       status: true,
       message: 'Notification updated successfully',
+      err: null,
       data: updatedNotification,
     });
   } catch (err) {
@@ -149,9 +155,18 @@ const updateNotification = async (req, res, next) => {
 const deleteNotification = async (req, res, next) => {
   try {
     const { id } = req.params;
-    await prisma.notifications.delete({
+    let deleted = await prisma.notifications.delete({
       where: { id: parseInt(id, 10) },
     });
+
+    if (!deleted) {
+      return res.status(400).json({
+        status: false,
+        message: 'Bad Request',
+        err: 'Notification does not exist',
+        data: null,
+      });
+    }
 
     res.status(204).send();
   } catch (err) {

@@ -210,25 +210,6 @@ const updateClass = async (req, res, next) => {
         data: null,
       });
     }
-    console.log(typeof isFree);
-
-    console.log(typeof className);
-    console.log(typeof description);
-    console.log(typeof price);
-    console.log(typeof linkSosmed);
-    console.log(typeof author);
-    console.log(typeof isFree);
-    console.log(typeof levelName);
-    console.log(typeof categoryId);
-    console.log( className);
-    console.log( description);
-    console.log( price);
-    console.log( linkSosmed);
-    console.log( author);
-    console.log( isFree);
-    console.log( levelName);
-    console.log( categoryId);
-    
 
     const updatedClass = await prisma.class.update({
       where: { classCode: classCode },

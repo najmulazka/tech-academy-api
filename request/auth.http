@@ -45,8 +45,8 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email":"user3@gmail.com",
-    "password":"user3"
+    "email":"user1@gmail.com",
+    "password":"user1"
 }
 
 ### REGISTER
@@ -54,10 +54,10 @@ POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "fullName":"user3",
-    "email":"user3@gmail.com",
+    "fullName":"user1",
+    "email":"user1@gmail.com",
     "noTelp":"000000000",
-    "password":"user3"
+    "password":"user1"
 }
 
 ### change-password

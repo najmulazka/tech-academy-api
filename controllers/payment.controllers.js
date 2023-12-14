@@ -41,29 +41,16 @@ const createTransaction = async (req, res, next) => {
   }
 };
 
-const paymentWithBank = async (req, res, next) => {
+const payment = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let { paymentMethod, bankType, struckPicture } = req.body;
+    let { paymentMethod, bankId, cardNumber } = req.body;
 
     if (!paymentMethod) {
       return res.status(400).json({ status: false, message: 'Bad Request!', err: 'payment method is require', data: null });
     }
 
-    if (!bankType) {
-      return res.status(400).json({ status: false, message: 'Bad Request!', err: 'bank type is require', data: null });
-    }
-
-    if (!struckPicture) {
-      return res.status(400).json({ status: false, message: 'Bad Request!', err: 'struck picture is require', data: null });
-    }
-
-    if (!req.file) {
-      return res.status(400).json({ status: false, message: 'Bad Request!', err: 'file is require', data: null });
-    }
-
-    let strFile = req.file.buffer.toString('base64');
-    const transactionExist = await prisma.transactions.findUnique({ where: { id } });
+    const transactionExist = await prisma.transactions.findUnique({ where: { id: Number(id) } });
     if (!transactionExist) {
       return res.status(404).json({
         status: false,
@@ -73,19 +60,16 @@ const paymentWithBank = async (req, res, next) => {
       });
     }
 
-    const transaction = await prisma.transactions.create({
+    const transaction = await prisma.transactions.update({
+      where: { id: Number(id) },
       data: {
-        userId: req.user.id,
-        classCode,
+        status: true,
+        paymentMethod,
+        bankId,
+        cardNumber,
+        createdAt: new Date(Date.now()),
       },
     });
-
-    if (!classExist.isFree) {
-      await prisma.class.update({
-        where: { classCode },
-        data: { isFree: true },
-      });
-    }
 
     res.status(200).json({
       status: true,
@@ -102,7 +86,12 @@ const getTransactions = async (req, res, next) => {
   try {
     // Pengguna biasa melihat pembayarannya sendiri
     const userTransactions = await prisma.transactions.findMany({
-      where: { userId: req.user.id },
+      where: {
+        OR: [
+          { status: true, userId: req.user.id },
+          { status: false, createdAt: { gte: new Date(Date.now() - 5 * 60 * 1000) }, userId: req.user.id },
+        ],
+      },
       include: { class: true },
     });
 
@@ -121,7 +110,7 @@ const getDetailTransaction = async (req, res, next) => {
     let { id } = req.params;
 
     const transaction = await prisma.transactions.findUnique({
-      where: { id: Number(id) },
+      where: { id: Number(id), userId: req.user.id },
       include: { users: true, class: true },
     });
 
@@ -145,4 +134,4 @@ const getDetailTransaction = async (req, res, next) => {
   }
 };
 
-module.exports = { createTransaction, getDetailTransaction, getTransactions };
+module.exports = { createTransaction, getDetailTransaction, getTransactions, payment };

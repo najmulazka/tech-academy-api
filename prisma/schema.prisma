@@ -132,13 +132,19 @@ model Transactions {
   id            Int      @id @default(autoincrement())
   status        Boolean  @default(false)
   paymentMethod String?
-  bankType      String?
-  struckPicture String?
-  fileId        String?
+  bankId      Int?
   cardNumber    String?
   createdAt     DateTime @default(now())
   userId        Int
   classCode     String
   users         Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   class         Class    @relation(fields: [classCode], references: [classCode])
+  bank          Bank?    @relation(fields: [bankId], references: [id])
+}
+
+model Bank {
+  id           Int            @id @default(autoincrement())
+  bankType     String         @unique
+  bankNumber   String?
+  transactions Transactions[]
 }

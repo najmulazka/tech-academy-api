@@ -82,7 +82,7 @@ model Class {
   thumbnailPicture String
   fileId           String
   price            Int
-  promo            Int        @default(0)
+  promo            Int            @default(0)
   linkSosmed       String
   levelName        String
   author           String
@@ -131,8 +131,11 @@ model Lessons {
 model Transactions {
   id            Int      @id @default(autoincrement())
   status        Boolean  @default(false)
-  paymentMethod String
-  cardNumber    String
+  paymentMethod String?
+  bankType      String?
+  struckPicture String?
+  fileId        String?
+  cardNumber    String?
   createdAt     DateTime @default(now())
   userId        Int
   classCode     String

@@ -49,7 +49,9 @@ const createChapter = async (req, res, next) => {
 
 const getChapter = async (req, res, next) => {
   try {
-    let chapters = await prisma.chapters.findMany();
+    let chapters = await prisma.chapters.findMany({
+      include: { Lessons: true },
+    });
 
     if (!chapters || chapters.length === 0) {
       return res.status(400).json({
@@ -75,6 +77,7 @@ const getByIdChapter = async (req, res, next) => {
 
     const chapter = await prisma.chapters.findUnique({
       where: { id: Number(id) },
+      include: { Lessons: true },
     });
 
     if (!chapter || !id) {

@@ -82,7 +82,7 @@ model Class {
   thumbnailPicture String
   fileId           String
   price            Int
-  promo            Int        @default(0)
+  promo            Int            @default(0)
   linkSosmed       String
   levelName        String
   author           String
@@ -110,12 +110,13 @@ model Rating {
 }
 
 model Chapters {
-  id          Int       @id @default(autoincrement())
-  chapterName String
-  classCode   String
-  isFree      Boolean
-  class       Class     @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
-  Lessons     Lessons[]
+  id            Int       @id @default(autoincrement())
+  chapterName   String
+  classCode     String
+  isFree        Boolean
+  totalDuration Int       @default(0)
+  class         Class     @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  Lessons       Lessons[]
 }
 
 model Lessons {

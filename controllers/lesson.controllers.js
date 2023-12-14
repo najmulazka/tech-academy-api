@@ -67,10 +67,18 @@ const createLesson = async (req, res, next) => {
       },
     });
 
-    let totalDuration = existingChapter.class.totalDuration + duration;
+    // update total duration pada chapter
+    let totalDurationChapter = existingChapter.totalDuration + duration;
+    await prisma.chapters.update({
+      where: { id: existingChapter.id },
+      data: { totalDuration: totalDurationChapter },
+    });
+
+    // update total duration pada Class
+    let totalDurationClass = existingChapter.class.totalDuration + duration;
     await prisma.class.update({
       where: { classCode: existingChapter.class.classCode },
-      data: { totalDuration },
+      data: { totalDuration: totalDurationClass },
     });
 
     res.status(200).json({

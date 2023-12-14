@@ -2,7 +2,6 @@ const prisma = require("../utils/libs/prisma.libs");
 const imagekit = require("../utils/libs/imagekit.libs");
 const path = require("path");
 
-
 const getUserById = async (req, res, next) => {
   try {
     const user = req.user;
@@ -29,7 +28,7 @@ const updateUser = async (req, res, next) => {
   try {
     const user = req.user;
 
-    const userId = user.id; 
+    const userId = user.id;
     const { fullName, noTelp, city, country, profilePicture } = req.body;
 
     const existingUser = await prisma.users.findUnique({
@@ -110,4 +109,3 @@ module.exports = {
   updateUser,
   deleteUser,
 };
-

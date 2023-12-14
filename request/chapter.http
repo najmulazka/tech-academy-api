@@ -3,8 +3,8 @@ POST http://localhost:3000/api/v1/chapter
 Content-Type: application/json
 
 {
-    "chapterName":"Chapter-2 Pendahuluan",
-    "classCode":"AD0",
+    "chapterName":"Chapter-3 Pendahuluan",
+    "classCode":"U0",
     "isFree":false
 }
 
@@ -13,7 +13,7 @@ GET http://localhost:3000/api/v1/chapter
 
 
 ####
-GET http://localhost:3000/api/v1/chapter/1
+GET http://localhost:3000/api/v1/chapter/2
 
 ###
 PUT http://localhost:3000/api/v1/chapter/1

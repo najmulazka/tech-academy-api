@@ -32,7 +32,7 @@ GET http://localhost:3000/api/v1/class?promo=true
 
 ##### GET CLASS INPROGRESS
 GET http://localhost:3000/api/v1/class/inprogress/DA0
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwuY29tIiwiaWF0IjoxNzAyMzgwMjU2fQ.9rA3AjVVZ76UduqvI-vZ1ITj0PVaEkYss94mQsPY2lI
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwuY29tIiwiaWF0IjoxNzAyNDk0MzYwfQ.mam_Zt87R0-ACYoPxh3VWqVynQRtrPyXWF7FFn9NQ5o
 
 #####
 GET http://localhost:3000/api/v1/class/MD1

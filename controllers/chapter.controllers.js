@@ -112,6 +112,36 @@ const getPresentaseChapter = async (req, res, next) => {
       });
     }
 
+    // Validasi jika bab tidak gratis (isFree: false)
+    if (!chapter.isFree) {
+      const learning = await prisma.learning.findFirst({
+        where: {
+          chapterId: chapter.id,
+          userId: req.user.id,
+        },
+      });
+
+      if (!learning) {
+        return res.status(403).json({
+          status: false,
+          message: "Bab ini tidak dapat diakses karena tidak gratis",
+          data: {
+            chapter,
+            presentase: 0,
+          },
+        });
+      }
+
+      return res.status(403).json({
+        status: false,
+        message: "Bab ini tidak dapat diakses karena tidak gratis",
+        data: {
+          chapter,
+          presentase: learning.presentase,
+        },
+      });
+    }
+
     const learning = await prisma.learning.findFirst({
       where: {
         chapterId: chapter.id,
@@ -125,9 +155,9 @@ const getPresentaseChapter = async (req, res, next) => {
         data: {
           userId: req.user.id,
           chapterId: chapter.id,
-          presentase: 0, // Misalnya, presentase dimulai dari 0 karena baru dimulai
+          presentase: 0,
           classCode: classCode,
-          previousPresentase: 0, // Setel previousPresentase ke 0 saat membuat baru
+          prevPresentase: 0,
         },
       });
 
@@ -145,30 +175,52 @@ const getPresentaseChapter = async (req, res, next) => {
       where: { classCode },
     });
 
-    // Pastikan bahwa previousPresentase memiliki nilai numerik yang valid
-    const previousPresentase = typeof learning.previousPresentase === 'number' ? learning.previousPresentase : 0;
+    // const prevPresentase = typeof learning.prevPresentase === 'number' ? learning.prevPresentase : 0;
+    // const calculatedPrevPresentase = prevPresentase > 0 ? prevPresentase : learning.presentase;
 
-    // Hitung presentase berdasarkan total jumlah bab dan tambahkan ke previousPresentase
-    const presentase = previousPresentase + (chapter.id / totalChapters) * 100;
+    // const calculatedPresentase = calculatedPrevPresentase + (chapter.id / totalChapters) * 100;
+    const calculatedPresentase = (chapter.id / totalChapters) * 100;
+    const presentase = Math.min(calculatedPresentase, 100);
+    const finalPresentase = presentase === 101 ? learning.presentase : presentase;
 
-    // Perbarui kolom presentase dan previousPresentase di tabel Learning
-    await prisma.learning.update({
-      where: { id: learning.id },
-      data: { presentase, previousPresentase: presentase },
-    });
+    if (presentase < 101) {
+      await prisma.learning.update({
+        where: { id: learning.id },
+        data: { presentase: finalPresentase, prevPresentase: finalPresentase },
+      });
+
+      // Dapatkan semua ID bab yang ada di dalam chapter dengan ID tertentu
+      const excludedChapterIds = await prisma.chapters.findMany({
+        where: { classCode, id: { not: chapter.id } },
+        select: { id: true },
+      });
+
+      // Setel presentase bab sebelumnya menjadi 0 jika bukan bab yang sedang diakses
+      await prisma.learning.updateMany({
+        where: {
+          userId: req.user.id,
+          chapterId: { in: excludedChapterIds.map(chap => chap.id) },
+        },
+        data: { presentase: 0, prevPresentase: 0 },
+      });
+    }
 
     res.status(200).json({
       status: true,
       message: "Detail bab diambil dengan berhasil, dan presentase diperbarui",
       data: {
         chapter,
-        presentase,
+        presentase: finalPresentase,
       },
     });
   } catch (err) {
     next(err);
   }
 };
+
+
+
+
 
 
 

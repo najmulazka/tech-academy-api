@@ -113,6 +113,12 @@ const getPresentaseChapter = async (req, res, next) => {
       });
     }
 
+    // Set isView to true when hitting the endpoint
+    await prisma.chapters.update({
+      where: { id: Number(id) },
+      data: { isView: true },
+    });
+
     if (!chapter.isFree) {
       const learning = await prisma.learning.findFirst({
         where: {
@@ -174,16 +180,23 @@ const getPresentaseChapter = async (req, res, next) => {
       });
     }
 
-    const totalChapters = await prisma.chapters.count({
+    // Calculate presentase based on total isView in the classCode
+    const totalIsView = await prisma.chapters.count({
+      where: { classCode, isView: true },
+    });
+
+    // Calculate presentase based on total isView in the classCode
+    const totalChaptersInClass = await prisma.chapters.count({
       where: { classCode },
     });
 
-    const calculatedPresentase = (chapter.id / totalChapters) * 100;
-    const presentase = Math.min(calculatedPresentase, 100);
+    const calculatedPresentase = (totalIsView / totalChaptersInClass) * 100;
     const finalPresentase =
-      presentase === 101 ? Math.round(learning.presentase) : Math.round(presentase); // Bulatkan presentase
+      calculatedPresentase === 101
+        ? Math.round(learning.presentase)
+        : Math.round(calculatedPresentase / 10) * 10; // Bulatkan ke puluhan
 
-    if (presentase < 101) {
+    if (calculatedPresentase < 101) {
       await prisma.learning.update({
         where: { id: learning.id },
         data: {
@@ -234,7 +247,6 @@ const getPresentaseChapter = async (req, res, next) => {
     next(err);
   }
 };
-
 
 const updateChapter = async (req, res, next) => {
   try {

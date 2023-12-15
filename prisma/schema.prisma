@@ -105,8 +105,8 @@ model Rating {
   value     Int
   userId    Int
   classCode String
-  users     Users  @relation(fields: [userId], references: [id])
-  class     Class  @relation(fields: [classCode], references: [classCode])
+  users     Users  @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  class     Class  @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Chapters {
@@ -126,7 +126,7 @@ model Lessons {
   linkLearningMaterial String
   duration             Int
   chapterId            Int
-  chapters             Chapters @relation(fields: [chapterId], references: [id])
+  chapters             Chapters @relation(fields: [chapterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Transactions {
@@ -139,8 +139,8 @@ model Transactions {
   userId        Int
   classCode     String
   users         Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  class         Class    @relation(fields: [classCode], references: [classCode])
-  bank          Bank?    @relation(fields: [bankId], references: [id])
+  class         Class    @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  bank          Bank?    @relation(fields: [bankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Bank {

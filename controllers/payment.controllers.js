@@ -50,7 +50,7 @@ const payment = async (req, res, next) => {
       return res.status(400).json({ status: false, message: 'Bad Request!', err: 'payment method is require', data: null });
     }
 
-    const transactionExist = await prisma.transactions.findUnique({ where: { id: Number(id) } });
+    const transactionExist = await prisma.transactions.findUnique({ where: { id: Number(id), userId: req.user.id } });
     if (!transactionExist) {
       return res.status(404).json({
         status: false,
@@ -89,7 +89,7 @@ const getTransactions = async (req, res, next) => {
       where: {
         OR: [
           { status: true, userId: req.user.id },
-          { status: false, createdAt: { gte: new Date(Date.now() - 5 * 60 * 1000) }, userId: req.user.id },
+          { status: false, createdAt: { gte: new Date(Date.now() - 24 * 60 * 1000) }, userId: req.user.id },
         ],
       },
       include: { class: true },

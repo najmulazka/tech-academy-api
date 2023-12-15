@@ -231,14 +231,9 @@ const getIdClassProgress = async (req, res, next) => {
       });
     }
 
-    await prisma.class.update({
-      where: { classCode: classCode },
-      data: { views: { increment: 1 } },
-    });
-
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
-      include: { chapters: true},
+      include: { chapters: { orderBy: { id: 'asc' } } }, // Urutkan chapters berdasarkan id
     });
 
     if (!existingClass) {
@@ -249,27 +244,49 @@ const getIdClassProgress = async (req, res, next) => {
       });
     }
 
-    // Create learning entry for the user
+    // Create learning entries for each chapter if not already exists
     const userId = req.user.id;
 
-    const learningEntry = await prisma.learning.create({
-      data: {
-        inProgress: false,
-        presentase: 0,
-        classCode: classCode,
-        userId: userId,
-      },
-    });
+    const learningEntries = await Promise.all(
+      existingClass.chapters.map(async (chapter) => {
+        // Check if learning entry already exists
+        const existingLearning = await prisma.learning.findFirst({
+          where: {
+            userId: userId,
+            chapterId: chapter.id,
+            classCode: classCode,
+          },
+        });
+
+        // Create learning entry if it doesn't exist
+        if (!existingLearning) {
+          const learningEntry = await prisma.learning.create({
+            data: {
+              inProgress: false,
+              presentase: 0,
+              class: { connect: { classCode: classCode } },
+              chapter: { connect: { id: chapter.id } },
+              users: { connect: { id: userId } },
+            },
+          });
+          return learningEntry;
+        } else {
+          // Return existing learning entry if it already exists
+          return existingLearning;
+        }
+      })
+    );
 
     res.status(200).json({
       status: true,
       message: 'getById class successfully',
-      data: { existingClass, learningEntry },
+      data: { existingClass, learningEntries },
     });
   } catch (err) {
     next(err);
   }
 };
+
 
 
 const updateClass = async (req, res, next) => {

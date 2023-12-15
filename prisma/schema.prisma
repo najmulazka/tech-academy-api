@@ -66,15 +66,16 @@ model Categorys {
 }
 
 model Learning {
-  id         Int      @id @default(autoincrement())
-  inProgress Boolean  @default(false)
-  presentase Int      @default(0)
-  classCode  String
-  chapterId  Int
-  userId     Int
-  class      Class    @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
-  chapter    Chapters @relation(fields: [chapterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  users      Users    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  id             Int      @id @default(autoincrement())
+  inProgress     Boolean  @default(false)
+  presentase     Int      @default(0)
+  prevPresentase Int      @default(0)
+  classCode      String
+  chapterId      Int
+  userId         Int
+  class          Class    @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  chapter        Chapters @relation(fields: [chapterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  users          Users    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Class {
@@ -112,14 +113,15 @@ model Rating {
 }
 
 model Chapters {
-  id            Int        @id @default(autoincrement())
-  chapterName   String
-  classCode     String
-  isFree        Boolean
+  id          Int        @id @default(autoincrement())
+  chapterName String
+  classCode   String
+  isFree      Boolean
+  isView      Boolean    @default(false)
   totalDuration Int        @default(0)
-  class         Class      @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
-  learning      Learning[]
-  Lessons       Lessons[]
+  class       Class      @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  learning    Learning[]
+  Lessons     Lessons[]
 }
 
 model Lessons {

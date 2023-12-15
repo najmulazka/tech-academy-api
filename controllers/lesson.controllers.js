@@ -119,7 +119,7 @@ const getLessonById = async (req, res, next) => {
 
 const updateLesson = async (req, res, next) => {
   try {
-    const lessonId = parseInt(req.params.id);
+    const lessonId = Number(req.params.id);
     const {
       title,
       learningMaterial,
@@ -156,7 +156,7 @@ const updateLesson = async (req, res, next) => {
 
     const durationChange = duration - existingLesson.duration;
 
-    // Update pelajaran
+    // update pelajaran
     const updatedLesson = await prisma.lessons.update({
       where: { id: lessonId },
       data: {
@@ -169,12 +169,20 @@ const updateLesson = async (req, res, next) => {
     });
 
     if (durationChange !== 0) {
-      const updatedTotalDuration =
-        existingLesson.chapters.class.totalDuration + durationChange;
+      // update total duration pada chapter
+      let updatedTotalDurationChapter =
+        existingChapter.totalDuration + durationChange;
+      await prisma.chapters.update({
+        where: { id: existingLesson.chapters.id },
+        data: { totalDuration: updatedTotalDurationChapter },
+      });
 
+      // update total duration pada class
+      let updatedTotalDurationClass =
+        existingLesson.chapters.class.totalDuration + durationChange;
       await prisma.class.update({
         where: { classCode: existingLesson.chapters.class.classCode },
-        data: { totalDuration: updatedTotalDuration },
+        data: { totalDuration: updatedTotalDurationClass },
       });
     }
 
@@ -190,10 +198,11 @@ const updateLesson = async (req, res, next) => {
 
 const deleteLesson = async (req, res, next) => {
   try {
-    const lessonId = parseInt(req.params.id);
+    const lessonId = Number(req.params.id);
 
     const existingLesson = await prisma.lessons.findUnique({
       where: { id: lessonId },
+      include: { chapters: { include: { class: true } } },
     });
 
     if (!existingLesson) {
@@ -204,6 +213,24 @@ const deleteLesson = async (req, res, next) => {
       });
     }
 
+    // kurangi total duration pada chapter dan class
+    let updatedTotalDurationChapter =
+      existingLesson.chapters.totalDuration - existingLesson.duration;
+
+    await prisma.chapters.update({
+      where: { id: existingLesson.chapterId },
+      data: { totalDuration: updatedTotalDurationChapter },
+    });
+
+    let updatedTotalDurationClass =
+      existingLesson.chapters.class.totalDuration - existingLesson.duration;
+
+    await prisma.class.update({
+      where: { classCode: existingLesson.chapters.class.classCode },
+      data: { totalDuration: updatedTotalDurationClass },
+    });
+
+    // hapus lesson
     await prisma.lessons.delete({
       where: { id: lessonId },
     });

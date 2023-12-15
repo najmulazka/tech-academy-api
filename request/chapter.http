@@ -13,7 +13,7 @@ GET http://localhost:3000/api/v1/chapter
 
 
 ####
-GET http://localhost:3000/api/v1/chapter/2
+GET http://localhost:3000/api/v1/chapter/1
 
 ###
 PUT http://localhost:3000/api/v1/chapter/1

@@ -3,8 +3,8 @@ POST http://localhost:3000/api/v1/chapter
 Content-Type: application/json
 
 {
-    "chapterName":"Chapter-2 Pendahuluan",
-    "classCode":"DA0",
+    "chapterName":"Chapter-3 Pendahuluan",
+    "classCode":"U0",
     "isFree":false
 }
 

@@ -117,6 +117,7 @@ model Chapters {
   chapterName String
   classCode   String
   isFree      Boolean
+  isView      Boolean    @default(false)
   class       Class      @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
   learning    Learning[]
   Lessons     Lessons[]

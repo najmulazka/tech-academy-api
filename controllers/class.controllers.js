@@ -211,14 +211,9 @@ const getIdClassProgress = async (req, res, next) => {
       });
     }
 
-    await prisma.class.update({
-      where: { classCode: classCode },
-      data: { views: { increment: 1 } },
-    });
-
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
-      include: { chapters: true },
+      include: { chapters: { orderBy: { id: 'asc' } } }, // Urutkan chapters berdasarkan id
     });
 
     if (!existingClass) {
@@ -229,21 +224,36 @@ const getIdClassProgress = async (req, res, next) => {
       });
     }
 
-    // Create learning entries for each chapter
+    // Create learning entries for each chapter if not already exists
     const userId = req.user.id;
 
     const learningEntries = await Promise.all(
       existingClass.chapters.map(async (chapter) => {
-        const learningEntry = await prisma.learning.create({
-          data: {
-            inProgress: true,
-            presentase: 0,
-            class: { connect: { classCode: classCode } },
-            chapter: { connect: { id: chapter.id } },
-            users: { connect: { id: userId } },
+        // Check if learning entry already exists
+        const existingLearning = await prisma.learning.findFirst({
+          where: {
+            userId: userId,
+            chapterId: chapter.id,
+            classCode: classCode,
           },
         });
-        return learningEntry;
+
+        // Create learning entry if it doesn't exist
+        if (!existingLearning) {
+          const learningEntry = await prisma.learning.create({
+            data: {
+              inProgress: false,
+              presentase: 0,
+              class: { connect: { classCode: classCode } },
+              chapter: { connect: { id: chapter.id } },
+              users: { connect: { id: userId } },
+            },
+          });
+          return learningEntry;
+        } else {
+          // Return existing learning entry if it already exists
+          return existingLearning;
+        }
       })
     );
 
@@ -256,7 +266,6 @@ const getIdClassProgress = async (req, res, next) => {
     next(err);
   }
 };
-
 
 
 

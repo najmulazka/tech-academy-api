@@ -86,7 +86,6 @@ model Class {
   linkSosmed       String
   levelName        String
   author           String
-  is_preview       String
   isFree           Boolean
   views            Int            @default(0)
   module           Int            @default(0)
@@ -114,7 +113,7 @@ model Chapters {
   id          Int       @id @default(autoincrement())
   chapterName String
   classCode   String
-  isFree      Boolean
+  is_preview  Boolean        @default(false)
   class       Class     @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
   Lessons     Lessons[]
 }

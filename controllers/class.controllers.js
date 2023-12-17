@@ -162,32 +162,17 @@ const getByIdClass = async (req, res, next) => {
       });
     }
 
-
-    // find transaction where user_id = user.id(kalo user login) and class_id = class.fileId
-    let transactions = await prisma.transactions.findUnique({
-      where: {
-        userId: req.user.id,
-        classCode,
-      },
-    });
-
-    // if transaction ada -> then -> isBuy = true
-    if (transactions) {
-      isBuy = true;
-    }
-
     let isBuy = await prisma.transactions.findFirst({
       where: {
-        userId: req.user.id,
         classCode: classCode,
       },
     });
-    
-    let chaptersWithPreview = existingClass.chapters.map((chapter, index) => ({
+
+    let chaptersWithPreview = existingClass.chapters.map(chapter => ({
       ...chapter,
-      is_preview: index === 0, 
+      is_preview: true,
     }));
-    
+
     res.status(200).json({
       status: true,
       message: "getById class successfully",
@@ -220,7 +205,7 @@ const updateClass = async (req, res, next) => {
       });
     }
     console.log(typeof isFree);
-
+    console.log(typeof is_preview);
     console.log(typeof className);
     console.log(typeof description);
     console.log(typeof price);

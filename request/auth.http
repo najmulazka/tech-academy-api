@@ -1,3 +1,24 @@
+### GET ALL USER (ADMIN)
+GET http://localhost:3000/api/v1/admin
+
+### GET USER BY ID (ADMIN)
+GET http://localhost:3000/api/v1/admin/2
+
+### UPDATE USER (ADMIN)
+PUT http://localhost:3000/api/v1/admin/4
+Content-Type: multipart/form-data
+
+{
+  "fullName": "Achmad Fahmi",
+  "noTelp": "1234567890",
+  "city": "Surabaya",
+  "country": "Indonesia",
+  "profilePicture": "https://ik.imagekit.io/techacademy/1701619115846_kCwEkz3ur.png"
+}
+
+### DELETE USER (ADMIN)
+DELETE http://localhost:3000/api/v1/admin/3
+
 ### GET USER (USER)
 GET http://localhost:3000/api/v1/user
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyMkBnbWFpbC5jb20iLCJpYXQiOjE3MDE3MDQ1MDJ9.Oo0zVwlVWr6sxG2BaC3O9zVvt9zNl3de7Il7_c9sOG8
@@ -19,34 +40,14 @@ Content-Type: multipart/form-data
 DELETE http://localhost:3000/api/v1/user
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMTY5NDU4NH0.g_e49iOyeahfJdZGq_J85E-Of05KaRo-_E6ThePK2UM
 
-### GET ALL USER (ADMIN)
-GET http://localhost:3000/api/v1/admin
-
-### GET USER BY ID (ADMIN)
-GET http://localhost:3000/api/v1/admin/4
-
-### UPDATE USER (ADMIN)
-PUT http://localhost:3000/api/v1/admin/4
-Content-Type: multipart/form-data
-
-{
-  "fullName": "Achmad Fahmi",
-  "noTelp": "1234567890",
-  "city": "Surabaya",
-  "country": "Indonesia",
-  "profilePicture": "https://ik.imagekit.io/techacademy/1701619115846_kCwEkz3ur.png"
-}
-
-### DELETE USER (ADMIN)
-DELETE http://localhost:3000/api/v1/admin/3
 
 ### LOGIN
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email":"user3@gmail.com",
-    "password":"user3"
+    "email":"user1@gmail.com",
+    "password":"user1"
 }
 
 ### REGISTER
@@ -54,10 +55,17 @@ POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "fullName":"user3",
-    "email":"user3@gmail.com",
+<<<<<<< HEAD
+    "fullName":"halo",
+    "email":"halo@gmail.com",
+    "noTelp":"085326672543",
+    "password":"halo"
+=======
+    "fullName":"user1",
+    "email":"user1@gmail.com",
     "noTelp":"000000000",
-    "password":"user3"
+    "password":"user1"
+>>>>>>> 6bfdcaffbcefab96b00b527055cb351fc5dcbb23
 }
 
 ### change-password

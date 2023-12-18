@@ -8,11 +8,12 @@ const {
   deleteLesson,
 } = require("../controllers/lesson.controllers");
 const lessonMiddleware = require("../middlewares/lesson.middlewares");
+const { isAdmin } = require("../middlewares/admin.midlewares");
 
-router.get("/", getLessons);
-router.post("/", lessonMiddleware.validateLessonInput, createLesson);
+router.get("/", isAdmin, getLessons);
+router.post("/", lessonMiddleware.validateLessonInput, isAdmin, createLesson);
 router.get("/:id", getLessonById);
-router.put("/:id", lessonMiddleware.validateLessonInput, updateLesson);
-router.delete("/:id", deleteLesson);
+router.put("/:id", lessonMiddleware.validateLessonInput, isAdmin, updateLesson);
+router.delete("/:id", isAdmin, deleteLesson);
 
 module.exports = router;

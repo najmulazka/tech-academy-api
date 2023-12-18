@@ -1,30 +1,27 @@
 const prisma = require("../utils/libs/prisma.libs");
 
 const getTransactionsAdmin = async (req, res, next) => {
-    try {
-      const usersWithTransactions = await prisma.users.findMany({
-        include: {
-          transactions: {
-            include: {
-              class: true,
-            },
+  try {
+    const usersWithTransactions = await prisma.users.findMany({
+      include: {
+        transactions: {
+          include: {
+            class: true,
           },
         },
-      });
-  
-      res.status(200).json({
-        status: true,
-        message: "OK!",
-        err: null,
-        data: usersWithTransactions,
-      });
-    } catch (err) {
-      next(err);
-    }
-  };
-  
-  
-  
+      },
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "OK!",
+      err: null,
+      data: usersWithTransactions,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 const getDetailTransaction = async (req, res, next) => {
   try {
@@ -32,7 +29,7 @@ const getDetailTransaction = async (req, res, next) => {
 
     const transaction = await prisma.transactions.findUnique({
       where: { id: Number(id) },
-      include: { users: true, class: true  },
+      include: { users: true, class: true },
     });
 
     if (!transaction) {

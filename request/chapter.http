@@ -3,8 +3,8 @@ POST http://localhost:3000/api/v1/chapter
 Content-Type: application/json
 
 {
-    "chapterName":"Chapter-2 Pendahuluan",
-    "classCode":"AD0",
+    "chapterName":"Chapter-4 Pendahuluan ",
+    "classCode":"ML1",
     "isFree":false
 }
 
@@ -15,15 +15,20 @@ GET http://localhost:3000/api/v1/chapter
 ####
 GET http://localhost:3000/api/v1/chapter/1
 
+#### PRESENTASE
+GET http://localhost:3000/api/v1/chapter/presentase/ML1/16
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwuY29tIiwiaWF0IjoxNzAyNDk0MzYwfQ.mam_Zt87R0-ACYoPxh3VWqVynQRtrPyXWF7FFn9NQ5o
+
 ###
-PUT http://localhost:3000/api/v1/chapter/1
+PUT http://localhost:3000/api/v1/chapter/10
 Content-Type: application/json
 
 {
-    "chapterName":"Chapter-1 Pendahuluan",
-    "classCode":"UD0",
-    "isFree":true
+    "chapterName":"Chapter-7 Pendahuluan",
+    "classCode":"ML1",
+    "isFree":true,
+    "isView":false
 }
 
 ####
-DELETE http://localhost:3000/api/v1/chapter/35
+DELETE http://localhost:3000/api/v1/chapter/12

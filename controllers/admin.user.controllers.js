@@ -1,6 +1,6 @@
 const prisma = require("../utils/libs/prisma.libs");
-const imagekit = require('../utils/libs/imagekit.libs');
-const path = require('path');
+const imagekit = require("../utils/libs/imagekit.libs");
+const path = require("path");
 const { getPagination } = require("../utils/libs/pagination.libs");
 
 const getAllUsers = async (req, res, next) => {
@@ -56,65 +56,64 @@ const getUserById = async (req, res, next) => {
 };
 
 const updateUser = async (req, res, next) => {
-    try {
-      const userId = parseInt(req.params.id);
-      const {
+  try {
+    const userId = parseInt(req.params.id);
+    const {
+      fullName,
+      noTelp,
+      city,
+      country,
+      profilePicture,
+      fileId,
+      isActivated,
+      isAdmin,
+    } = req.body;
+
+    const existingUser = await prisma.users.findUnique({
+      where: { id: userId },
+    });
+
+    if (!existingUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    let updatedProfilePicture = profilePicture;
+    let updatedFileId = fileId;
+
+    if (req.file) {
+      const strFile = req.file.buffer.toString("base64");
+      const { url, fileId: imageFileId } = await imagekit.upload({
+        fileName: Date.now() + path.extname(req.file.originalname),
+        file: strFile,
+      });
+
+      updatedProfilePicture = url;
+      updatedFileId = imageFileId;
+    }
+
+    const user = await prisma.users.update({
+      where: { id: userId },
+      data: {
         fullName,
         noTelp,
         city,
         country,
-        profilePicture,
-        fileId,
-        isActivated, 
-        isAdmin
-      } = req.body;
-  
-      const existingUser = await prisma.users.findUnique({
-        where: { id: userId },
-      });
-  
-      if (!existingUser) {
-        return res
-          .status(404)
-          .json({ success: false, message: "User not found" });
-      }
-  
-      let updatedProfilePicture = profilePicture;
-      let updatedFileId = fileId;
-  
-      if (req.file) {
-        const strFile = req.file.buffer.toString("base64");
-        const { url, fileId: imageFileId } = await imagekit.upload({
-          fileName: Date.now() + path.extname(req.file.originalname),
-          file: strFile,
-        });
-  
-        updatedProfilePicture = url;
-        updatedFileId = imageFileId;
-      }
-  
-      const user = await prisma.users.update({
-        where: { id: userId },
-        data: {
-          fullName,
-          noTelp,
-          city,
-          country,
-          profilePicture: updatedProfilePicture,
-          fileId: updatedFileId,
-          isActivated: JSON.parse(isActivated),
-          isAdmin: JSON.parse(isAdmin)
-        },
-      });
-  
-      res
-        .status(200)
-        .json({ success: true, message: "User berhasil diperbarui", data: user });
-    } catch (error) {
-      next(error);
-    }
-  };
-  
+        profilePicture: updatedProfilePicture,
+        fileId: updatedFileId,
+        isActivated: JSON.parse(isActivated),
+        isAdmin: JSON.parse(isAdmin),
+      },
+    });
+
+    res
+      .status(200)
+      .json({ success: true, message: "User berhasil diperbarui", data: user });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const deleteUser = async (req, res, next) => {
   try {

@@ -6,11 +6,11 @@ POST http://localhost:3000/api/v1/lesson
 Content-Type: application/json
 
 {
-  "title": "Lesson Title",
+  "title": "Lesson Title 2",
   "learningMaterial": "Lesson Material",
   "linkLearningMaterial": "http://example.com/material",
-  "chapterId": 1,
-  "duration": 10
+  "chapterId": 3,
+  "duration": 5
 }
 ### GET LESSON BY LESSON ID
 GET http://localhost:3000/api/v1/lesson/1

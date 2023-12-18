@@ -2,7 +2,8 @@ const prisma = require("../utils/libs/prisma.libs");
 
 const createRating = async (req, res, next) => {
   try {
-    const { classCode, value } = req.body;
+    const { classCode } = req.params;
+    const { value } = req.body;
 
     let existClass = await prisma.class.findUnique({
       where: { classCode },

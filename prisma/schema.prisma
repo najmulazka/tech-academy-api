@@ -116,6 +116,7 @@ model Chapters {
   id          Int        @id @default(autoincrement())
   chapterName String
   classCode   String
+  is_preview  Boolean        @default(false)
   isFree      Boolean
   isView      Boolean    @default(false)
   totalDuration Int        @default(0)

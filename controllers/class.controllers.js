@@ -181,38 +181,26 @@ const getByIdClass = async (req, res, next) => {
         data: null,
       });
     }
+    
+    let isBuy = await prisma.transactions.findFirst({
+      where: {
+        classCode: classCode,
+      },
+    });
 
-    // mapping is_preview = true for chapter 1
-    // const previewChapter = await prisma.chapter.map((chapter) => {
-    //   if (chapter.id = id) {
-    //     return { ...chapter, is_preview: true };
-    //   }
-    //   return chapter;
-    // });
+    let chaptersWithPreview = existingClass.chapters.map(chapter => ({
+      ...chapter,
+      is_preview: true,
+    }));
 
-
-    // let isBuy = false;
-    // // find transaction where user_id = user.id(kalo user login) and class_id = class.fileId
-    // let transactions = await prisma.transactions.findUnique({
-    //   where:{
-    //     userId : req.user.id,
-    //     classCode
-    //   }})
-
-    // // if transaction ada -> then -> isBuy = true
-    // if(transactions){
-    //   isBuy = true
-    // }
-
-    // res.status(200).json({
-    //   status: true,
-    //   message: 'getById class successfully',
-    //   data: { ...existingClass, is_buy: isBuy },
-    // });
     res.status(200).json({
       status: true,
       message: "getById class successfully",
-      data: { ...existingClass, is_buy: isBuy },
+      data: {
+        ...existingClass,
+        is_buy: Boolean(isBuy),
+        chapters: chaptersWithPreview,
+      },
     });
   } catch (err) {
     next(err);
@@ -243,7 +231,7 @@ const getIdClassProgress = async (req, res, next) => {
         data: null,
       });
     }
-
+    
     // Create learning entries for each chapter if not already exists
     const userId = req.user.id;
 
@@ -282,12 +270,11 @@ const getIdClassProgress = async (req, res, next) => {
       message: 'getById class successfully',
       data: { existingClass, learningEntries },
     });
+
   } catch (err) {
     next(err);
   }
 };
-
-
 
 const updateClass = async (req, res, next) => {
   try {

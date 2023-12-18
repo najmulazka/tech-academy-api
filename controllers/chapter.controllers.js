@@ -2,7 +2,7 @@ const prisma = require("../utils/libs/prisma.libs");
 
 const createChapter = async (req, res, next) => {
   try {
-    let { chapterName, classCode, isFree } = req.body;
+    let { chapterName, classCode, is_preview } = req.body;
 
     if (!chapterName || !classCode) {
       return res.status(400).json({
@@ -25,7 +25,7 @@ const createChapter = async (req, res, next) => {
     }
 
     const newChapter = await prisma.chapters.create({
-      data: { chapterName, classCode, isFree: JSON.parse(isFree) },
+      data: { chapterName, classCode, is_preview: JSON.parse(is_preview) },
     });
 
     let currentChapterCount = await prisma.chapters.count({

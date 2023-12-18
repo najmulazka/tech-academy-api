@@ -1,0 +1,123 @@
+### GET USER (USER)
+GET http://localhost:3000/api/v1/user
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyMkBnbWFpbC5jb20iLCJpYXQiOjE3MDE3MDQ1MDJ9.Oo0zVwlVWr6sxG2BaC3O9zVvt9zNl3de7Il7_c9sOG8
+
+### UPDATE USER (USER)
+PUT http://localhost:3000/api/v1/user
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyMkBnbWFpbC5jb20iLCJpYXQiOjE3MDE3MDUzMjZ9.7K7R6cNDykEi4DHj7RJH8XpFkFKbDJKyi8Zs9JJk0Oc
+Content-Type: multipart/form-data
+
+{
+  "fullName": "Achmad Fahmi Al Hafidz",
+  "noTelp": "1234567890",
+  "city": "Surabaya",
+  "country": "Indonesia",
+  "profilePicture": "https://ik.imagekit.io/techacademy/1701619115846_kCwEkz3ur.png"
+}
+
+### DELETE USER (USER)
+DELETE http://localhost:3000/api/v1/user
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtbWFkYWxpbXJhbjIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMTY5NDU4NH0.g_e49iOyeahfJdZGq_J85E-Of05KaRo-_E6ThePK2UM
+
+### GET ALL USER (ADMIN)
+GET http://localhost:3000/api/v1/admin
+
+### GET USER BY ID (ADMIN)
+GET http://localhost:3000/api/v1/admin/4
+
+### UPDATE USER (ADMIN)
+PUT http://localhost:3000/api/v1/admin/4
+Content-Type: multipart/form-data
+
+{
+  "fullName": "Achmad Fahmi",
+  "noTelp": "1234567890",
+  "city": "Surabaya",
+  "country": "Indonesia",
+  "profilePicture": "https://ik.imagekit.io/techacademy/1701619115846_kCwEkz3ur.png"
+}
+
+### DELETE USER (ADMIN)
+DELETE http://localhost:3000/api/v1/admin/3
+
+### LOGIN
+POST http://localhost:3000/api/v1/auth/login-admin
+Content-Type: application/json
+
+{
+    "email":"systems.dev33@gmail.com",
+    "password":"admin"
+}
+
+### REGISTER
+POST http://localhost:3000/api/v1/auth/register
+Content-Type: application/json
+
+{
+    "fullName":"admin",
+    "email":"systems.dev33@gmail.com",
+    "noTelp":"00000000000000",
+    "password":"admin"
+}
+
+### change-password
+POST http://localhost:3000/api/v1/auth/change-password
+Content-Type: application/json
+
+{
+    "email":"muhammadalimran22@gmail.com",
+    "currentPassword":"",
+    "new_password":"",
+    "new_password_confirm":""
+}
+
+#### VERIVY-OTP
+POST http://localhost:3000/api/v1/auth/verify-otp
+Content-Type: application/json
+
+{
+    "email":"systems.dev33@gmail.com",
+    "activationCode":"469587"
+}
+
+####
+GET http://localhost:3000/api/v1/auth/resend-otp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAyNzE5OTI3fQ.6f-doAx-NldhTUTrFcCGA_MUnUxFyxLPdd47-wSxZ8c
+
+#### RESEND-OTP
+POST http://localhost:3000/api/v1/auth/resend-otp?token=
+Content-Type: application/json
+
+{
+    "email":"muhammadalimran22@gmail.com"
+}
+
+#### FORRGOT-PASSWORD
+POST http://localhost:3000/api/v1/auth/forrgot-password
+Content-Type: application/json
+
+{
+    "email":"najmulazka369@gmail.com"
+}
+
+#### RESEND OTP PASSWORD
+GET http://localhost:3000/api/v1/auth/resend-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxOTYzODIzfQ.ztatmQZQNDT-gqzGwlYqlvnLqMSYg-x-aUBj6O3wRxg
+
+#### VERIFY OTP PASSWORD
+POST http://localhost:3000/api/v1/auth/verify-otp-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ham11bGF6a2EzNjlAZ21haWwuY29tIiwiaWF0IjoxNzAxOTYzODIzfQ.ztatmQZQNDT-gqzGwlYqlvnLqMSYg-x-aUBj6O3wRxg
+Content-Type: application/json
+
+{
+    "otp":"816253"
+}
+
+#### RESET PASSWORD
+POST http://localhost:3000/api/v1/auth/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlYXBhcmswMUBnbWFpbC5jb20iLCJpYXQiOjE3MDE3Njc4MjN9.HuxMcF2KnkhbBhMbpgGBT1hcVEEYbgewz0WGb5dVwOQ
+Content-Type: application/json
+
+{
+    "newPassword": "a",
+    "newPasswordConfirmation":"a"
+}
+
+#### GET ALL CLASS
+GET http://localhost:3000/api/v1/class

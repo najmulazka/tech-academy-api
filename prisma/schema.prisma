@@ -113,16 +113,16 @@ model Rating {
 }
 
 model Chapters {
-  id          Int        @id @default(autoincrement())
-  chapterName String
-  classCode   String
-  is_preview  Boolean        @default(false)
-  isFree      Boolean
-  isView      Boolean    @default(false)
+  id            Int        @id @default(autoincrement())
+  chapterName   String
+  classCode     String
+  is_preview    Boolean    @default(false)
+  isFree        Boolean
+  isView        Boolean    @default(false)
   totalDuration Int        @default(0)
-  class       Class      @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
-  learning    Learning[]
-  Lessons     Lessons[]
+  class         Class      @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  learning      Learning[]
+  Lessons       Lessons[]
 }
 
 model Lessons {

@@ -31,6 +31,6 @@ router.use('/notifications', restrict, notifications);
 router.use('/lesson', lesson);
 router.use('/rating', restrict, rating);
 router.use('/learning', learning)
-router.use('/bank', isAdmin, bank);
+router.use('/bank', bank);
 
 module.exports = router;

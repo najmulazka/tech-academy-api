@@ -172,9 +172,7 @@ const getByIdClass = async (req, res, next) => {
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
       include: { 
-        chapters: {
-            Lessons: true
-        }, 
+        chapters: true,
         learning: true 
       },
     });

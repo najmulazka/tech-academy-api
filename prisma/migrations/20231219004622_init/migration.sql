@@ -110,7 +110,6 @@ CREATE TABLE "Chapters" (
     "chapterName" TEXT NOT NULL,
     "classCode" TEXT NOT NULL,
     "is_preview" BOOLEAN NOT NULL DEFAULT false,
-    "isFree" BOOLEAN NOT NULL,
     "isView" BOOLEAN NOT NULL DEFAULT false,
     "totalDuration" INTEGER NOT NULL DEFAULT 0,
 
@@ -135,6 +134,7 @@ CREATE TABLE "Transactions" (
     "status" BOOLEAN NOT NULL DEFAULT false,
     "paymentMethod" TEXT,
     "bankId" INTEGER,
+    "cardName" TEXT,
     "cardNumber" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" INTEGER NOT NULL,

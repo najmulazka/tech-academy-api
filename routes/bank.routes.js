@@ -8,10 +8,11 @@ const {
 } = require("../controllers/bank.controllers");
 const router = express.Router();
 const { isAdmin } = require("../middlewares/admin.midlewares");
+const {restrict} = require("../middlewares/auth.middlewares")
 
 router.post("/", isAdmin, createBank);
-router.get("/", banks);
-router.get("/:id", bankDetail);
+router.get("/", restrict, banks);
+router.get("/:id", restrict, bankDetail);
 router.put("/:id", isAdmin, updateBank);
 router.delete("/:id", isAdmin, deleteBank);
 

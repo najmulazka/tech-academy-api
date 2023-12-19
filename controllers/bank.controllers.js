@@ -3,7 +3,7 @@ const prisma = require('../utils/libs/prisma.libs');
 module.exports = {
   createBank: async (req, res, next) => {
     try {
-      let { bankType, bankNumber } = req.body;
+      let { bankType, bankName, bankNumber } = req.body;
       if (!bankType) {
         return res.status(400).json({ status: false, message: 'Bad Request', err: 'bank type is required', data: null });
       }
@@ -11,6 +11,7 @@ module.exports = {
       let bank = await prisma.Bank.create({
         data: {
           bankType,
+          bankName,
           bankNumber,
         },
       });
@@ -67,7 +68,7 @@ module.exports = {
   updateBank: async (req, res, next) => {
     try {
       let { id } = req.params;
-      let { bankType, bankNumber } = req.body;
+      let { bankType, bankName, bankNumber } = req.body;
       if (!bankType) {
         return res.status(400).json({ status: false, message: 'Bad Request', err: 'bank type is required', data: null });
       }
@@ -84,6 +85,7 @@ module.exports = {
         where: { id: Number(id) },
         data: {
           bankType,
+          bankName,
           bankNumber,
         },
       });

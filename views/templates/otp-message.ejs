@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechAcademy OTP Verification</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      .container {
+        max-width: 600px;
+        width: 100%;
+        margin: 20px auto;
+      }
+
+      h1 {
+        color: #4b0082;
+        margin-top: 0;
+        font-size: 20px;
+      }
+
+      p {
+        color: #333;
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+
+      .otp-code {
+        font-weight: bold;
+        font-size: 24px;
+        color: #4b0082;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>TechAcademy OTP Verification</h1>
+      <p>
+        Welcome to TechAcademy! To complete your registration, please enter the
+        following OTP code:
+      </p>
+      <p class="otp-code"><%= user.activationCode %></p>
+      <p>If you didn't sign up for TechAcademy, please disregard this email.</p>
+      <p>Thank you for choosing TechAcademy.</p>
+    </div>
+  </body>
+</html>

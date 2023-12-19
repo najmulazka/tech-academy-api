@@ -1,0 +1,9 @@
+####
+POST http://localhost:3000/api/v1/rating
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIzQGdtYWlsLmNvbSIsImlhdCI6MTcwMjM4ODUyNX0.C08Cg8781yEYocYN5r_WjEx9tKIAJpsAiSo1T-WmDNQ
+Content-Type: application/json
+
+{
+  "classCode": "PM0",
+  "value": 4
+}

@@ -1,0 +1,35 @@
+### Get All transaction (ADMIN)
+GET http://localhost:3000/api/v1/admin/payment
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
+
+### Get Detail transaction (ADMIN)
+GET http://localhost:3000/api/v1/admin/payment/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
+
+### Delete Transaction (ADMIN)
+DELETE GET http://localhost:3000/api/v1/admin/payment/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
+
+######################################################
+
+### Create Payment (USER)
+POST http://localhost:3000/api/v1/payment/AS0
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMjU1ODc2OH0._o5GVXG7uaB-OC8IMDt0ps7Byg4fMB_hRDCN2BkhIDw
+
+### PUT Payment (USER)
+PUT  http://localhost:3000/api/v1/payment/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMjU1ODc2OH0._o5GVXG7uaB-OC8IMDt0ps7Byg4fMB_hRDCN2BkhIDw
+Content-Type: application/json
+
+{
+    "paymentMethod":"Transfer",
+    "bankType":"BRI"
+}
+
+### Get All Payment (USER)
+GET http://localhost:3000/api/v1/payment/
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwiaWF0IjoxNzAyNTU4MDY4fQ.Ivj1cyaS9a2k8XfH-X_OR_kVoDfROxmNyQVZuqQV2mE
+
+### Get Detail Payment (USER)
+GET http://localhost:3000/api/v1/payment/1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMjU1ODc2OH0._o5GVXG7uaB-OC8IMDt0ps7Byg4fMB_hRDCN2BkhIDw

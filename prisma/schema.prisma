@@ -10,93 +10,148 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id              Int      @id @default(autoincrement())
-  namaLengkap     String
-  email           String   @unique
+model Users {
+  id              Int               @id @default(autoincrement())
+  fullName        String
+  email           String            @unique
   password        String?
   noTelp          String?
-  kota            String?
-  negara          String?
-  gambarProfile   String?
+  city            String?
+  country         String?
+  profilePicture  String?
   fileId          String?
-  isActivated     Boolean  @default(false)
-  isAdmin         Boolean  @default(false)
+  isActivated     Boolean           @default(false)
+  isAdmin         Boolean           @default(false)
   googleId        String?
-  notifikasi      Notifikasi[]
-  transaksi       Transaksi[]
-  activationCode  ActivationCode[]
-  resetCode       ResetCode[]
+  notification    Notifications[]
+  transactions    Transactions[]
+  activationCodes ActivationCodes[]
+  resetCodes      ResetCodes[]
+  learning        Learning[]
+  ratings         Rating[]
 }
 
-model ActivationCode {
-  id              Int      @id @default(autoincrement())
-  userId          Int
-  activationCode  String
-  createdAt       DateTime  @default(now())
-  user            User      @relation(fields: [userId], references: [id])
+model ActivationCodes {
+  id             Int      @id @default(autoincrement())
+  userId         Int      @unique
+  activationCode String
+  createdAt      DateTime @default(now())
+  users          Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-model ResetCode {
+model ResetCodes {
   id        Int      @id @default(autoincrement())
-  userId    Int
+  userId    Int      @unique
   resetCode String
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-model Notifikasi {
-  id          Int      @id @default(autoincrement())
-  title       String
-  body        String
-  deskripsi   String?
-  dateTime    DateTime @default(now()) 
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id])
+model Notifications {
+  id        Int      @id @default(autoincrement())
+  title     String
+  body      String
+  deskripsi String?
+  dateTime  DateTime @default(now())
+  userId    Int
+  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-model Tipe{
-  id        Int     @id @default(autoincrement())
-  tipeKelas String
-  kelas     Kelas[]
+model Categorys {
+  id                       Int     @id @default(autoincrement())
+  categoryName             String  @unique
+  thumbnailPictureCategory String
+  fileId                   String
+  class                    Class[]
 }
 
-model Level{
-  id        Int     @id @default(autoincrement())
-  namaLevel String
-  kelas     Kelas[]
+model Learning {
+  id             Int      @id @default(autoincrement())
+  inProgress     Boolean  @default(false)
+  presentase     Int      @default(0)
+  prevPresentase Int      @default(0)
+  classCode      String
+  chapterId      Int
+  userId         Int
+  class          Class    @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  chapter        Chapters @relation(fields: [chapterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  users          Users    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
-model Kategori{
-  id            Int     @id @default(autoincrement())
-  namaKategori  String
-  kelas         Kelas[]
+model Class {
+  classCode        String         @id @unique
+  className        String
+  description      String
+  thumbnailPicture String
+  fileId           String
+  price            Int
+  promo            Int            @default(0)
+  linkSosmed       String
+  levelName        String
+  author           String
+  isFree           Boolean
+  views            Int            @default(0)
+  module           Int            @default(0)
+  totalDuration    Int            @default(0)
+  averageRating    Float          @default(0)
+  createdAt        DateTime       @default(now())
+  categoryId       Int
+  categorys        Categorys      @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  ratings          Rating[]
+  learning         Learning[]
+  chapters         Chapters[]
+  transactions     Transactions[]
 }
 
-model Kelas{
-  kodeKelas   String     @unique
-  namaKelas   String
-  harga       Decimal
-  materi      String
-  vidio       String
-  fileId      String
-  tipeId      Int 
-  levelId     Int 
-  kategoriId  Int
-  tipe        Tipe        @relation(fields: [tipeId], references: [id])
-  level       Level       @relation(fields: [levelId], references: [id])
-  kategori    Kategori    @relation(fields: [kategoriId], references: [id])
-  transaksi   Transaksi[]
+model Rating {
+  id        Int    @id @default(autoincrement())
+  value     Int
+  userId    Int
+  classCode String
+  users     Users  @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  class     Class  @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
 }
 
-model Transaksi{
-  id            Int       @id @default(autoincrement())
-  status        Boolean   @default(false)
-  metode        String
-  tanggalBayar  DateTime
+model Chapters {
+  id            Int        @id @default(autoincrement())
+  chapterName   String
+  classCode     String
+  is_preview    Boolean    @default(false)
+  isView        Boolean    @default(false)
+  totalDuration Int        @default(0)
+  class         Class      @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  learning      Learning[]
+  Lessons       Lessons[]
+}
+
+model Lessons {
+  id                   Int      @id @default(autoincrement())
+  title                String
+  learningMaterial     String
+  linkLearningMaterial String
+  duration             Int
+  chapterId            Int
+  chapters             Chapters @relation(fields: [chapterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model Transactions {
+  id            Int      @id @default(autoincrement())
+  status        Boolean  @default(false)
+  paymentMethod String?
+  bankId        Int?
+  cardName      String?
+  cardNumber    String?
+  createdAt     DateTime @default(now())
   userId        Int
-  kodeKelas     String
-  user          User      @relation(fields: [userId], references: [id])
-  kelas         Kelas     @relation(fields: [kodeKelas], references: [kodeKelas])
+  classCode     String
+  users         Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  class         Class    @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  bank          Bank?    @relation(fields: [bankId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
+model Bank {
+  id           Int            @id @default(autoincrement())
+  bankType     String         @unique
+  bankNumber   String?
+  transactions Transactions[]
+}

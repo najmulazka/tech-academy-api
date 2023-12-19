@@ -192,13 +192,19 @@ const getByIdClass = async (req, res, next) => {
     let isBuy = await prisma.transactions.findFirst({
       where: {
         classCode: classCode,
+        userId: req.user.id,
+        status: true
       },
     });
 
-    let chaptersWithPreview = existingClass.chapters.map(chapter => ({
-      ...chapter,
-      is_preview: true,
-    }));
+    let chaptersWithPreview;
+    if(isBuy){
+      chaptersWithPreview = existingClass.chapters.map(chapter => ({
+        ...chapter,
+        is_preview: true,
+      }));
+    }
+    
 
     res.status(200).json({
       status: true,

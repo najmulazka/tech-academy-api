@@ -192,7 +192,6 @@ const getByIdClass = async (req, res, next) => {
     let isBuy = await prisma.transactions.findFirst({
       where: {
         classCode: classCode,
-        userId: req.user.id,
         status: true
       },
     });

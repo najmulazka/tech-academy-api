@@ -63,7 +63,9 @@ CREATE TABLE "Learning" (
     "id" SERIAL NOT NULL,
     "inProgress" BOOLEAN NOT NULL DEFAULT false,
     "presentase" INTEGER NOT NULL DEFAULT 0,
+    "prevPresentase" INTEGER NOT NULL DEFAULT 0,
     "classCode" TEXT NOT NULL,
+    "chapterId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Learning_pkey" PRIMARY KEY ("id")
@@ -107,7 +109,9 @@ CREATE TABLE "Chapters" (
     "id" SERIAL NOT NULL,
     "chapterName" TEXT NOT NULL,
     "classCode" TEXT NOT NULL,
+    "is_preview" BOOLEAN NOT NULL DEFAULT false,
     "isFree" BOOLEAN NOT NULL,
+    "isView" BOOLEAN NOT NULL DEFAULT false,
     "totalDuration" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Chapters_pkey" PRIMARY KEY ("id")
@@ -177,6 +181,9 @@ ALTER TABLE "Notifications" ADD CONSTRAINT "Notifications_userId_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "Learning" ADD CONSTRAINT "Learning_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Learning" ADD CONSTRAINT "Learning_chapterId_fkey" FOREIGN KEY ("chapterId") REFERENCES "Chapters"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Learning" ADD CONSTRAINT "Learning_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

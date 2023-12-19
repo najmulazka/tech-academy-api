@@ -1,19 +1,19 @@
-const router = require('express').Router();
-const auth = require('./auth.routes');
-const user = require('./user.routes');
-const password = require('./password.routes');
-const classs = require('./class.routes');
-const categories = require('./category.routes');
-const chapter = require('./chapter.routes');
+const router = require("express").Router();
+const auth = require("./auth.routes");
+const user = require("./user.routes");
+const password = require("./password.routes");
+const classs = require("./class.routes");
+const categories = require("./category.routes");
+const chapter = require("./chapter.routes");
+const payment = require("./payment.routes");
+const paymentAdmin = require("./admin.payment.routes");
+const admin = require("./admin.user.routes");
+const notifications = require("./notif.routes");
+const rating = require("./rating.routes");
+const { restrict } = require("../middlewares/auth.middlewares");
+const { isAdmin } = require("../middlewares/admin.midlewares");
 const lesson = require('./lesson.routes');
-const bank = require('./bank.routes');
-const payment = require('./payment.routes');
-const paymentAdmin = require('./admin.payment.routes');
-const admin = require('./admin.user.routes');
-const notifications = require('./notif.routes');
-const rating = require('./rating.routes');
-const { restrict } = require('../middlewares/auth.middlewares');
-const { isAdmin } = require('../middlewares/admin.midlewares');
+const learning = require('./learning.routes');
 
 // const admin = require('./admin.routes');
 // const { admin } = require('../middlewares/admin.midlewares');
@@ -30,6 +30,7 @@ router.use('/admin/user', isAdmin, admin);
 router.use('/notifications', restrict, notifications);
 router.use('/lesson', lesson);
 router.use('/rating', restrict, rating);
-router.use('/bank', isAdmin, bank);
+router.use('/learning', learning)
+router.use('/bank', bank);
 
 module.exports = router;

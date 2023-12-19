@@ -171,7 +171,7 @@ const getByIdClass = async (req, res, next) => {
 
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
-      include: { chapters: true },
+      include: { chapters: true, learning: true },
     });
 
     if (!existingClass) {
@@ -181,34 +181,96 @@ const getByIdClass = async (req, res, next) => {
         data: null,
       });
     }
-
-    // mapping is_preview = true for chapter 1
-    const previewChapter = await prisma.chapter.map((chapter) => {
-      if ((chapter.id = id)) {
-        return { ...chapter, is_preview: true };
-      }
-      return chapter;
-    });
-
-    let isBuy = false;
-    // find transaction where user_id = user.id(kalo user login) and class_id = class.fileId
-    let transactions = await prisma.transactions.findUnique({
+    
+    let isBuy = await prisma.transactions.findFirst({
       where: {
-        userId: req.user.id,
-        classCode,
+        classCode: classCode,
       },
     });
 
-    // if transaction ada -> then -> isBuy = true
-    if (transactions) {
-      isBuy = true;
-    }
+    let chaptersWithPreview = existingClass.chapters.map(chapter => ({
+      ...chapter,
+      is_preview: true,
+    }));
 
     res.status(200).json({
       status: true,
       message: "getById class successfully",
-      data: { ...existingClass, is_buy: isBuy },
+      data: {
+        ...existingClass,
+        is_buy: Boolean(isBuy),
+        chapters: chaptersWithPreview,
+      },
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getIdClassProgress = async (req, res, next) => {
+  try {
+    let { classCode } = req.params;
+
+    if (!classCode) {
+      return res.status(400).json({
+        status: false,
+        message: 'classcode is required',
+        data: null,
+      });
+    }
+
+    const existingClass = await prisma.class.findUnique({
+      where: { classCode: classCode },
+      include: { chapters: { orderBy: { id: 'asc' } } }, // Urutkan chapters berdasarkan id
+    });
+
+    if (!existingClass) {
+      return res.status(400).json({
+        status: false,
+        message: 'classCode not exist',
+        data: null,
+      });
+    }
+    
+    // Create learning entries for each chapter if not already exists
+    const userId = req.user.id;
+
+    const learningEntries = await Promise.all(
+      existingClass.chapters.map(async (chapter) => {
+        // Check if learning entry already exists
+        const existingLearning = await prisma.learning.findFirst({
+          where: {
+            userId: userId,
+            chapterId: chapter.id,
+            classCode: classCode,
+          },
+        });
+
+        // Create learning entry if it doesn't exist
+        if (!existingLearning) {
+          const learningEntry = await prisma.learning.create({
+            data: {
+              inProgress: false,
+              presentase: 0,
+              class: { connect: { classCode: classCode } },
+              chapter: { connect: { id: chapter.id } },
+              users: { connect: { id: userId } },
+            },
+          });
+          return learningEntry;
+        } else {
+          // Return existing learning entry if it already exists
+          return existingLearning;
+        }
+      })
+    );
+
+    res.status(200).json({
+      status: true,
+      message: 'getById class successfully',
+      data: { existingClass, learningEntries },
+    });
+
   } catch (err) {
     next(err);
   }
@@ -311,6 +373,7 @@ module.exports = {
   createClass,
   getAllClass,
   getByIdClass,
+  getIdClassProgress,
   updateClass,
   deleteClass,
 };

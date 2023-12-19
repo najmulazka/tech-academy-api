@@ -39,6 +39,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwu
 
 #####
 GET http://localhost:3000/api/v1/class/WD0
+# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMjk5NTc5OH0.sjFNdYRt31SipMtaoJ-rXyxNX-DDNATqdzHcJPLUX_g
 
 ####
 PUT http://localhost:3000/api/v1/class/PM0

@@ -139,11 +139,7 @@ const getByIdClass = async (req, res, next) => {
     let { classCode } = req.params;
 
     if (!classCode) {
-      return res.status(400).json({
-        status: false,
-        message: 'classcode is required',
-        data: null,
-      });
+      return res.status(400).json({ status: false, message: 'classcode is required', data: null });
     }
 
     await prisma.class.update({
@@ -164,74 +160,70 @@ const getByIdClass = async (req, res, next) => {
     });
 
     if (!existingClass) {
-      return res.status(400).json({
-        status: false,
-        message: 'classCode not exist',
-        data: null,
-      });
+      return res.status(400).json({ status: false, message: 'classCode not exist', data: null });
     }
 
     let isBuy = false;
+
     let { authorization } = req.headers;
+    let users;
     if (authorization) {
       jwt.verify(authorization, JWT_SECRET_KEY, async (err, decoded) => {
         if (err) {
-          return res.status(401).json({
-            status: false,
-            message: 'Unauthorized',
-            err: err.message,
-            data: null,
-          });
+          return res.status(401).json({ status: false, message: 'Unauthorized', err: err.message, data: null });
         }
 
-        req.user = await prisma.users.findUnique({ where: { email: decoded.email } });
-        if (!req.user) {
-          return res.status(400).json({
-            status: false,
-            message: 'Bad Request',
-            err: 'User does not exist',
-            data: null,
-          });
+        users = await prisma.users.findUnique({ where: { email: decoded.email } });
+        if (!users) {
+          return res.status(400).json({ status: false, message: 'Bad Request', err: 'User does not exist', data: null });
         }
-      });
 
-      isBuy = await prisma.transactions.findFirst({
-        where: {
-          classCode: classCode,
-          userId: req.user.id,
+        isBuy = await prisma.transactions.findFirst({
+          where: {
+            classCode: classCode,
+            userId: users.id,
+            status: true,
+          },
+        });
+
+        let chaptersWithPreview = existingClass.chapters.map((chapter) => ({
+          ...chapter,
+        }));
+
+        if (Boolean(isBuy)) {
+          chaptersWithPreview = existingClass.chapters.map((chapter) => ({
+            ...chapter,
+            is_preview: true,
+          }));
+        }
+
+        res.status(200).json({
           status: true,
+          message: 'getById class successfully',
+          data: {
+            ...existingClass,
+            is_buy: Boolean(isBuy),
+            chapters: chaptersWithPreview,
+          },
+        });
+      });
+    }
+
+    if (!authorization) {
+      let chaptersWithPreview = existingClass.chapters.map((chapter) => ({
+        ...chapter,
+      }));
+
+      res.status(200).json({
+        status: true,
+        message: 'getById class successfully',
+        data: {
+          ...existingClass,
+          is_buy: Boolean(isBuy),
+          chapters: chaptersWithPreview,
         },
       });
     }
-
-    // let isBuy = await prisma.transactions.findFirst({
-    //   where: {
-    //     classCode: classCode,
-    //     userId: req.user.id,
-    //     status: true,
-    //   },
-    // });
-
-    let chaptersWithPreview = existingClass.chapters.map((chapter) => ({
-      ...chapter,
-    }));
-
-    if (Boolean(isBuy)) {
-      chaptersWithPreview = existingClass.chapters.map((chapter) => ({
-        ...chapter,
-        is_preview: true,
-      }));
-    }
-
-    res.status(200).json({
-      status: true,
-      message: 'getById class successfully',
-      data: {
-        ...existingClass,
-        is_buy: Boolean(isBuy),
-        chapters: chaptersWithPreview,
-      },
-    });
   } catch (err) {
     next(err);
   }

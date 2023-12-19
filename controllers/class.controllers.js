@@ -172,8 +172,11 @@ const getByIdClass = async (req, res, next) => {
     const existingClass = await prisma.class.findUnique({
       where: { classCode: classCode },
       include: { 
-        chapters: true,
-        learning: true 
+        chapters: {
+          include:{
+            Lessons: true
+          }
+        }
       },
     });
 
@@ -193,12 +196,12 @@ const getByIdClass = async (req, res, next) => {
     });
 
     let chaptersWithPreview;
-    if(isBuy){
+    // if(isBuy){
       chaptersWithPreview = existingClass.chapters.map(chapter => ({
         ...chapter,
         is_preview: true,
       }));
-    }
+    // }
     
 
     res.status(200).json({

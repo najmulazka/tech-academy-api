@@ -173,9 +173,7 @@ const getByIdClass = async (req, res, next) => {
       where: { classCode: classCode },
       include: { 
         chapters: {
-          include: {
             Lessons: true
-          }
         }, 
         learning: true 
       },

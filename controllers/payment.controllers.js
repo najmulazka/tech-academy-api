@@ -44,10 +44,7 @@ const getTransactions = async (req, res, next) => {
     // Pengguna biasa melihat pembayarannya sendiri
     const userTransactions = await prisma.transactions.findMany({
       where: {
-        OR: [
-          { status: true, userId: req.user.id },
-          { status: false, createdAt: { gte: new Date(Date.now() - 24 * 60 * 1000) }, userId: req.user.id },
-        ],
+        userId: req.user.id,
       },
       include: { class: true },
     });

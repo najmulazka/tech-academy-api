@@ -152,6 +152,7 @@ model Transactions {
 model Bank {
   id           Int            @id @default(autoincrement())
   bankType     String         @unique
+  bankName     String?
   bankNumber   String?
   transactions Transactions[]
 }

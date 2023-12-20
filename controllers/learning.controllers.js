@@ -64,6 +64,17 @@ const prisma = require("../utils/libs/prisma.libs");
 const getAllLearning = async (req, res, next) => {
   try {
     const allLearning = await prisma.learning.findMany({
+      include: {
+        class: { include: { categorys: true } },
+        lesson: { include: { chapters: true } },
+        users: {
+          select: {
+            id: true,
+            fullName: true,
+            email: true,
+          },
+        },
+      },
     });
 
     res.status(200).json({
@@ -83,7 +94,8 @@ const getLearningById = async (req, res, next) => {
     const learning = await prisma.learning.findUnique({
       where: { id: Number(id) },
       include: {
-        class: true,
+        class: { include: { categorys: true } },
+        lesson: { include: { chapters: true } },
         users: {
           select: {
             id: true,

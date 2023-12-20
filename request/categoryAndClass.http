@@ -34,8 +34,8 @@ GET http://localhost:3000/api/v1/class?promo=true
 GET http://localhost:3000/api/v1/class
 
 ##### GET CLASS INPROGRESS
-GET http://localhost:3000/api/v1/class/inprogress/ML1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwuY29tIiwiaWF0IjoxNzAyNDk0MzYwfQ.mam_Zt87R0-ACYoPxh3VWqVynQRtrPyXWF7FFn9NQ5o
+GET http://localhost:3000/api/v1/class/inprogress/DA1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
 
 #####
 GET http://localhost:3000/api/v1/class/WD0

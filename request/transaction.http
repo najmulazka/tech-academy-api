@@ -28,8 +28,8 @@ Content-Type: application/json
 
 ### Get All Payment (USER)
 GET http://localhost:3000/api/v1/payment/
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwiaWF0IjoxNzAyNTU4MDY4fQ.Ivj1cyaS9a2k8XfH-X_OR_kVoDfROxmNyQVZuqQV2mE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMjk5NjU3MH0.Fku4z8SnD5JwEMbZFdW45j3Bc1uXw-OZk26iMgVwpk0
 
 ### Get Detail Payment (USER)
 GET http://localhost:3000/api/v1/payment/1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMjU1ODc2OH0._o5GVXG7uaB-OC8IMDt0ps7Byg4fMB_hRDCN2BkhIDw
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMjk5NjU3MH0.Fku4z8SnD5JwEMbZFdW45j3Bc1uXw-OZk26iMgVwpk0

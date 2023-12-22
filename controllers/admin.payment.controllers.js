@@ -1,20 +1,17 @@
-const prisma = require("../utils/libs/prisma.libs");
+const prisma = require('../utils/libs/prisma.libs');
 
 const getTransactionsAdmin = async (req, res, next) => {
   try {
-    const usersWithTransactions = await prisma.users.findMany({
+    const usersWithTransactions = await prisma.transactions.findMany({
       include: {
-        transactions: {
-          include: {
-            class: true,
-          },
-        },
+        users: true,
+        class: true,
       },
     });
 
     res.status(200).json({
       status: true,
-      message: "OK!",
+      message: 'OK!',
       err: null,
       data: usersWithTransactions,
     });
@@ -35,15 +32,15 @@ const getDetailTransaction = async (req, res, next) => {
     if (!transaction) {
       return res.status(404).json({
         status: false,
-        message: "Not Found",
-        err: "Transaction not found",
+        message: 'Not Found',
+        err: 'Transaction not found',
         data: null,
       });
     }
 
     res.status(200).json({
       status: true,
-      message: "OK!",
+      message: 'OK!',
       err: null,
       data: transaction,
     });
@@ -100,8 +97,8 @@ const deleteTransaction = async (req, res, next) => {
     if (!existingTransaction) {
       return res.status(404).json({
         status: false,
-        message: "Bad Request!",
-        err: "Transaction not found",
+        message: 'Bad Request!',
+        err: 'Transaction not found',
         data: null,
       });
     }
@@ -112,7 +109,7 @@ const deleteTransaction = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: "Transaction deleted successfully",
+      message: 'Transaction deleted successfully',
       err: null,
       data: null,
     });

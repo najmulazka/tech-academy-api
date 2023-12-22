@@ -1,6 +1,6 @@
 ### Get All transaction (ADMIN)
 GET http://localhost:3000/api/v1/admin/payment
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMTg3NzA5MX0.exFS0LkIb8yj7gyj3Sjc5tq2s56hVOcLJTCtp244De4
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzIyNjM1OX0.vV8MuzPn_yBLdnbJir17gFiVxw8EPkA5fI27qR0tmc0
 
 ### Get Detail transaction (ADMIN)
 GET http://localhost:3000/api/v1/admin/payment/1

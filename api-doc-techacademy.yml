@@ -1,0 +1,3729 @@
+openapi: 3.0.0
+info:
+  title: TechAcademy
+  version: 1.0.0
+  description: The API documentation here contains all the api documentation to support the Binar Academy Final Project Backend Developer
+servers:
+  - url: 'https://techacademya.up.railway.app/'
+    description: Production Environtment
+  - url: 'http://localhost:3000/'
+    description: Staging Environtment
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    noauthAuth:
+      type: http
+      scheme: noauth
+tags:
+  - name: Admin
+  - name: Admin > Users
+  - name: Admin > Categorys
+  - name: Admin > Class
+  - name: Admin > Chapters
+  - name: Admin > Lessons
+  - name: Admin > Notifications
+  - name: Admin > Payments
+  - name: Admin > Bank
+  - name: Auth
+  - name: Category
+  - name: Class
+    description: '- Tambah data class ke learning pakai endpoint Join My Class'
+  - name: Chapter
+  - name: Lesson
+    description: >-
+      - Menghitung presentase dan memasukkan data ke Inprogress menggunakan
+      endpoint Presentase Lesson
+  - name: Learning
+  - name: Profile
+  - name: Notifications
+  - name: Payment
+  - name: Rating
+  - name: Bank
+paths:
+  /api/v1/admin/user:
+    get:
+      tags:
+        - Admin > Users
+      summary: Get All Data Users
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: asfdklhqewrqwrewt343fsaadsf
+      responses:
+        '201':
+          description: Created
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '796'
+            etag:
+              schema:
+                type: string
+                example: W/"31c-NgExredC8Xi2uMFx9xR+/scJdBo"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 04:53:26 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: All Users Data
+                data:
+                  pagination:
+                    links:
+                      next: >-
+                        http://techacademya.up.railway.app/api/v1/admin/?limit=1&page3
+                      prev: >-
+                        http://techacademya.up.railway.app/api/v1/admin/?limit=1&page=1
+                    total_items: 10
+                  users:
+                    - id: 1
+                      fullName: Irfan tes
+                      email: irfanmustafa350@gmail.com
+                      password: >-
+                        $2b$10$.bQtrNO2Nz.uwmBLfm2TnOBJh1CmbPJgARfKnOy9n4bfw0iEbc3Pq
+                      noTelp: '09283948923'
+                      city: null
+                      country: null
+                      profilePicture: null
+                      fileId: null
+                      isActivated: false
+                      isAdmin: true
+                      googleId: null
+                    - id: 2
+                      fullName: Irfan tes
+                      email: tess@gmail.com
+                      password: >-
+                        $2b$10$o2OgqBPN7dgJPbFnknJezeA0JpVA1gEY.XxN9KqTxFNxLVPvw.VM6
+                      noTelp: '09283948923'
+                      city: null
+                      country: null
+                      profilePicture: null
+                      fileId: null
+                      isActivated: false
+                      isAdmin: false
+                      googleId: null
+        '401':
+          description: Unauthorized
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '79'
+            etag:
+              schema:
+                type: string
+                example: W/"4f-W+/yb1JhcU+eE/OaBpllcGyZaho"
+            date:
+              schema:
+                type: string
+                example: Fri, 22 Dec 2023 14:18:37 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message: Unauthorized
+                err: You are not admin
+                data: null
+  /api/v1/admin/user/5:
+    get:
+      tags:
+        - Admin > Users
+      summary: Get Data User By Id user
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '314'
+            etag:
+              schema:
+                type: string
+                example: W/"13a-3GAOKK731RtHEeahHSppItZwNFk"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 04:57:22 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: User Found
+                data:
+                  id: 5
+                  fullName: Irfan tes
+                  email: tes3@gmail.com
+                  password: $2b$10$mgG995Akp70BZRGmvwL4PuasGg2Z6DTUTPW2Shbk36TzxLLVafdDm
+                  noTelp: '09283948923'
+                  city: null
+                  country: null
+                  profilePicture: null
+                  fileId: null
+                  isActivated: false
+                  isAdmin: false
+                  googleId: null
+  /api/v1/admin/user/9:
+    put:
+      tags:
+        - Admin > Users
+      summary: Update User By Id user
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                city:
+                  type: string
+                  example: Boyolali
+                country:
+                  type: string
+                  example: Indonesia
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: dstgw4543re45t4erad4tgver4gvt54qrdc
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '348'
+            etag:
+              schema:
+                type: string
+                example: W/"15c-Of9rjyC5Ww7hylglhPZrpljyIMU"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 05:06:12 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: true
+                message: User berhasil diperbarui
+                data:
+                  id: 9
+                  fullName: Annisa
+                  email: annisanoor014@gmail.com
+                  password: $2b$10$Zyfu0ncFzgSKTgfgvA.z3.I59Ij4BWTYs0L4h/SVe1E59gqMQt.NO
+                  noTelp: '08532688888'
+                  city: Boyolali
+                  country: Indonesia
+                  profilePicture: null
+                  fileId: null
+                  isActivated: false
+                  isAdmin: false
+                  googleId: null
+  /api/v1/admin/user/2:
+    delete:
+      tags:
+        - Admin > Users
+      summary: Delete User by id user
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '49'
+            etag:
+              schema:
+                type: string
+                example: W/"31-XlQTpAarKIB7gtMB/EN1j84QFEc"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 17:17:47 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: User berhasil dihapus
+  /api/v1/category:
+    post:
+      tags:
+        - Admin > Categorys
+      summary: Create New Category
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                categoryName:
+                  type: string
+                  example: Android Development
+                thumbnailPictureCategory:
+                  type: string
+                  format: binary
+                '':
+                  type: string
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: sadfcsdxre4tw34edtve43t6gvfery5refsgve
+      responses:
+        '201':
+          description: Created
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '222'
+            etag:
+              schema:
+                type: string
+                example: W/"de-eq/0AvTEY9m62LY7wgEEUm2CWCs"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 04:34:48 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: created successfullyy
+                data:
+                  id: 3
+                  categoryName: Programming
+                  thumbnailPictureCategory: >-
+                    https://ik.imagekit.io/techacademy/1701923685419_9vH0QYDjV.png
+                  fileId: 65714b6888c257da33b17d95
+    get:
+      tags:
+        - Category
+      summary: Get All Data Categorys
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '996'
+            etag:
+              schema:
+                type: string
+                example: W/"3e4-VSOCgDRMZ6CmO1JzHrPLKFXTAfg"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 04:09:25 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: get category successfully
+                data:
+                  - id: 1
+                    categoryName: UI/UX Design
+                    thumbnailPictureCategory: >-
+                      https://ik.imagekit.io/techacademy/1701917051824_64xMJUSib.jpg
+                    fileId: 6571317d88c257da3352b239
+                    class:
+                      - classCode: UD0
+                        className: Membuat Wirefram Hingga ke Visual Design
+                        description: >-
+                          Design system adalah kumpulan komponen design, code,
+                          ataupun dokumentasi yang dapat digunakan sebagai
+                          panduan utama yang memunginkan designer serta
+                          developer memiliki lebih banyak kontrol atas berbagai
+                          platform
+                        thumbnailPicture: >-
+                          https://ik.imagekit.io/techacademy/1701917076939_7ACF2kPb8.png
+                        fileId: 6571319788c257da33532eae
+                        price: '150000'
+                        linkSosmed: https://web.telegram.org/
+                        levelName: Intermediate
+                        isFree: false
+                        views: 0
+                        createdAt: '2023-12-07T02:44:39.715Z'
+                        categoryId: 1
+                  - id: 2
+                    categoryName: UI/UX
+                    thumbnailPictureCategory: >-
+                      https://ik.imagekit.io/techacademy/1701921556556_L2Q41D3Hc.png
+                    fileId: 6571431788c257da3391480b
+                    class: []
+  /api/v1/category/1:
+    put:
+      tags:
+        - Admin > Categorys
+      summary: Update Category By Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                categoryName: UI/UX DESIGN
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: asdfgvsrgte34rt34erdvget5hyte5yh45tgfvtyt4egt45yfegtg
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '231'
+            etag:
+              schema:
+                type: string
+                example: W/"e7-i9x063y3+6J5ie2AbQfs1B0/QU8"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 05:30:00 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: category updated successfully
+                data:
+                  id: 2
+                  categoryName: UI/UX DESIGN
+                  thumbnailPictureCategory: >-
+                    https://ik.imagekit.io/techacademy/1701921556556_L2Q41D3Hc.png
+                  fileId: 6571431788c257da3391480b
+    get:
+      tags:
+        - Category
+      summary: Get Data Category by Id category
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '980'
+            etag:
+              schema:
+                type: string
+                example: W/"3d4-J5a1/0jaxhSETDSRWvFf7tIl1Bw"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 04:22:23 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: getById category successfully
+                data:
+                  id: 2
+                  categoryName: UI/UX
+                  thumbnailPictureCategory: >-
+                    https://ik.imagekit.io/techacademy/1701921556556_L2Q41D3Hc.png
+                  fileId: 6571431788c257da3391480b
+                  class:
+                    - classCode: U1
+                      className: Introduction to UI/UX
+                      description: test description
+                      thumbnailPicture: >-
+                        https://ik.imagekit.io/techacademy/1701922868648_K_W0ulAkW.png
+                      fileId: 6571483788c257da33a8209f
+                      price: '200000'
+                      linkSosmed: https://web.telegram.org/
+                      levelName: BeginnerLevel
+                      isFree: false
+                      views: 0
+                      createdAt: '2023-12-07T04:21:12.130Z'
+                      categoryId: 2
+                    - classCode: U2
+                      className: Introduction to UI/UX
+                      description: test description
+                      thumbnailPicture: >-
+                        https://ik.imagekit.io/techacademy/1701922908915_IcHPqmkLk.png
+                      fileId: 6571485f88c257da33a88194
+                      price: '200000'
+                      linkSosmed: https://web.telegram.org/
+                      levelName: BeginnerLevel
+                      isFree: false
+                      views: 0
+                      createdAt: '2023-12-07T04:21:52.912Z'
+                      categoryId: 2
+  /api/v1/category/3:
+    delete:
+      tags:
+        - Admin > Categorys
+      summary: Delete Category By Id
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: fcderger5tty6345y675tfhdbrt64yu75rth5y67thr66y5vtcdrt54
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '362'
+            etag:
+              schema:
+                type: string
+                example: W/"16a-Yv27SvXaGqyBLEhHge3e4Q4CtF8"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 04:47:14 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: category deleted successfully
+                data:
+                  id: 3
+                  categoryName: Programming
+                  thumbnailPictureCategory: >-
+                    https://ik.imagekit.io/techacademy/1701923685419_9vH0QYDjV.png
+                  fileId: 65714b6888c257da33b17d95
+                  class:
+                    - classCode: P3
+                      className: Introduction to Programming
+                    - classCode: P4
+                      className: Introduction to Programming
+  /api/v1/class:
+    post:
+      tags:
+        - Admin > Class
+      summary: Create New Class
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                className:
+                  type: string
+                  example: Introduction to UI/UX
+                description:
+                  type: string
+                  example: test description
+                price:
+                  type: integer
+                  example: '200000'
+                promo:
+                  type: integer
+                  example: '70000'
+                isFree:
+                  type: boolean
+                  example: 'false'
+                levelName:
+                  type: string
+                  example: BeginnerLevel
+                categoryId:
+                  type: integer
+                  example: '2'
+                thumbnailPicture:
+                  type: string
+                  format: binary
+                linkSosmed:
+                  type: string
+                  example: https://web.telegram.org/
+                author:
+                  type: string
+                  example: Juki
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: asdf345ewdf4rdxr3rewdxd
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '421'
+            etag:
+              schema:
+                type: string
+                example: W/"1a5-1PHWLvawjT5p4EBBITgQrjeDupw"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 04:35:42 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                err: null
+                data:
+                  classCode: P3
+                  className: Introduction to Programming
+                  description: test description
+                  thumbnailPicture: >-
+                    https://ik.imagekit.io/techacademy/1701923739622_JRiyZj8T_.png
+                  fileId: 65714b9e88c257da33b25fc5
+                  price: '0'
+                  linkSosmed: https://web.telegram.org/
+                  levelName: BeginnerLevel
+                  isFree: true
+                  views: 0
+                  createdAt: '2023-12-07T04:35:42.833Z'
+                  categoryId: 3
+    get:
+      tags:
+        - Class
+      summary: Get All Class
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: categoryId
+          in: query
+          schema:
+            type: string
+          example: 1-3
+        - name: levelName
+          in: query
+          schema:
+            type: string
+          example: 1-4
+        - name: isFree
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: search
+          in: query
+          schema:
+            type: string
+          example: pencarian
+        - name: popular
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: latest
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: promo
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '708'
+            etag:
+              schema:
+                type: string
+                example: W/"2c4-OlGEGaYES5wPoCNd3gEbD5bBcsU"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 03:15:53 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                err: null
+                data:
+                  pagination:
+                    links:
+                      next: ''
+                      prev: ''
+                    total_items: 1
+                  result:
+                    - classCode: UD0
+                      className: Membuat Wirefram Hingga ke Visual Design
+                      description: >-
+                        Design system adalah kumpulan komponen design, code,
+                        ataupun dokumentasi yang dapat digunakan sebagai panduan
+                        utama yang memunginkan designer serta developer memiliki
+                        lebih banyak kontrol atas berbagai platform
+                      thumbnailPicture: >-
+                        https://ik.imagekit.io/techacademy/1701917076939_7ACF2kPb8.png
+                      fileId: 6571319788c257da33532eae
+                      price: '150000'
+                      linkSosmed: https://web.telegram.org/
+                      levelName: Intermediate
+                      isFree: false
+                      views: 0
+                      createdAt: '2023-12-07T02:44:39.715Z'
+                      categoryId: 1
+  /api/v1/class/KA2:
+    put:
+      tags:
+        - Admin > Class
+      summary: Update Class By Class Code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                className: update
+                description: update
+                price: 2001
+                promo: 30
+                levelName: Beginner
+                isFree: false
+                categoryId: '2'
+                linkSosmed: owkokw
+                author: imrann
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: asdfasfwe45324wed43rewd4r3ew
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/class/P3:
+    delete:
+      tags:
+        - Admin > Class
+      summary: Delete Class By Class Code
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: safsdcfwqer423resdar24wer34saw
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '460'
+            etag:
+              schema:
+                type: string
+                example: W/"1cc-Ax3CVhtENTpVYowMznUuUsWq7tI"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 14:51:50 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: class deleted successfully
+                data:
+                  classCode: P3
+                  className: Introduction to Web Developer
+                  description: test description
+                  thumbnailPicture: >-
+                    https://ik.imagekit.io/techacademy/1701960657432_96-PpsO63.PNG
+                  fileId: 6571dbd288c257da33ec57f5
+                  price: '200000'
+                  linkSosmed: https://web.telegram.org/
+                  levelName: IntermediateLevel
+                  isFree: false
+                  views: 0
+                  createdAt: '2023-12-07T14:51:00.826Z'
+                  categoryId: 4
+                  chapters: []
+  /api/v1/chapter:
+    post:
+      tags:
+        - Admin > Chapters
+      summary: Create New Chapter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                chapterName: Chapter-7 Pendahuluan
+                classCode: U1
+                is_preview: false
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '127'
+            etag:
+              schema:
+                type: string
+                example: W/"7f-axzru66nTL40WrnOrfn8R+3enLU"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 05:35:16 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: chapter created successfully
+                data:
+                  id: 1
+                  chapterName: Chapter-1 Pendahuluan
+                  classCode: U1
+    get:
+      tags:
+        - Chapter
+      summary: Get All Data Chapters
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '129'
+            etag:
+              schema:
+                type: string
+                example: W/"81-lM0ya82uoee17XAPDM6YRdpqqRs"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 05:37:18 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: chapter get all successfully
+                data:
+                  - id: 1
+                    chapterName: Chapter-1 Pendahuluan
+                    classCode: U1
+  /api/v1/chapter/2:
+    put:
+      tags:
+        - Admin > Chapters
+      summary: Update Chapter By Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                chapterName: Chapter-2 Apa itu UI/UX Design?
+                classCode: U1
+                isFree: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '137'
+            etag:
+              schema:
+                type: string
+                example: W/"89-rHA27D9zf47KCMf+vw+relKuUI0"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 05:46:14 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: chapter updated successfully
+                data:
+                  id: 2
+                  chapterName: Chapter-2 Apa itu UI/UX Design?
+                  classCode: U1
+  /api/v1/chapter/3:
+    delete:
+      tags:
+        - Admin > Chapters
+      summary: Delete Chapter By Id
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '132'
+            etag:
+              schema:
+                type: string
+                example: W/"84-JfsmKcmiPjVYT78qVY8gj6DwCWE"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 05:48:02 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: chapter deleted successfully
+                data:
+                  id: 3
+                  chapterName: Chapter-3 Pengenalan Figma
+                  classCode: U1
+  /api/v1/lesson:
+    post:
+      tags:
+        - Admin > Lessons
+      summary: Create New Lesson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Lesson Title
+                learningMaterial: Lesson Material
+                linkLearningMaterial: http://example.com/material
+                chapterId: 1
+                duration: 60
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: vafaeerd4r3dece4r3cfde34t
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '209'
+            etag:
+              schema:
+                type: string
+                example: W/"d1-DnF5VqfByUuU95kFgj8Jl+1JQPI"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 15:43:56 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Lesson created successfully
+                data:
+                  lesson:
+                    id: 1
+                    title: Lesson Title
+                    learningMaterial: Lesson Material
+                    linkLearningMaterial: http://example.com/material
+                    chapterId: 1
+    get:
+      tags:
+        - Admin > Lessons
+      summary: Get All data Lessons
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: asdfd434rewdse34rewdw34
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '227'
+            etag:
+              schema:
+                type: string
+                example: W/"e3-MfnhJV8GHkoBocXuSas/0mhZGpg"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 17:31:21 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Lessons retrieved successfully
+                data:
+                  - id: 1
+                    title: Updated Lesson Title
+                    learningMaterial: Updated Lesson Material
+                    linkLearningMaterial: http://example.com/updated-material
+                    chapterId: 1
+  /api/v1/lesson/1:
+    put:
+      tags:
+        - Admin > Lessons
+      summary: Update Lesson by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Updated Lesson Title
+                learningMaterial: Updated Lesson Material
+                linkLearningMaterial: http://example.com/updated-material
+                chapterId: 1
+                duration: 10
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: saDCSdfrefrf344sedc4r3
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '222'
+            etag:
+              schema:
+                type: string
+                example: W/"de-26lkUmzTSaX8q/JpUZuaNxowhkc"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 16:12:55 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Lesson updated successfully
+                data:
+                  id: 1
+                  title: Updated Lesson Title
+                  learningMaterial: Updated Lesson Material
+                  linkLearningMaterial: http://example.com/updated-material
+                  chapterId: 1
+    get:
+      tags:
+        - Lesson
+      summary: Get Lesson by Id lesson
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '200'
+            etag:
+              schema:
+                type: string
+                example: W/"c8-QmluSKDDfcEjdL3jqJLip2X2An4"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 15:46:15 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Lesson retrieved successfully
+                data:
+                  id: 1
+                  title: Lesson Title
+                  learningMaterial: Lesson Material
+                  linkLearningMaterial: http://example.com/material
+                  chapterId: 1
+  /api/v1/lesson/2:
+    delete:
+      tags:
+        - Admin > Lessons
+      summary: Delete Lesson by Id
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: asdfwer23esewr34saw3rawse34rewsrsarg53
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '67'
+            etag:
+              schema:
+                type: string
+                example: W/"43-mAri14KAGWSpuPyWNAqTKkO365s"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 16:15:17 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Lesson deleted successfully
+                data: null
+  /api/v1/notifications/all:
+    post:
+      tags:
+        - Admin > Notifications
+      summary: Create Notifications All User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Introduction to Basic JavaScript
+                body: Belajar dasar-dasar bahasa pemrograman JavaScript.
+                deskripsi: >-
+                  Kelas ini memberikan penjelasan mengenai fundamental dalam
+                  bahasa JavaScript beserta dengan video tutorial di setiap
+                  chapter.
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: asdfsfwr23esqae32st43tedfc
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '93'
+            etag:
+              schema:
+                type: string
+                example: W/"5d-/Zgifs4vwzjLukwzD9V3v5Ht1QQ"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 16:21:41 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Notification created successfully
+                err: null
+                data:
+                  - count: 0
+  /api/v1/notifications:
+    post:
+      tags:
+        - Admin > Notifications
+      summary: Create Notifications for Specific Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Introduction to Basic JavaScript
+                body: Belajar dasar-dasar bahasa pemrograman JavaScript.
+                deskripsi: >-
+                  Kelas ini memberikan penjelasan mengenai fundamental dalam
+                  bahasa JavaScript beserta dengan video tutorial di setiap
+                  chapter.
+                userId: 1
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: cdwr43wdf43t5rdgt3qtsy7uhy6gtg
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '369'
+            etag:
+              schema:
+                type: string
+                example: W/"171-hcid/ZVhhwTBVFxrPBobM3NAerc"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 16:23:16 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Notification created successfully
+                data:
+                  id: 1
+                  title: Introduction to Basic JavaScript
+                  body: Belajar dasar-dasar bahasa pemrograman JavaScript.
+                  deskripsi: >-
+                    Kelas ini memberikan penjelasan mengenai fundamental dalam
+                    bahasa JavaScript beserta dengan video tutorial di setiap
+                    chapter.
+                  dateTime: '2023-12-07T16:23:16.428Z'
+                  userId: 1
+    get:
+      tags:
+        - Notifications
+      summary: Get All Notifications
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '488'
+            etag:
+              schema:
+                type: string
+                example: W/"1e8-ad6ygv+BQi3AAhpec5kEvgxfr6M"
+            date:
+              schema:
+                type: string
+                example: Fri, 08 Dec 2023 13:14:20 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                err: null
+                data:
+                  - id: 2
+                    title: Introduction to UI/UX
+                    body: Belajar dasar-dasar UI/UX Design.
+                    deskripsi: >-
+                      Kelas ini memberikan penjelasan mengenai fundamental dalam
+                      UI/UX dengan video tutorial di setiap chapter.
+                    dateTime: '2023-12-07T17:26:23.713Z'
+                    userId: 1
+                  - id: 1
+                    title: Notifikasi terbaru
+                    body: Selamat anda sudah masuk ke chapter 6.
+                    deskripsi: Anda telah menyelesaikan chapter 6.
+                    dateTime: '2023-12-07T16:23:16.428Z'
+                    userId: 1
+  /api/v1/notifications/1:
+    put:
+      tags:
+        - Admin > Notifications
+      summary: Get Notification by Id notification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Notifikasi terbaru
+                body: Selamat anda sudah masuk ke chapter 5.
+                deskripsi: Anda telah menyelesaikan chapter 5.
+                userId: 1
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: bdgfy65tgbdey65ubtrfyw454rtfb5y
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '253'
+            etag:
+              schema:
+                type: string
+                example: W/"fd-VrdFGsbLfVTjD9/XGJrvu5rHWkw"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 16:27:22 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Notification updated successfully
+                data:
+                  id: 1
+                  title: Notifikasi terbaru
+                  body: Selamat anda sudah masuk ke chapter 5.
+                  deskripsi: Anda telah menyelesaikan chapter 5.
+                  dateTime: '2023-12-07T16:23:16.428Z'
+                  userId: 1
+    delete:
+      tags:
+        - Admin > Notifications
+      summary: Delete Notifications by Id notification
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: adfsecr5trfy5rt6u756ughrt6u5ugdte4y6tef
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Notifications
+      summary: Get Notification by id notification
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '488'
+            etag:
+              schema:
+                type: string
+                example: W/"1e8-ad6ygv+BQi3AAhpec5kEvgxfr6M"
+            date:
+              schema:
+                type: string
+                example: Fri, 08 Dec 2023 13:14:20 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                err: null
+                data:
+                  - id: 2
+                    title: Introduction to UI/UX
+                    body: Belajar dasar-dasar UI/UX Design.
+                    deskripsi: >-
+                      Kelas ini memberikan penjelasan mengenai fundamental dalam
+                      UI/UX dengan video tutorial di setiap chapter.
+                    dateTime: '2023-12-07T17:26:23.713Z'
+                    userId: 1
+                  - id: 1
+                    title: Notifikasi terbaru
+                    body: Selamat anda sudah masuk ke chapter 6.
+                    deskripsi: Anda telah menyelesaikan chapter 6.
+                    dateTime: '2023-12-07T16:23:16.428Z'
+                    userId: 1
+  /api/v1/admin/payment:
+    get:
+      tags:
+        - Admin > Payments
+      summary: Get Payments for Admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY4MTgxfQ.DQvkHv9ZqTVYY-EGHJkkoYTIt_UdMp1Avv0TxoL27qg
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '877'
+            etag:
+              schema:
+                type: string
+                example: W/"36d-HHYBTjUeHROMwzgwyItB7knEdIY"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 17:01:45 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                err: null
+                data:
+                  - id: 1
+                    fullName: Annisa
+                    email: systems.dev33@gmail.com
+                    password: >-
+                      $2b$10$4K/K4Hn2xrbyE8Pmia0oTun2iDIa/aIBi.BawdBNBClP1T5paEfpu
+                    noTelp: '0891234567'
+                    city: boyolali
+                    country: Indonesia
+                    profilePicture: null
+                    fileId: null
+                    isActivated: true
+                    isAdmin: true
+                    googleId: null
+                    transactions:
+                      - id: 1
+                        status: false
+                        paymentMethod: null
+                        paymentDate: null
+                        createdAt: '2023-12-07T16:59:47.166Z'
+                        userId: 1
+                        classCode: P0
+                        class:
+                          classCode: P0
+                          className: Introduction to Web Developer
+                          description: test description
+                          thumbnailPicture: >-
+                            https://ik.imagekit.io/techacademy/1701964981049_OiGT649Qh.PNG
+                          fileId: 6571ecba88c257da333e3856
+                          price: '200000'
+                          linkSosmed: https://web.telegram.org/
+                          levelName: IntermediateLevel
+                          isFree: false
+                          views: 0
+                          createdAt: '2023-12-07T16:03:07.953Z'
+                          categoryId: 1
+  /api/v1/admin/payment/1:
+    get:
+      tags:
+        - Admin > Payments
+      summary: Get Payment by Id payment for Admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY4MTgxfQ.DQvkHv9ZqTVYY-EGHJkkoYTIt_UdMp1Avv0TxoL27qg
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '866'
+            etag:
+              schema:
+                type: string
+                example: W/"362-ExDq6exx/8lJSjnFEAdEZAPknhA"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 17:03:22 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                err: null
+                data:
+                  id: 1
+                  status: false
+                  paymentMethod: null
+                  paymentDate: null
+                  createdAt: '2023-12-07T16:59:47.166Z'
+                  userId: 1
+                  classCode: P0
+                  users:
+                    id: 1
+                    fullName: Annisa
+                    email: systems.dev33@gmail.com
+                    password: >-
+                      $2b$10$4K/K4Hn2xrbyE8Pmia0oTun2iDIa/aIBi.BawdBNBClP1T5paEfpu
+                    noTelp: '0891234567'
+                    city: boyolali
+                    country: Indonesia
+                    profilePicture: null
+                    fileId: null
+                    isActivated: true
+                    isAdmin: true
+                    googleId: null
+                  class:
+                    classCode: P0
+                    className: Introduction to Web Developer
+                    description: test description
+                    thumbnailPicture: >-
+                      https://ik.imagekit.io/techacademy/1701964981049_OiGT649Qh.PNG
+                    fileId: 6571ecba88c257da333e3856
+                    price: '200000'
+                    linkSosmed: https://web.telegram.org/
+                    levelName: IntermediateLevel
+                    isFree: false
+                    views: 0
+                    createdAt: '2023-12-07T16:03:07.953Z'
+                    categoryId: 1
+    put:
+      tags:
+        - Admin > Payments
+      summary: Update Payment by Id payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: true
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY4MTgxfQ.DQvkHv9ZqTVYY-EGHJkkoYTIt_UdMp1Avv0TxoL27qg
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '866'
+            etag:
+              schema:
+                type: string
+                example: W/"362-ExDq6exx/8lJSjnFEAdEZAPknhA"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 17:03:22 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                err: null
+                data:
+                  id: 1
+                  status: false
+                  paymentMethod: null
+                  paymentDate: null
+                  createdAt: '2023-12-07T16:59:47.166Z'
+                  userId: 1
+                  classCode: P0
+                  users:
+                    id: 1
+                    fullName: Annisa
+                    email: systems.dev33@gmail.com
+                    password: >-
+                      $2b$10$4K/K4Hn2xrbyE8Pmia0oTun2iDIa/aIBi.BawdBNBClP1T5paEfpu
+                    noTelp: '0891234567'
+                    city: boyolali
+                    country: Indonesia
+                    profilePicture: null
+                    fileId: null
+                    isActivated: true
+                    isAdmin: true
+                    googleId: null
+                  class:
+                    classCode: P0
+                    className: Introduction to Web Developer
+                    description: test description
+                    thumbnailPicture: >-
+                      https://ik.imagekit.io/techacademy/1701964981049_OiGT649Qh.PNG
+                    fileId: 6571ecba88c257da333e3856
+                    price: '200000'
+                    linkSosmed: https://web.telegram.org/
+                    levelName: IntermediateLevel
+                    isFree: false
+                    views: 0
+                    createdAt: '2023-12-07T16:03:07.953Z'
+                    categoryId: 1
+  /api/v1/admin/payment/2:
+    delete:
+      tags:
+        - Admin > Payments
+      summary: Delete Transaction by Id payment for Admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY4MTgxfQ.DQvkHv9ZqTVYY-EGHJkkoYTIt_UdMp1Avv0TxoL27qg
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '83'
+            etag:
+              schema:
+                type: string
+                example: W/"53-aKplQ9fx4mPq65LVZnRFoTCtUnU"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 17:13:14 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Transaction deleted successfully
+                err: null
+                data: null
+  /api/v1/bank:
+    post:
+      tags:
+        - Admin > Bank
+      summary: Create new Data Bank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                bankType: BBCA
+                bankName: Azka
+                bankNumber: '3453534534'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: tey55fteg5yygbftyrf4y7yhtbnty7u66tdgfbty6uj67ey5thbu67yght67ygt
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Bank
+      summary: Gett Data Banks
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAzMjUzNjExfQ.MYqO3zCCPbZ0Qovzh83wUf0YchHAmN5dYXdAuRfa7cE
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '127'
+            etag:
+              schema:
+                type: string
+                example: W/"7f-F1azdTpDcp+nkgUpQA/bXx3DT0w"
+            date:
+              schema:
+                type: string
+                example: Fri, 22 Dec 2023 14:10:29 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                err: null
+                data:
+                  - id: 1
+                    bankType: BCA
+                    bankName: Tech Academy
+                    bankNumber: '891819721'
+  /api/v1/bank/1:
+    put:
+      tags:
+        - Admin > Bank
+      summary: Update Bank Information
+      description: Update the information for a specific bank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                bankType: BBCA
+                bankName: Azka
+                bankNumber: '3453534534'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: tey55fteg5yygbftyrf4y7yhtbnty7u66tdgfbty6uj67ey5thbu67yght67ygt
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/bank/2:
+    delete:
+      tags:
+        - Admin > Bank
+      summary: Delete Banks by id bank Copy
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: tey55fteg5yygbftyrf4y7yhtbnty7u66tdgfbty6uj67ey5thbu67yght67ygt
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Bank
+      summary: Get Banks by id bank
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: tey55fteg5yygbftyrf4y7yhtbnty7u66tdgfbty6uj67ey5thbu67yght67ygt
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '125'
+            etag:
+              schema:
+                type: string
+                example: W/"7d-3iVhb8YF0nSl65xlarye+67Euvk"
+            date:
+              schema:
+                type: string
+                example: Fri, 22 Dec 2023 14:13:01 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                err: null
+                data:
+                  id: 1
+                  bankType: BCA
+                  bankName: Tech Academy
+                  bankNumber: '891819721'
+  /api/v1/auth/login-admin:
+    post:
+      tags:
+        - Admin
+      summary: Login Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: najmulazka36@gmail.com
+                password: najmul
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '495'
+            etag:
+              schema:
+                type: string
+                example: W/"1ef-JliP9uHanQR+ijWcv8hdvcTr2+s"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 03:38:22 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                err: null
+                data:
+                  user:
+                    id: 10
+                    fullName: Annisa
+                    email: systems.dev33@gmail.com
+                    password: >-
+                      $2b$10$cHtDNaiES7TFGvxl8qkeHeyAOSaxbmt16p0cD01/1VUsw6a2r7qlq
+                    noTelp: '08532688888'
+                    city: null
+                    country: null
+                    profilePicture: null
+                    fileId: null
+                    isActivated: false
+                    isAdmin: false
+                    googleId: null
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+  /api/v1/auth/register:
+    post:
+      tags:
+        - Auth
+      summary: User Registration
+      description: Register a new user account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                fullName: Najmul
+                email: najmulazka36@gmail.com
+                noTelp: '085326672543'
+                password: najmul
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '315'
+            etag:
+              schema:
+                type: string
+                example: W/"13b-4jVfpxiDmzzQW48nDNUNpOWSrAY"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 03:38:05 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Created
+                err: null
+                data:
+                  fullName: Annisa
+                  email: systems.dev33@gmail.com
+                  noTelp: '08532688888'
+                  password: nisa123
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMjg1fQ.lTseUjSM3gN_oIoFBHqb_-Iyv69x56X-fMsggXqDYHM
+  /api/v1/auth/resend-otp:
+    get:
+      tags:
+        - Auth
+      summary: Get Resend OTP
+      parameters:
+        - name: token
+          in: query
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '267'
+            etag:
+              schema:
+                type: string
+                example: W/"10b-TVCnWENl2/xiELrWsjHsrj12pPE"
+            date:
+              schema:
+                type: string
+                example: Sat, 09 Dec 2023 10:02:32 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OTP resent successfully
+                err: null
+                data:
+                  email: systems.dev33@gmail.com
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+  /api/v1/auth/verify-otp:
+    post:
+      tags:
+        - Auth
+      summary: Verify One-Time Password (OTP)
+      description: Verify the provided OTP for user account verification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: systems.dev33@gmail.com
+                activationCode: '558275'
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '145'
+            etag:
+              schema:
+                type: string
+                example: W/"91-1kScGs/3jL9BMv/SBS28lzzbalM"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 15:40:36 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Activation Code verified successfully
+                err: null
+                data:
+                  email: systems.dev33@gmail.com
+                  activationCode: '688754'
+  /api/v1/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: najmulazka36@gmail.com
+                password: najmul
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '495'
+            etag:
+              schema:
+                type: string
+                example: W/"1ef-JliP9uHanQR+ijWcv8hdvcTr2+s"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 03:38:22 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK
+                err: null
+                data:
+                  user:
+                    id: 10
+                    fullName: Annisa
+                    email: systems.dev33@gmail.com
+                    password: >-
+                      $2b$10$cHtDNaiES7TFGvxl8qkeHeyAOSaxbmt16p0cD01/1VUsw6a2r7qlq
+                    noTelp: '08532688888'
+                    city: null
+                    country: null
+                    profilePicture: null
+                    fileId: null
+                    isActivated: false
+                    isAdmin: false
+                    googleId: null
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+  /api/v1/auth/forrgot-password:
+    post:
+      tags:
+        - Auth
+      summary: Forgot Password
+      description: reset the user's password by sending a reset link or code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: najmulazka36@gmail.com
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '509'
+            etag:
+              schema:
+                type: string
+                example: W/"1fd-Zf9FLHAVgHGUBzElukUNsx4sTYQ"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 15:56:13 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                err: null
+                data:
+                  user:
+                    id: 1
+                    fullName: Annisa
+                    email: systems.dev33@gmail.com
+                    password: >-
+                      $2b$10$4K/K4Hn2xrbyE8Pmia0oTun2iDIa/aIBi.BawdBNBClP1T5paEfpu
+                    noTelp: '0891234567'
+                    city: null
+                    country: null
+                    profilePicture: null
+                    fileId: null
+                    isActivated: false
+                    isAdmin: false
+                    googleId: null
+                  otp: '171189'
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY0NTczfQ.GSLzjecUAEkPI5KpHsrEm9fTnzn6pH8xEJCISblmE2A
+  /api/v1/auth/resend-otp-password:
+    get:
+      tags:
+        - Auth
+      summary: Resend OTP Password
+      parameters:
+        - name: token
+          in: query
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '267'
+            etag:
+              schema:
+                type: string
+                example: W/"10b-TVCnWENl2/xiELrWsjHsrj12pPE"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 14:32:05 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OTP resent successfully
+                err: null
+                data:
+                  email: systems.dev33@gmail.com
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+  /api/v1/auth/verify-otp-password:
+    post:
+      tags:
+        - Auth
+      summary: Verify OTP Password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                otp: '171189'
+      parameters:
+        - name: token
+          in: query
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY0NTUxfQ.EICUthhiDMMbTfgUvH9f4A4-OBes1FCfHNoCiFJAFUc
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '363'
+            etag:
+              schema:
+                type: string
+                example: W/"16b-woGlrViBU2bYmTsdrmFrLSFl8wA"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 15:57:26 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OTP verified password successfully
+                err: null
+                data:
+                  user:
+                    id: 1
+                    fullName: Annisa
+                    email: systems.dev33@gmail.com
+                    password: >-
+                      $2b$10$4K/K4Hn2xrbyE8Pmia0oTun2iDIa/aIBi.BawdBNBClP1T5paEfpu
+                    noTelp: '0891234567'
+                    city: null
+                    country: null
+                    profilePicture: null
+                    fileId: null
+                    isActivated: false
+                    isAdmin: false
+                    googleId: null
+  /api/v1/auth/reset-password:
+    post:
+      tags:
+        - Auth
+      summary: Reset Password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                newPassword: nisa113
+                newPasswordConfirmation: nisa113
+      parameters:
+        - name: token
+          in: query
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '73'
+            etag:
+              schema:
+                type: string
+                example: W/"49-cuOHKmPGaNMxd2ncWxyjd7+7kyM"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 14:15:50 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Reset password success
+                err: null
+                data: null
+        '400':
+          description: Bad Request
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '81'
+            etag:
+              schema:
+                type: string
+                example: W/"51-mePrLSuEgwJ01kG9jLhk4dRbyyg"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 03:08:22 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: false
+                message: Bad Request
+                err: jwt must be provided
+                data: null
+  /api/v1/class/UD1:
+    get:
+      tags:
+        - Class
+      summary: Class by classCode
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '448'
+            etag:
+              schema:
+                type: string
+                example: W/"1c0-A/1gAviZrEjfuPNj+CFpOfg19E4"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 04:24:11 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: getById class successfully
+                data:
+                  classCode: U2
+                  className: Introduction to UI/UX
+                  description: test description
+                  thumbnailPicture: >-
+                    https://ik.imagekit.io/techacademy/1701922908915_IcHPqmkLk.png
+                  fileId: 6571485f88c257da33a88194
+                  price: '200000'
+                  linkSosmed: https://web.telegram.org/
+                  levelName: BeginnerLevel
+                  isFree: false
+                  views: 1
+                  createdAt: '2023-12-07T04:21:52.912Z'
+                  categoryId: 2
+                  chapters: []
+  /api/v1/class/joinclass/DA1:
+    get:
+      tags:
+        - Class
+      summary: Join My Class
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbG9AZ21haWwuY29tIiwiaWF0IjoxNzAyNDk0MzYwfQ.mam_Zt87R0-ACYoPxh3VWqVynQRtrPyXWF7FFn9NQ5o
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/chapter/1:
+    get:
+      tags:
+        - Chapter
+      summary: Chapter by Id chapter
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '129'
+            etag:
+              schema:
+                type: string
+                example: W/"81-pi8QGZl/Ee5RSJkC86YTTLzXFGs"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 05:40:00 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: chapter get by id successfully
+                data:
+                  id: 1
+                  chapterName: Chapter-1 Pendahuluan
+                  classCode: U1
+  /api/v1/lesson/presentase/DA1/6:
+    get:
+      tags:
+        - Lesson
+      summary: Presentase Lesson
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '200'
+            etag:
+              schema:
+                type: string
+                example: W/"c8-QmluSKDDfcEjdL3jqJLip2X2An4"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 15:46:15 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Lesson retrieved successfully
+                data:
+                  id: 1
+                  title: Lesson Title
+                  learningMaterial: Lesson Material
+                  linkLearningMaterial: http://example.com/material
+                  chapterId: 1
+  /api/v1/learning:
+    get:
+      tags:
+        - Learning
+      summary: All Learning Data
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/learning/all:
+    get:
+      tags:
+        - Learning
+      summary: Search Learning
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
+        - name: search
+          in: query
+          schema:
+            type: string
+          example: halo
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/learning/1:
+    get:
+      tags:
+        - Learning
+      summary: Get Learning By ID
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/password/change-password:
+    post:
+      tags:
+        - Profile
+      summary: Change Password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: systems.dev33@gmail.com
+                currentPassword: nisa123
+                new_password: nisa111
+                new_password_confirm: nisa111
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: fsrdgrvcrstgver54tgr5gy44gtrdgt5r4edkjghh,jhlmnljklh
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '359'
+            etag:
+              schema:
+                type: string
+                example: W/"167-dSUoy3B9i69Asc4N6IV+kiRIOWg"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 07:03:06 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: Password changed successfully
+                err: null
+                data:
+                  email: systems.dev33@gmail.com
+                  currentPassword: nisa123
+                  new_password: nisa111
+                  new_password_confirm: nisa111
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTMyNTg2fQ.A6pnWANww-Ut5YepIDs8FffX0oXeRzs6BvYmQoaujNM
+  /api/v1/user:
+    get:
+      tags:
+        - Profile
+      summary: Get User by token User
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: ashjdfwr3ho234o82u3ownjeo823
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '139'
+            etag:
+              schema:
+                type: string
+                example: W/"8b-EO0V4m01z+hMT+e6vcHEvVhg6Kc"
+            date:
+              schema:
+                type: string
+                example: Fri, 22 Dec 2023 14:17:21 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: User Found
+                data:
+                  fullName: Annisa
+                  noTelp: '08532688888'
+                  city: null
+                  country: null
+                  profilePicture: null
+    put:
+      tags:
+        - Profile
+      summary: Update User by token User
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                city:
+                  type: string
+                  example: boyolali
+                country:
+                  type: string
+                  example: Indonesia
+                fullName:
+                  type: string
+                  example: Budi
+                noTelp:
+                  type: integer
+                  example: '089238432'
+                profilePicture:
+                  type: string
+                  format: binary
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY4MTgxfQ.DQvkHv9ZqTVYY-EGHJkkoYTIt_UdMp1Avv0TxoL27qg
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '345'
+            etag:
+              schema:
+                type: string
+                example: W/"159-40CBOCO3w+9kVniiMcVgCmEacCI"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 16:57:18 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: true
+                message: User berhasil diperbarui
+                data:
+                  id: 1
+                  fullName: Annisa
+                  email: systems.dev33@gmail.com
+                  password: $2b$10$4K/K4Hn2xrbyE8Pmia0oTun2iDIa/aIBi.BawdBNBClP1T5paEfpu
+                  noTelp: '0891234567'
+                  city: boyolali
+                  country: Indonesia
+                  profilePicture: null
+                  fileId: null
+                  isActivated: true
+                  isAdmin: true
+                  googleId: null
+    delete:
+      tags:
+        - Profile
+      summary: Delete User by token User
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: dsafeqrtq34tedfse4353aewde34rred43
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/payment/UD0:
+    post:
+      tags:
+        - Payment
+      summary: Create Payment by classCode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                paymentMethod: TF
+                bankId: 2
+                cardName: Juki
+                cardNumber: '0943892408923'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTIwMzAyfQ.W80-G0YPiPaK_B5ZIpXtS5_O0gB7_8AGBbXiBRI6jLw
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '182'
+            etag:
+              schema:
+                type: string
+                example: W/"b6-aKm5Ex/6bWKUTJW9Jc/AIKUGuvg"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 13:53:17 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                err: null
+                data:
+                  id: 1
+                  status: false
+                  paymentMethod: null
+                  paymentDate: null
+                  createdAt: '2023-12-07T13:53:17.802Z'
+                  userId: 10
+                  classCode: UD0
+  /api/v1/payment:
+    get:
+      tags:
+        - Payment
+      summary: Get All Data Payments
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY4MTgxfQ.DQvkHv9ZqTVYY-EGHJkkoYTIt_UdMp1Avv0TxoL27qg
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '564'
+            etag:
+              schema:
+                type: string
+                example: W/"234-ZfIFFVXyufRs7RiwlnlponBvBmg"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 17:06:24 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                data:
+                  - id: 1
+                    status: false
+                    paymentMethod: null
+                    paymentDate: null
+                    createdAt: '2023-12-07T16:59:47.166Z'
+                    userId: 1
+                    classCode: P0
+                    class:
+                      classCode: P0
+                      className: Introduction to Web Developer
+                      description: test description
+                      thumbnailPicture: >-
+                        https://ik.imagekit.io/techacademy/1701964981049_OiGT649Qh.PNG
+                      fileId: 6571ecba88c257da333e3856
+                      price: '200000'
+                      linkSosmed: https://web.telegram.org/
+                      levelName: IntermediateLevel
+                      isFree: false
+                      views: 0
+                      createdAt: '2023-12-07T16:03:07.953Z'
+                      categoryId: 1
+  /api/v1/payment/1:
+    get:
+      tags:
+        - Payment
+      summary: Get Payment by Id payment
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN5c3RlbXMuZGV2MzNAZ21haWwuY29tIiwiaWF0IjoxNzAxOTY4MTgxfQ.DQvkHv9ZqTVYY-EGHJkkoYTIt_UdMp1Avv0TxoL27qg
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '866'
+            etag:
+              schema:
+                type: string
+                example: W/"362-ExDq6exx/8lJSjnFEAdEZAPknhA"
+            date:
+              schema:
+                type: string
+                example: Thu, 07 Dec 2023 17:08:07 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: OK!
+                err: null
+                data:
+                  id: 1
+                  status: false
+                  paymentMethod: null
+                  paymentDate: null
+                  createdAt: '2023-12-07T16:59:47.166Z'
+                  userId: 1
+                  classCode: P0
+                  users:
+                    id: 1
+                    fullName: Annisa
+                    email: systems.dev33@gmail.com
+                    password: >-
+                      $2b$10$4K/K4Hn2xrbyE8Pmia0oTun2iDIa/aIBi.BawdBNBClP1T5paEfpu
+                    noTelp: '0891234567'
+                    city: boyolali
+                    country: Indonesia
+                    profilePicture: null
+                    fileId: null
+                    isActivated: true
+                    isAdmin: true
+                    googleId: null
+                  class:
+                    classCode: P0
+                    className: Introduction to Web Developer
+                    description: test description
+                    thumbnailPicture: >-
+                      https://ik.imagekit.io/techacademy/1701964981049_OiGT649Qh.PNG
+                    fileId: 6571ecba88c257da333e3856
+                    price: '200000'
+                    linkSosmed: https://web.telegram.org/
+                    levelName: IntermediateLevel
+                    isFree: false
+                    views: 0
+                    createdAt: '2023-12-07T16:03:07.953Z'
+                    categoryId: 1
+  /api/v1/rating/AD0:
+    post:
+      tags:
+        - Rating
+      summary: Create Rating by classCode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                value: 3
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: hjfklwhh4i23h42345hkj235234hiu242
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-powered-by:
+              schema:
+                type: string
+                example: Express
+            access-control-allow-origin:
+              schema:
+                type: string
+                example: '*'
+            content-type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: integer
+                example: '111'
+            etag:
+              schema:
+                type: string
+                example: W/"6f-FKcsOVKqQlRXU2MG/+YIwSAPy6o"
+            date:
+              schema:
+                type: string
+                example: Fri, 22 Dec 2023 14:15:06 GMT
+            server:
+              schema:
+                type: string
+                example: railway
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: true
+                message: rating created successfully.
+                data:
+                  id: 1
+                  value: 3
+                  userId: 6
+                  classCode: AD0

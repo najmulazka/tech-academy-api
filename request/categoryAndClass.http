@@ -34,7 +34,7 @@ GET http://localhost:3000/api/v1/class?promo=true
 GET http://localhost:3000/api/v1/class
 
 ##### GET CLASS INPROGRESS
-GET http://localhost:3000/api/v1/class/inprogress/DA1
+GET http://localhost:3000/api/v1/class/joinclass/DA1
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
 
 #####

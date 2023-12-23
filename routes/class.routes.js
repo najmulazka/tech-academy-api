@@ -14,7 +14,7 @@ const { restrict } = require("../middlewares/auth.middlewares");
 router.post("/", isAdmin, image.single("thumbnailPicture"), createClass);
 router.get("/", getAllClass);
 router.get("/:classCode", getByIdClass); 
-router.get("/inprogress/:classCode", restrict, getIdClassProgress);  
+router.get("/joinclass/:classCode", restrict, getIdClassProgress);  
 router.put("/:classCode", updateClass);
 router.delete("/:classCode", deleteClass);
 

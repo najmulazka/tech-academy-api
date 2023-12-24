@@ -68,7 +68,10 @@ const allLearningClassCode = async (req, res, next) => {
     }
 
     const allLearning = await prisma.learning.findMany({
-      where,
+      where: {
+        ...where,
+        users: { id: req.user.id }, // Menambahkan kondisi where untuk pengguna yang terautentikasi
+      },
       include: {
         class: { include: { categorys: true } },
         lesson: { include: { chapters: true } },

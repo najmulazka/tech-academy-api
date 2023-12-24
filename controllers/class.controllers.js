@@ -194,28 +194,24 @@ const getByIdClass = async (req, res, next) => {
     if (authorization) {
       jwt.verify(authorization, JWT_SECRET_KEY, async (err, decoded) => {
         if (err) {
-          return res
-            .status(401)
-            .json({
-              status: false,
-              message: "Unauthorized",
-              err: err.message,
-              data: null,
-            });
+          return res.status(401).json({
+            status: false,
+            message: "Unauthorized",
+            err: err.message,
+            data: null,
+          });
         }
 
         users = await prisma.users.findUnique({
           where: { email: decoded.email },
         });
         if (!users) {
-          return res
-            .status(400)
-            .json({
-              status: false,
-              message: "Bad Request",
-              err: "User does not exist",
-              data: null,
-            });
+          return res.status(400).json({
+            status: false,
+            message: "Bad Request",
+            err: "User does not exist",
+            data: null,
+          });
         }
 
         isBuy = await prisma.transactions.findFirst({
@@ -298,36 +294,38 @@ const getIdClassProgress = async (req, res, next) => {
 
     // Combine and rearrange data
     const combinedData = existingClasses.map(async (existingClass) => {
-      const lessons = existingClass.chapters ? existingClass.chapters.flatMap(async (chapter) => {
-        const learningEntries = chapter.Lessons.map(async (lesson) => {
-          const existingLearning = await prisma.learning.findFirst({
-            where: {
-              userId: req.user.id,
-              lessonId: lesson.id,
-              classCode: classCode,
-            },
-          });
+      const lessons = existingClass.chapters
+        ? existingClass.chapters.flatMap(async (chapter) => {
+            const learningEntries = chapter.Lessons.map(async (lesson) => {
+              const existingLearning = await prisma.learning.findFirst({
+                where: {
+                  userId: req.user.id,
+                  lessonId: lesson.id,
+                  classCode: classCode,
+                },
+              });
 
-          // Create learning entry if it doesn't exist
-          if (!existingLearning) {
-            const learningEntry = await prisma.learning.create({
-              data: {
-                inProgress: false,
-                presentase: 0,
-                class: { connect: { classCode: classCode } },
-                lesson: { connect: { id: lesson.id } },
-                users: { connect: { id: req.user.id } },
-              },
+              // Create learning entry if it doesn't exist
+              if (!existingLearning) {
+                const learningEntry = await prisma.learning.create({
+                  data: {
+                    inProgress: false,
+                    presentase: 0,
+                    class: { connect: { classCode: classCode } },
+                    lesson: { connect: { id: lesson.id } },
+                    users: { connect: { id: req.user.id } },
+                  },
+                });
+                return learningEntry;
+              } else {
+                // Return existing learning entry if it already exists
+                return existingLearning;
+              }
             });
-            return learningEntry;
-          } else {
-            // Return existing learning entry if it already exists
-            return existingLearning;
-          }
-        });
 
-        return learningEntries;
-      }) : [];
+            return learningEntries;
+          })
+        : [];
 
       const learningEntries = await Promise.all(lessons);
 
@@ -345,13 +343,10 @@ const getIdClassProgress = async (req, res, next) => {
       data: result,
     });
   } catch (err) {
-    console.error('Error:', err);
+    console.error("Error:", err);
     next(err);
   }
 };
-
-
-
 
 const updateClass = async (req, res, next) => {
   try {

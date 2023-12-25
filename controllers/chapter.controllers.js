@@ -254,7 +254,7 @@ const getPresentaseChapter = async (req, res, next) => {
 const updateChapter = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let { chapterName, classCode, isFree } = req.body;
+    let { chapterName, classCode, is_preview } = req.body;
 
     const existingChapter = await prisma.chapters.findUnique({
       where: { id: Number(id) },
@@ -278,7 +278,7 @@ const updateChapter = async (req, res, next) => {
 
     const updatedChapter = await prisma.chapters.update({
       where: { id: Number(id) },
-      data: { chapterName, classCode, isFree: JSON.parse(isFree) },
+      data: { chapterName, classCode, is_preview: JSON.parse(is_preview) },
     });
 
     res.status(200).json({

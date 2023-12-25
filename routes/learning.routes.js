@@ -3,15 +3,17 @@ const router = express.Router();
 const {
   allLearningClassCode,
   getAllLearning,
-  getLearningById,
+  getLearningByClassCode,
 } = require("../controllers/learning.controllers");
 const { restrict } = require("../middlewares/auth.middlewares");
+const { isAdmin } = require("../middlewares/admin.midlewares");
+
 
 // Endpoint untuk mengubah status inProgress pada kelas
 // router.get('/:classCode', restrict, updateProgres);
 
-router.get("/", restrict, getAllLearning);
+router.get("/", isAdmin, getAllLearning);
 router.get("/all", restrict, allLearningClassCode);
-router.get("/:id", restrict, getLearningById);
+router.get("/:classCode", restrict, getLearningByClassCode);
 
 module.exports = router;

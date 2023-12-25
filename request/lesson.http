@@ -16,7 +16,7 @@ Content-Type: application/json
 GET http://localhost:3000/api/v1/lesson/1
 
 #### PRESENTASE
-GET http://localhost:3000/api/v1/lesson/presentase/DA1/6
+GET http://localhost:3000/api/v1/lesson/presentase/PF1/4
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
 
 ### UPDATE LESSON

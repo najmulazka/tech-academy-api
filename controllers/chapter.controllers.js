@@ -34,7 +34,7 @@ const createChapter = async (req, res, next) => {
 
     let updatedClass = await prisma.class.update({
       where: { classCode: classCode },
-      data: { module: currentChapterCount + 1 },
+      data: { module: currentChapterCount },
     });
 
     res.status(200).json({
@@ -306,6 +306,15 @@ const deletedChapter = async (req, res, next) => {
         data: null,
       });
     }
+
+    await prisma.class.update({
+      where: {
+        classCode : existingChapter.classCode
+      },
+      data:{
+        module: -1,
+      }
+    })
 
     const deletedChapter = await prisma.chapters.delete({
       where: { id: Number(id) },

@@ -15,12 +15,16 @@ Content-Type: application/json
 ### GET LESSON BY LESSON ID
 GET http://localhost:3000/api/v1/lesson/1
 
+#### PRESENTASE
+GET http://localhost:3000/api/v1/lesson/presentase/DA1/6
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
+
 ### UPDATE LESSON
-PUT http://localhost:3000/api/v1/lesson/1
+PUT http://localhost:3000/api/v1/lesson/2
 Content-Type: application/json
 
 {
-  "title": "Updated Lesson Title",
+  "title": "Updated Lesson Title 2",
   "learningMaterial": "Updated Lesson Material",
   "linkLearningMaterial": "http://example.com/updated-material",
   "chapterId": 1,
@@ -28,4 +32,4 @@ Content-Type: application/json
 }
 
 ### DELETE LESSON
-DELETE http://localhost:3000/api/v1/lesson/1
+DELETE http://localhost:3000/api/v1/lesson/3

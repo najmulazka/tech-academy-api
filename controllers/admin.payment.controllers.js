@@ -5,7 +5,12 @@ const getTransactionsAdmin = async (req, res, next) => {
     const usersWithTransactions = await prisma.transactions.findMany({
       include: {
         users: true,
-        class: true,
+        class: {
+          include: {
+            categorys: true,
+          },
+        },
+        bank: true,
       },
     });
 

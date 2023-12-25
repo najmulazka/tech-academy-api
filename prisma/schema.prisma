@@ -66,16 +66,17 @@ model Categorys {
 }
 
 model Learning {
-  id             Int      @id @default(autoincrement())
-  inProgress     Boolean  @default(false)
-  presentase     Int      @default(0)
-  prevPresentase Int      @default(0)
+  id             Int     @id @default(autoincrement())
+  is_buy         Boolean @default(false)
+  inProgress     Boolean @default(false)
+  presentase     Int     @default(0)
+  prevPresentase Int     @default(0)
   classCode      String
-  chapterId      Int
+  lessonId       Int
   userId         Int
-  class          Class    @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
-  chapter        Chapters @relation(fields: [chapterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  users          Users    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  class          Class   @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
+  lesson         Lessons @relation(fields: [lessonId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  users          Users   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Class {
@@ -113,25 +114,25 @@ model Rating {
 }
 
 model Chapters {
-  id            Int        @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   chapterName   String
   classCode     String
-  is_preview    Boolean    @default(false)
-  isView        Boolean    @default(false)
-  totalDuration Int        @default(0)
-  class         Class      @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
-  learning      Learning[]
+  is_preview    Boolean   @default(false)
+  totalDuration Int       @default(0)
+  class         Class     @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
   Lessons       Lessons[]
 }
 
 model Lessons {
-  id                   Int      @id @default(autoincrement())
+  id                   Int        @id @default(autoincrement())
   title                String
   learningMaterial     String
   linkLearningMaterial String
   duration             Int
+  isView               Boolean    @default(false)
   chapterId            Int
-  chapters             Chapters @relation(fields: [chapterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  chapters             Chapters   @relation(fields: [chapterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  learning             Learning[]
 }
 
 model Transactions {

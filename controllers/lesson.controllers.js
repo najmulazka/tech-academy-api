@@ -117,6 +117,196 @@ const getLessonById = async (req, res, next) => {
   }
 };
 
+const getPresentaseLesson = async (req, res, next) => {
+  try {
+    const { classCode, id } = req.params;
+
+    const lesson = await prisma.lessons.findUnique({
+      where: { id: Number(id) },
+      include: { chapters: { include: { class: true } } },
+    });
+
+    if (!lesson || !id || !classCode) {
+      return res.status(400).json({
+        status: false,
+        message: "Pelajaran dengan ID tertentu tidak ditemukan",
+        data: null,
+      });
+    }
+
+    // Set isView to true when hitting the endpoint
+    console.log("Before updating isView:", lesson.isView);
+    await prisma.lessons.update({
+      where: { id: Number(id) },
+      data: { isView: true },
+    });
+    console.log("After updating isView:", true);
+
+    const lessonClassCode = lesson.chapters.classCode;
+
+    if (classCode !== lessonClassCode) {
+      return res.status(400).json({
+        status: false,
+        message: "Kode kelas dan Id lesson tidak sesuai dengan pelajaran yang diminta",
+        data: null,
+      });
+    }
+
+    // Check if the lesson is free
+    let isBuy = false;
+    if (!lesson.is_free) {
+      const isBuyData = await prisma.transactions.findFirst({
+        where: {
+          classCode: lessonClassCode,
+          userId: req.user.id,
+          status: true,
+        },
+      });
+
+      if (!isBuyData) {
+        // Update isView to false if is_buy is false
+        await prisma.lessons.update({
+          where: { id: Number(id) },
+          data: { isView: false },
+        });
+
+        return res.status(403).json({
+          status: false,
+          message: "Pelajaran ini tidak dapat diakses karena tidak gratis",
+          data: {
+            lesson,
+            presentase: 0,
+            learning: null,
+            is_buy: false,
+          },
+        });
+      } else {
+        isBuy = isBuyData; // Assign the data to isBuy
+      }
+    }
+
+    const learning = await prisma.learning.findFirst({
+      where: {
+        lessonId: lesson.id,
+        userId: req.user.id,
+      },
+    });
+
+    if (!learning) {
+      const newLearning = await prisma.learning.create({
+        data: {
+          userId: req.user.id,
+          lessonId: lesson.id,
+          presentase: 0,
+          classCode: lessonClassCode,
+          prevPresentase: 0,
+          inProgress: false,
+          is_buy: isBuy ? isBuy.status : false, // Set is_buy based on transaction status
+        },
+      });
+
+      return res.status(200).json({
+        status: true,
+        message: "Rekam belajar baru telah dibuat untuk pelajaran tertentu",
+        data: {
+          lesson,
+          presentase: Math.round(newLearning.presentase),
+          learning: { ...newLearning, inProgress: false },
+        },
+      });
+    }
+
+    console.log("lessonClassCode:", lessonClassCode);
+    // Calculate presentase based on total isView in the classCode
+    const totalIsView = await prisma.lessons.count({
+      where: {
+        chapters: {
+          classCode: lessonClassCode,
+        },
+        isView: true,
+      },
+    });
+    
+    const totalLessonsInClass = await prisma.lessons.count({
+      where: {
+        chapters: {
+          classCode: lessonClassCode,
+        },
+      },
+    });
+    
+
+    console.log("Total isView:", totalIsView);
+    console.log("Total lessons in class:", totalLessonsInClass);
+
+    const calculatedPresentase = (totalIsView / totalLessonsInClass) * 100;
+    const finalPresentase = Math.min(100, Math.round(calculatedPresentase / 10) * 10);
+    
+
+    if (calculatedPresentase < 101) {
+      await prisma.learning.update({
+        where: { id: learning.id },
+        data: {
+          presentase: finalPresentase,
+          prevPresentase: finalPresentase,
+          inProgress: true,
+          is_buy: isBuy ? isBuy.status : false, // Set is_buy based on transaction status
+        },
+      });
+
+      const excludedLessonIds = await prisma.lessons.findMany({
+        where: {
+          chapters: {
+            classCode: lessonClassCode,
+          },
+          id: {
+            not: lesson.id,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      await prisma.learning.updateMany({
+        where: {
+          userId: req.user.id,
+          lessonId: { in: excludedLessonIds.map((less) => less.id) },
+        },
+        data: { presentase: 0, prevPresentase: 0 },
+      });
+    }
+
+    const updatedLearning = await prisma.learning.findFirst({
+      where: {
+        lessonId: lesson.id,
+        userId: req.user.id,
+      },
+      select: {
+        inProgress: true,
+        classCode: true,
+        lessonId: true,
+        userId: true,
+        is_buy: true,
+      },
+    });
+
+    res.status(200).json({
+      status: true,
+      message:
+        "Detail pelajaran diambil dengan berhasil, dan presentase diperbarui",
+      data: {
+        lesson,
+        presentase: Math.round(finalPresentase),
+        learning: updatedLearning,
+        is_buy: Boolean(isBuy),
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateLesson = async (req, res, next) => {
   try {
     const lessonId = Number(req.params.id);
@@ -249,6 +439,7 @@ module.exports = {
   getLessons,
   createLesson,
   getLessonById,
+  getPresentaseLesson,
   updateLesson,
   deleteLesson,
 };

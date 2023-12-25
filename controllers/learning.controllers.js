@@ -1,80 +1,116 @@
 const prisma = require("../utils/libs/prisma.libs");
-
-// const updateProgres = async (req, res, next) => {
-//   try {
-//     // Validasi jika ada classCode yang sama
-//     const duplicateClassCode = await prisma.learning.findFirst({
-//       where: {
-//         userId: req.user.id,
-//         inProgress: true,
-//       },
-//     });
-
-//     if (duplicateClassCode) {
-//       return res.status(400).json({
-//         status: false,
-//         message: "Class is already in progress.",
-//         data: null,
-//       });
-//     }
-
-//     // Set inProgress to true automatically
-//     const updatedProgress = await prisma.learning.updateMany({
-//       where: {
-//         userId: req.user.id,
-//       },
-//       data: {
-//         inProgress: true,
-//       },
-//     });
-
-//     if (updatedProgress.count === 0) {
-//       return res.status(404).json({
-//         status: false,
-//         message: "Data not found.",
-//         data: null,
-//       });
-//     }
-
-//     // Get updated progress
-//     const progress = await prisma.learning.findMany({
-//       where: { userId: req.user.id },
-//       include: {
-//         class: true,
-//         users: {
-//           select: {
-//             id: true,
-//             fullName: true,
-//             email: true
-//           },
-//         },
-//       },
-//     });
-
-//     res.status(200).json({
-//       status: true,
-//       message: "OK!",
-//       data: progress,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+const { getPagination } = require("../utils/libs/pagination.libs");
 
 const getAllLearning = async (req, res, next) => {
   try {
+    let { search, limit = 5, page = 1 } = req.query;
+    limit = Number(limit);
+    page = Number(page);
+
+    const _count = await prisma.learning.count();
+    let pagination = getPagination(req, _count, limit, page);
+
+    let where = {};
+    if (search) {
+      where = {
+        OR: [
+          { class: { className: { contains: search } } },
+          { lesson: { title: { contains: search } } },
+        ],
+      };
+    }
+
     const allLearning = await prisma.learning.findMany({
+      where,
+      include: {
+        class: { include: { categorys: true } },
+        lesson: { include: { chapters: true } },
+        users: {
+          select: {
+            id: true,
+            fullName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: { id: 'asc' }, // Order by creation date, you can change this based on your requirement
+      skip: (page - 1) * limit,
+      take: limit,
     });
 
     res.status(200).json({
       status: true,
       message: "OK!",
-      data: allLearning,
+      data: { pagination, allLearning },
     });
   } catch (error) {
     next(error);
   }
 };
+
+const allLearningClassCode = async (req, res, next) => {
+  try {
+    let { search, limit = 5, page = 1 } = req.query;
+    limit = Number(limit);
+    page = Number(page);
+
+    const _count = await prisma.learning.count();
+    let pagination = getPagination(req, _count, limit, page);
+
+    let where = {};
+    if (search) {
+      where = {
+        OR: [
+          { class: { className: { contains: search } } },
+          { lesson: { title: { contains: search } } },
+        ],
+      };
+    }
+
+    const allLearning = await prisma.learning.findMany({
+      where: {
+        ...where,
+        users: { id: req.user.id }, // Menambahkan kondisi where untuk pengguna yang terautentikasi
+      },
+      include: {
+        class: { include: { categorys: true } },
+        lesson: { include: { chapters: true } },
+        users: {
+          select: {
+            id: true,
+            fullName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        lessonId: 'asc', // Urutkan berdasarkan lessonId secara ascending
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    // Eliminate duplicate classCode entries, keep the first occurrence
+    const uniqueClassCodes = new Set();
+    const filteredLearning = allLearning.filter(item => {
+      if (!uniqueClassCodes.has(item.class.classCode)) {
+        uniqueClassCodes.add(item.class.classCode);
+        return true;
+      }
+      return false;
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "OK!",
+      data: { pagination, allLearning: filteredLearning },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 
 const getLearningById = async (req, res, next) => {
   try {
@@ -83,7 +119,8 @@ const getLearningById = async (req, res, next) => {
     const learning = await prisma.learning.findUnique({
       where: { id: Number(id) },
       include: {
-        class: true,
+        class: { include: { categorys: true } },
+        lesson: { include: { chapters: true } },
         users: {
           select: {
             id: true,
@@ -112,4 +149,4 @@ const getLearningById = async (req, res, next) => {
   }
 };
 
-module.exports = { getLearningById, getAllLearning };
+module.exports = { getLearningById, getAllLearning, allLearningClassCode };

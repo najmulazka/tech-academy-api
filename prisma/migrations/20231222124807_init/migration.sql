@@ -61,11 +61,12 @@ CREATE TABLE "Categorys" (
 -- CreateTable
 CREATE TABLE "Learning" (
     "id" SERIAL NOT NULL,
+    "is_buy" BOOLEAN NOT NULL DEFAULT false,
     "inProgress" BOOLEAN NOT NULL DEFAULT false,
     "presentase" INTEGER NOT NULL DEFAULT 0,
     "prevPresentase" INTEGER NOT NULL DEFAULT 0,
     "classCode" TEXT NOT NULL,
-    "chapterId" INTEGER NOT NULL,
+    "lessonId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Learning_pkey" PRIMARY KEY ("id")
@@ -110,7 +111,6 @@ CREATE TABLE "Chapters" (
     "chapterName" TEXT NOT NULL,
     "classCode" TEXT NOT NULL,
     "is_preview" BOOLEAN NOT NULL DEFAULT false,
-    "isView" BOOLEAN NOT NULL DEFAULT false,
     "totalDuration" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Chapters_pkey" PRIMARY KEY ("id")
@@ -123,6 +123,7 @@ CREATE TABLE "Lessons" (
     "learningMaterial" TEXT NOT NULL,
     "linkLearningMaterial" TEXT NOT NULL,
     "duration" INTEGER NOT NULL,
+    "isView" BOOLEAN NOT NULL DEFAULT false,
     "chapterId" INTEGER NOT NULL,
 
     CONSTRAINT "Lessons_pkey" PRIMARY KEY ("id")
@@ -147,6 +148,7 @@ CREATE TABLE "Transactions" (
 CREATE TABLE "Bank" (
     "id" SERIAL NOT NULL,
     "bankType" TEXT NOT NULL,
+    "bankName" TEXT,
     "bankNumber" TEXT,
 
     CONSTRAINT "Bank_pkey" PRIMARY KEY ("id")
@@ -183,7 +185,7 @@ ALTER TABLE "Notifications" ADD CONSTRAINT "Notifications_userId_fkey" FOREIGN K
 ALTER TABLE "Learning" ADD CONSTRAINT "Learning_classCode_fkey" FOREIGN KEY ("classCode") REFERENCES "Class"("classCode") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Learning" ADD CONSTRAINT "Learning_chapterId_fkey" FOREIGN KEY ("chapterId") REFERENCES "Chapters"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Learning" ADD CONSTRAINT "Learning_lessonId_fkey" FOREIGN KEY ("lessonId") REFERENCES "Lessons"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Learning" ADD CONSTRAINT "Learning_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

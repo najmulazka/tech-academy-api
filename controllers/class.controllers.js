@@ -209,7 +209,7 @@ const getByIdClass = async (req, res, next) => {
           }));
         }
 
-        const presentase = await prisma.learning.findFirst({
+        const learning = await prisma.learning.findFirst({
           where: {
             userId: users.id,
             classCode: classCode,
@@ -219,13 +219,18 @@ const getByIdClass = async (req, res, next) => {
           },
         });
 
+        let presentase = 0;
+        if (learning) {
+          presentase = learning.presentase;
+        }
+
         res.status(200).json({
           status: true,
           message: 'getById class successfully',
           data: {
             ...existingClass,
             is_buy: Boolean(isBuy),
-            presentase : presentase.presentase,
+            presentase: presentase,
             chapters: chaptersWithPreview,
           },
         });

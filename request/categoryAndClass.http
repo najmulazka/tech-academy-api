@@ -39,7 +39,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWls
 
 #####
 GET http://localhost:3000/api/v1/class/WD0
-# Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMjk5NTc5OH0.sjFNdYRt31SipMtaoJ-rXyxNX-DDNATqdzHcJPLUX_g
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcwMzQ4OTczOH0.rV1jq4crxzipa8SlmsCICQxa4EUFFJWYSRXhcfkMqMo
 
 ####
 PUT http://localhost:3000/api/v1/class/PM0

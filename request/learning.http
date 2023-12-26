@@ -8,12 +8,12 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWls
 
 ### GET ALL LEARNING BY CLASSCODE
 GET http://localhost:3000/api/v1/learning/all
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzQ5NDUxM30.tMMD_uI2ssSOyqFNESrxbsVmrerqfQseWq2YwgoMuOE
 
 ### SEARCH LEARNING
-GET http://localhost:3000/api/v1/learning/all?search=halo
+GET http://localhost:3000/api/v1/learning/all?search=javascript
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
 
-### GET LEARNING BY ID
-GET http://localhost:3000/api/v1/learning/1
+### GET LEARNING BY CLASSCODE
+GET http://localhost:3000/api/v1/learning/DA0
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE

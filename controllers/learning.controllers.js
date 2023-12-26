@@ -33,7 +33,7 @@ const getAllLearning = async (req, res, next) => {
           },
         },
       },
-      orderBy: { id: 'asc' }, // Order by creation date, you can change this based on your requirement
+      orderBy: { id: "asc" }, // Order by creation date, you can change this based on your requirement
       skip: (page - 1) * limit,
       take: limit,
     });
@@ -50,7 +50,17 @@ const getAllLearning = async (req, res, next) => {
 
 const allLearningClassCode = async (req, res, next) => {
   try {
-    let { search, limit = 5, page = 1 } = req.query;
+    let {
+      search,
+      latest,
+      popular,
+      promo,
+      categoryId,
+      levelName,
+      isFree,
+      limit = 5,
+      page = 1,
+    } = req.query;
     limit = Number(limit);
     page = Number(page);
 
@@ -58,19 +68,47 @@ const allLearningClassCode = async (req, res, next) => {
     let pagination = getPagination(req, _count, limit, page);
 
     let where = {};
+    let gt = { gt: 0 };
+    let orderBy = {};
     if (search) {
       where = {
         OR: [
-          { class: { className: { contains: search } } },
-          { lesson: { title: { contains: search } } },
+          { class: { className: { contains: search, mode: "insensitive" } } },
+          { lesson: { title: { contains: search, mode: "insensitive" } } },
         ],
       };
+    }
+    if (latest) {
+      orderBy = { class: { createdAt: "desc" } };
+    }
+
+    if (popular) {
+      orderBy = { class: { views: "desc" } };
+    }
+
+    if (promo) {
+      where.class = { promo: gt };
+    }
+
+    if (categoryId) {
+      let categorys = categoryId.split("-").map(Number);
+      where.class = { categoryId: { in: categorys } };
+    }
+
+    if (levelName) {
+      let levels = levelName.split("-");
+      where.class = { levelName: { in: levels } };
+    }
+
+    if (isFree) {
+      isFree = JSON.parse(isFree);
+      where.class = { isFree: isFree };
     }
 
     const allLearning = await prisma.learning.findMany({
       where: {
         ...where,
-        users: { id: req.user.id }, // Menambahkan kondisi where untuk pengguna yang terautentikasi
+        users: { id: req.user.id },
       },
       include: {
         class: { include: { categorys: true } },
@@ -83,41 +121,48 @@ const allLearningClassCode = async (req, res, next) => {
           },
         },
       },
-      orderBy: {
-        lessonId: 'asc', // Urutkan berdasarkan lessonId secara ascending
-      },
+      orderBy: [
+        { lessonId: "asc" },
+        { class: { views: "desc" } },
+        { class: { createdAt: "desc" } },
+      ],
       skip: (page - 1) * limit,
       take: limit,
     });
 
-    // Eliminate duplicate classCode entries, keep the first occurrence
-    const uniqueClassCodes = new Set();
-    const filteredLearning = allLearning.filter(item => {
-      if (!uniqueClassCodes.has(item.class.classCode)) {
-        uniqueClassCodes.add(item.class.classCode);
-        return true;
+    const withPresentase = {};
+    allLearning.forEach((item) => {
+      const lowercaseClassCode = item.class.classCode.toLowerCase();
+      if (!withPresentase[lowercaseClassCode] || item.presentase !== 0) {
+        withPresentase[lowercaseClassCode] = {
+          ...item,
+          prevPresentase: undefined,
+        };
       }
-      return false;
     });
+
+    const resultData = Object.values(withPresentase);
 
     res.status(200).json({
       status: true,
       message: "OK!",
-      data: { pagination, allLearning: filteredLearning },
+      data: { pagination, allLearning: resultData },
     });
   } catch (error) {
     next(error);
   }
 };
 
-
-
-const getLearningById = async (req, res, next) => {
+const getLearningByClassCode = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { classCode } = req.params;
 
-    const learning = await prisma.learning.findUnique({
-      where: { id: Number(id) },
+    const learning = await prisma.learning.findMany({
+      where: {
+        class: { classCode: classCode },
+        users: { id: req.user.id }, // Filter berdasarkan ID pengguna
+        // presentase: { not: 0 }, // Hanya tampilkan yang presentasenya tidak sama dengan 0
+      },
       include: {
         class: { include: { categorys: true } },
         lesson: { include: { chapters: true } },
@@ -131,10 +176,15 @@ const getLearningById = async (req, res, next) => {
       },
     });
 
-    if (!learning) {
+    // Menyaring catatan di mana presentase adalah 0
+    const filteredLearning = learning
+      .filter((item) => item.presentase !== 0)
+      .map(({ prevPresentase, ...rest }) => rest);
+
+    if (!filteredLearning || filteredLearning.length === 0) {
       return res.status(404).json({
         status: false,
-        message: "Learning not found.",
+        message: "Pembelajaran tidak ditemukan untuk classCode yang diberikan.",
         data: null,
       });
     }
@@ -142,11 +192,15 @@ const getLearningById = async (req, res, next) => {
     res.status(200).json({
       status: true,
       message: "OK!",
-      data: learning,
+      data: filteredLearning,
     });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { getLearningById, getAllLearning, allLearningClassCode };
+module.exports = {
+  getLearningByClassCode,
+  getAllLearning,
+  allLearningClassCode,
+};

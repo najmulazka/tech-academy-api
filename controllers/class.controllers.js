@@ -296,6 +296,11 @@ const getIdClassProgress = async (req, res, next) => {
                   lessonId: lesson.id,
                   classCode: classCode,
                 },
+                include: {
+                  class: true,
+                  lesson: true,
+                  users: true,
+                },
               });
 
               // Create learning entry if it doesn't exist
@@ -307,6 +312,11 @@ const getIdClassProgress = async (req, res, next) => {
                     class: { connect: { classCode: classCode } },
                     lesson: { connect: { id: lesson.id } },
                     users: { connect: { id: req.user.id } },
+                  },
+                  include: {
+                    class: true,
+                    lesson: true,
+                    users: true,
                   },
                 });
                 return learningEntry;
@@ -320,11 +330,16 @@ const getIdClassProgress = async (req, res, next) => {
           })
         : [];
 
-      const learningEntries = await Promise.all(lessons);
+      // const learningEntries = await Promise.all(lessons);
 
       return {
         class: existingClass,
-        learningEntries: learningEntries.flat(),
+        // learningEntries: learningEntries.flat(),
+        currentUser: {
+          id: req.user.id,
+          fullName: req.user.fullName,
+          email: req.user.email,
+        },
       };
     });
 
@@ -340,6 +355,9 @@ const getIdClassProgress = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
 
 const updateClass = async (req, res, next) => {
   try {

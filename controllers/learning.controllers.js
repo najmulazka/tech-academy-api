@@ -59,7 +59,7 @@ const allLearningClassCode = async (req, res, next) => {
       levelName,
       isFree,
       inProgress,
-      limit = 5,
+      limit = 10,
       page = 1,
     } = req.query;
     limit = Number(limit);

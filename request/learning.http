@@ -8,7 +8,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWls
 
 ### GET ALL LEARNING BY CLASSCODE
 GET http://localhost:3000/api/v1/learning/all
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzQ5NDUxM30.tMMD_uI2ssSOyqFNESrxbsVmrerqfQseWq2YwgoMuOE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMzU4ODIxNn0.jQGYG0NdH2sjwtlSP9cMrc12DxNLKML-piQEoQXcDTE
 
 ### SEARCH LEARNING
 GET http://localhost:3000/api/v1/learning/all?search=javascript

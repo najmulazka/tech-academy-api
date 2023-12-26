@@ -17,6 +17,22 @@ const createTransaction = async (req, res, next) => {
       });
     }
 
+    const existTransaction = await prisma.transactions.findFirst({
+      where: {
+        classCode,
+        userId: req.user.id,
+      },
+    });
+
+    if (existTransaction) {
+      return res.status(400).json({
+        status: false,
+        message: 'Bad Request!',
+        err: 'transaction is already',
+        data: null,
+      });
+    }
+
     const transaction = await prisma.transactions.create({
       data: {
         paymentMethod,
@@ -46,7 +62,13 @@ const getTransactions = async (req, res, next) => {
       where: {
         userId: req.user.id,
       },
-      include: { class: true },
+      include: {
+        class: {
+          include: {
+            categorys: true,
+          },
+        },
+      },
     });
 
     res.status(200).json({

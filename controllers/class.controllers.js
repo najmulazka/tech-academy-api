@@ -106,7 +106,7 @@ const getAllClass = async (req, res, next) => {
     let orderBy = {};
     if (search) {
       where.className = {
-        contains: search,
+        contains: search, mode: "insensitive",
       };
     }
     if (latest) {

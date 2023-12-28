@@ -82,6 +82,7 @@ const allLearningClassCode = async (req, res, next) => {
     }
 
     if (latest) {
+
       orderBy.push({ class: { createdAt: "desc" } });
     }
 
@@ -156,7 +157,6 @@ const allLearningClassCode = async (req, res, next) => {
     next(error);
   }
 };
-
 
 const getLearningByClassCode = async (req, res, next) => {
   try {

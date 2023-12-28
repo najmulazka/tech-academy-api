@@ -74,6 +74,11 @@ const createNotification = async (req, res, next) => {
 
 const getNotifications = async (req, res, next) => {
   try {
+    if(req.user.isAdmin){
+      const notifications = await prisma.notifications.findMany();
+      return res.status(200).json({ status: true, message: 'OK', err: null, data: notifications });
+    }
+    
     const notifications = await prisma.notifications.findMany({
       where: {
         userId: req.user.id,

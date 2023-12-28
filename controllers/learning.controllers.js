@@ -59,7 +59,7 @@ const allLearningClassCode = async (req, res, next) => {
       levelName,
       isFree,
       inProgress,
-      limit = 5,
+      limit = 10,
       page = 1,
     } = req.query;
     limit = Number(limit);
@@ -70,7 +70,7 @@ const allLearningClassCode = async (req, res, next) => {
 
     let where = {};
     let gt = { gt: 0 };
-    let orderBy = {};
+    let orderBy = [];
 
     if (search) {
       where = {
@@ -82,11 +82,12 @@ const allLearningClassCode = async (req, res, next) => {
     }
 
     if (latest) {
-      orderBy = { class: { createdAt: "desc" } };
+
+      orderBy.push({ class: { createdAt: "desc" } });
     }
 
     if (popular) {
-      orderBy = { class: { views: "desc" } };
+      orderBy.push({ class: { views: "desc" } });
     }
 
     if (promo) {
@@ -95,7 +96,7 @@ const allLearningClassCode = async (req, res, next) => {
 
     if (inProgress) {
       inProgress = JSON.parse(inProgress);
-      where.inProgress =  inProgress ;
+      where.inProgress = inProgress;
     }
 
     if (categoryId) {
@@ -129,11 +130,7 @@ const allLearningClassCode = async (req, res, next) => {
           },
         },
       },
-      orderBy: [
-        { lessonId: "asc" },
-        { class: { views: "desc" } },
-        { class: { createdAt: "desc" } },
-      ],
+      orderBy: orderBy,
       skip: (page - 1) * limit,
       take: limit,
     });
@@ -160,8 +157,6 @@ const allLearningClassCode = async (req, res, next) => {
     next(error);
   }
 };
-
-
 
 const getLearningByClassCode = async (req, res, next) => {
   try {

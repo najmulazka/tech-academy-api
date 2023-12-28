@@ -11,7 +11,7 @@ GET http://localhost:3000/api/v1/learning/all
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMzU4ODIxNn0.jQGYG0NdH2sjwtlSP9cMrc12DxNLKML-piQEoQXcDTE
 
 ### SEARCH LEARNING
-GET http://localhost:3000/api/v1/learning/all?search=javascript
+GET http://localhost:3000/api/v1/learning/all?search=test
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
 
 ### GET LEARNING BY CLASSCODE

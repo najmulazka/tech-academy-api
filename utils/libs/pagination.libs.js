@@ -12,7 +12,7 @@ module.exports = {
         link.prev = `${path}?limit=${limit}&page=${page - 1}`;
       }
     } else {
-      link.next = `${path}?limit=${limit}&page${page + 1}`;
+      link.next = `${path}?limit=${limit}&page=${page + 1}`;
       if (page - 1 <= 0) {
         link.prev = '';
       } else {

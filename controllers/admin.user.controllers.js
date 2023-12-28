@@ -5,7 +5,7 @@ const { getPagination } = require("../utils/libs/pagination.libs");
 
 const getAllUsers = async (req, res, next) => {
   try {
-    let { limit = 2, page = 1 } = req.query;
+    let { limit = 10, page = 1 } = req.query;
     limit = Number(limit);
     page = Number(page);
     let users = await prisma.users.findMany({

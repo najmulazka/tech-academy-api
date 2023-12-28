@@ -34,7 +34,7 @@ const createChapter = async (req, res, next) => {
 
     let updatedClass = await prisma.class.update({
       where: { classCode: classCode },
-      data: { module: currentChapterCount + 1 },
+      data: { module: currentChapterCount },
     });
 
     res.status(200).json({
@@ -254,7 +254,7 @@ const getPresentaseChapter = async (req, res, next) => {
 const updateChapter = async (req, res, next) => {
   try {
     let { id } = req.params;
-    let { chapterName, classCode, isFree } = req.body;
+    let { chapterName, classCode, is_preview } = req.body;
 
     const existingChapter = await prisma.chapters.findUnique({
       where: { id: Number(id) },
@@ -278,7 +278,7 @@ const updateChapter = async (req, res, next) => {
 
     const updatedChapter = await prisma.chapters.update({
       where: { id: Number(id) },
-      data: { chapterName, classCode, isFree: JSON.parse(isFree) },
+      data: { chapterName, classCode, is_preview: JSON.parse(is_preview) },
     });
 
     res.status(200).json({
@@ -306,6 +306,15 @@ const deletedChapter = async (req, res, next) => {
         data: null,
       });
     }
+
+    await prisma.class.update({
+      where: {
+        classCode : existingChapter.classCode
+      },
+      data:{
+        module: -1,
+      }
+    })
 
     const deletedChapter = await prisma.chapters.delete({
       where: { id: Number(id) },

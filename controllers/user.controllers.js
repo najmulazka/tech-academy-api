@@ -8,6 +8,7 @@ const getUserById = async (req, res, next) => {
 
     const userResponse = {
       fullName: user.fullName,
+      email: user.email,
       noTelp: user.noTelp,
       city: user.city,
       country: user.country,

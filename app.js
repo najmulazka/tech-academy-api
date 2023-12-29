@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
+const Sentry = require('@sentry/node');
 const path = require('path');
 const { PORT = 3000, SENRTY_DSN } = process.env;
 const { notFoundHandler, errorHandler } = require('./middlewares/index.middlewares');

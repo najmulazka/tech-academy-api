@@ -83,7 +83,7 @@ const getAllClass = async (req, res, next) => {
     // cara yng gak nyusahin umat
     let where = {};
     let gt = { gt: 0 };
-    let orderBy = { createdAt: 'asc' };
+    let orderBy = {};
     if (search) {
       where.className = {
         contains: search,
@@ -95,7 +95,6 @@ const getAllClass = async (req, res, next) => {
     }
     if (popular) {
       orderBy.views = 'desc';
-      orderBy.createdAt = null;
     }
     if (promo) {
       where.promo = gt;

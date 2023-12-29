@@ -95,6 +95,7 @@ const getAllClass = async (req, res, next) => {
     }
     if (popular) {
       orderBy.views = 'desc';
+      orderBy.createdAt = null;
     }
     if (promo) {
       where.promo = gt;

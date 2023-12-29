@@ -83,10 +83,11 @@ const getAllClass = async (req, res, next) => {
     // cara yng gak nyusahin umat
     let where = {};
     let gt = { gt: 0 };
-    let orderBy = {};
+    let orderBy = { createdAt: 'asc' };
     if (search) {
       where.className = {
-        contains: search, mode: "insensitive",
+        contains: search,
+        mode: 'insensitive',
       };
     }
     if (latest) {
@@ -355,9 +356,6 @@ const getIdClassProgress = async (req, res, next) => {
     next(err);
   }
 };
-
-
-
 
 const updateClass = async (req, res, next) => {
   try {

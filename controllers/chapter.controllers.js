@@ -1,4 +1,4 @@
-const prisma = require("../utils/libs/prisma.libs");
+const prisma = require('../utils/libs/prisma.libs');
 
 const createChapter = async (req, res, next) => {
   try {
@@ -7,7 +7,7 @@ const createChapter = async (req, res, next) => {
     if (!chapterName || !classCode) {
       return res.status(400).json({
         status: false,
-        message: "chapter name and class code are required",
+        message: 'chapter name and class code are required',
         data: null,
       });
     }
@@ -19,7 +19,7 @@ const createChapter = async (req, res, next) => {
     if (!existingClass) {
       return res.status(400).json({
         status: false,
-        message: "class with the provided classCode does not exist",
+        message: 'class with the provided classCode does not exist',
         data: null,
       });
     }
@@ -39,7 +39,7 @@ const createChapter = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: "chapter created successfully",
+      message: 'chapter created successfully',
       data: newChapter,
       updatedClass,
     });
@@ -52,19 +52,22 @@ const getChapter = async (req, res, next) => {
   try {
     let chapters = await prisma.chapters.findMany({
       include: { Lessons: true },
+      orderBy: {
+        id: 'asc',
+      },
     });
 
     if (!chapters || chapters.length === 0) {
       return res.status(400).json({
         status: false,
-        message: "chapter get all not exist",
+        message: 'chapter get all not exist',
         data: null,
       });
     }
 
     res.status(200).json({
       status: true,
-      message: "chapter get all successfully",
+      message: 'chapter get all successfully',
       data: chapters,
     });
   } catch (err) {
@@ -84,14 +87,14 @@ const getByIdChapter = async (req, res, next) => {
     if (!chapter || !id) {
       return res.status(400).json({
         status: false,
-        message: "chapter get by id not exist",
+        message: 'chapter get by id not exist',
         data: null,
       });
     }
 
     res.status(200).json({
       status: true,
-      message: "chapter get by id successfully",
+      message: 'chapter get by id successfully',
       data: chapter,
     });
   } catch (err) {
@@ -111,7 +114,7 @@ const getPresentaseChapter = async (req, res, next) => {
     if (!chapter || !id || !classCode) {
       return res.status(400).json({
         status: false,
-        message: "Bab dengan ID dan classCode tertentu tidak ditemukan",
+        message: 'Bab dengan ID dan classCode tertentu tidak ditemukan',
         data: null,
       });
     }
@@ -133,7 +136,7 @@ const getPresentaseChapter = async (req, res, next) => {
       if (!learning) {
         return res.status(403).json({
           status: false,
-          message: "Bab ini tidak dapat diakses karena tidak gratis",
+          message: 'Bab ini tidak dapat diakses karena tidak gratis',
           data: {
             chapter,
             presentase: 0,
@@ -144,7 +147,7 @@ const getPresentaseChapter = async (req, res, next) => {
 
       return res.status(403).json({
         status: false,
-        message: "Bab ini tidak dapat diakses karena tidak gratis",
+        message: 'Bab ini tidak dapat diakses karena tidak gratis',
         data: {
           chapter,
           presentase: Math.round(learning.presentase), // Bulatkan presentase
@@ -174,7 +177,7 @@ const getPresentaseChapter = async (req, res, next) => {
 
       return res.status(200).json({
         status: true,
-        message: "Rekam belajar baru telah dibuat untuk bab tertentu",
+        message: 'Rekam belajar baru telah dibuat untuk bab tertentu',
         data: {
           chapter,
           presentase: Math.round(newLearning.presentase), // Bulatkan presentase
@@ -194,10 +197,7 @@ const getPresentaseChapter = async (req, res, next) => {
     });
 
     const calculatedPresentase = (totalIsView / totalChaptersInClass) * 100;
-    const finalPresentase =
-      calculatedPresentase === 101
-        ? Math.round(learning.presentase)
-        : Math.round(calculatedPresentase / 10) * 10; // Bulatkan ke puluhan
+    const finalPresentase = calculatedPresentase === 101 ? Math.round(learning.presentase) : Math.round(calculatedPresentase / 10) * 10; // Bulatkan ke puluhan
 
     if (calculatedPresentase < 101) {
       await prisma.learning.update({
@@ -239,7 +239,7 @@ const getPresentaseChapter = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: "Detail bab diambil dengan berhasil, dan presentase diperbarui",
+      message: 'Detail bab diambil dengan berhasil, dan presentase diperbarui',
       data: {
         chapter,
         presentase: Math.round(finalPresentase), // Bulatkan presentase
@@ -263,7 +263,7 @@ const updateChapter = async (req, res, next) => {
     if (!existingChapter || !id) {
       return res.status(400).json({
         status: false,
-        message: "chapter id not exist",
+        message: 'chapter id not exist',
         data: null,
       });
     }
@@ -271,7 +271,7 @@ const updateChapter = async (req, res, next) => {
     if (!chapterName || !classCode) {
       return res.status(400).json({
         status: false,
-        message: "chapter name and class code are required",
+        message: 'chapter name and class code are required',
         data: null,
       });
     }
@@ -283,7 +283,7 @@ const updateChapter = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: "chapter updated successfully",
+      message: 'chapter updated successfully',
       data: updatedChapter,
     });
   } catch (err) {
@@ -302,19 +302,19 @@ const deletedChapter = async (req, res, next) => {
     if (!existingChapter || !id) {
       return res.status(400).json({
         status: false,
-        message: "chapter id not exist",
+        message: 'chapter id not exist',
         data: null,
       });
     }
 
     await prisma.class.update({
       where: {
-        classCode : existingChapter.classCode
+        classCode: existingChapter.classCode,
       },
-      data:{
+      data: {
         module: -1,
-      }
-    })
+      },
+    });
 
     const deletedChapter = await prisma.chapters.delete({
       where: { id: Number(id) },
@@ -322,7 +322,7 @@ const deletedChapter = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: "chapter deleted successfully",
+      message: 'chapter deleted successfully',
       data: deletedChapter,
     });
   } catch (err) {

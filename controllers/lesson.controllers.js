@@ -146,70 +146,76 @@ const getPresentaseLesson = async (req, res, next) => {
       });
     }
 
-    // Set isView to true when hitting the endpoint
-    console.log("Before updating isView:", lesson.isView);
+   // Set isView to true when hitting the endpoint
+console.log("Before updating isView:", lesson.isView);
+await prisma.lessons.update({
+  where: { id: Number(id) },
+  data: { isView: true },
+});
+console.log("After updating isView:", true);
+
+const lessonClassCode = lesson.chapters.classCode;
+
+console.log("Lesson Class Code:", lessonClassCode);
+
+if (classCode !== lessonClassCode) {
+  return res.status(400).json({
+    status: false,
+    message:
+      "Kode kelas dan Id lesson tidak sesuai dengan pelajaran yang diminta",
+    data: null,
+  });
+}
+
+// Check if the lesson is free
+let isBuy = false;
+if (!lesson.is_free) {
+  const isBuyData = await prisma.transactions.findFirst({
+    where: {
+      classCode: lessonClassCode,
+      userId: userId,
+      status: true,
+    },
+  });
+
+  console.log("Is Buy Data:", isBuyData);
+
+  if (!isBuyData) {
+    // Update isView to false if is_buy is false
     await prisma.lessons.update({
       where: { id: Number(id) },
-      data: { isView: true },
+      data: { isView: false },
     });
-    console.log("After updating isView:", true);
 
-    const lessonClassCode = lesson.chapters.classCode;
-
-    if (classCode !== lessonClassCode) {
-      return res.status(400).json({
-        status: false,
-        message:
-          "Kode kelas dan Id lesson tidak sesuai dengan pelajaran yang diminta",
-        data: null,
-      });
-    }
-
-    // Check if the lesson is free
-    let isBuy = false;
-    if (!lesson.is_free) {
-      const isBuyData = await prisma.transactions.findFirst({
-        where: {
-          classCode: lessonClassCode,
-          userId: userId,
-          status: true,
-        },
-      });
-
-      if (!isBuyData) {
-        // Update isView to false if is_buy is false
-        await prisma.lessons.update({
-          where: { id: Number(id) },
-          data: { isView: false },
-        });
-
-        return res.status(403).json({
-          status: false,
-          message: "Pelajaran ini tidak dapat diakses karena tidak gratis",
-          data: {
-            lesson,
-            presentase: 0,
-            learning: null,
-            is_buy: false,
-          },
-        });
-      } else {
-        isBuy = isBuyData; // Assign the data to isBuy
-      }
-    }
-
-    const learning = await prisma.learning.findFirst({
-      where: {
-        lessonId: lesson.id,
-        userId: userId,
+    return res.status(403).json({
+      status: false,
+      message: "Pelajaran ini tidak dapat diakses karena tidak gratis",
+      data: {
+        lesson,
+        presentase: 0,
+        learning: null,
+        is_buy: false,
       },
     });
+  } else {
+    isBuy = isBuyData; // Assign the data to isBuy
+  }
+}
 
-    // Update isView on the Learning model for the specific user
-    await prisma.learning.update({
-      where: { id: learning.id },
-      data: { isView: true },
-    });
+const learning = await prisma.learning.findFirst({
+  where: {
+    lessonId: lesson.id,
+    userId: userId,
+  },
+});
+
+console.log("Learning Data:", learning);
+
+// Update isView on the Learning model for the specific user
+await prisma.learning.update({
+  where: { id: learning.id },
+  data: { isView: true },
+});
 
     if (!learning) {
       const newLearning = await prisma.learning.create({
@@ -256,22 +262,30 @@ const getPresentaseLesson = async (req, res, next) => {
 
     const calculatedPresentaseForUser =
       (totalIsViewForUser / totalLessonsInClassForUser) * 100;
-    const finalPresentaseForUser = Math.min(
-      100,
-      Math.round(calculatedPresentaseForUser / 10) * 10
-    );
+    const finalPresentaseForUser = Math.floor(calculatedPresentaseForUser);
 
     if (calculatedPresentaseForUser < 101) {
-      await prisma.learning.update({
-        where: { id: learning.id },
-        data: {
-          presentase: finalPresentaseForUser,
-          prevPresentase: finalPresentaseForUser,
-          inProgress: true,
-          is_buy: isBuy ? isBuy.status : false, // Set is_buy based on transaction status
-        },
-      });
-
+      // Check if the current lesson ID is the same as the one stored in the database
+      if (learning.lessonId === lesson.id) {
+        await prisma.learning.update({
+          where: { id: learning.id },
+          data: {
+            presentase: finalPresentaseForUser,
+            prevPresentase: finalPresentaseForUser,
+            inProgress: true,
+            is_buy: isBuy ? isBuy.status : false,
+          },
+        });
+      } else {
+        // Reset presentase to 0 if switching to a new lesson ID
+        console.log("Resetting presentase to 0");
+        await prisma.learning.update({
+          where: { id: learning.id },
+          data: { presentase: 0, prevPresentase: 0, lessonId: lesson.id },
+        });
+      }
+    
+      // Update catatan lain untuk pengguna dan classCode yang sama
       const excludedLessonIds = await prisma.learning.findMany({
         where: {
           userId: userId,
@@ -281,15 +295,18 @@ const getPresentaseLesson = async (req, res, next) => {
           id: true,
         },
       });
-
-      await prisma.learning.updateMany({
-        where: {
-          userId: userId,
-          lessonId: { in: excludedLessonIds.map((less) => less.id) },
-        },
-        data: { presentase: 0, prevPresentase: 0 },
-      });
+    
+      if (excludedLessonIds.length > 0) {
+        await prisma.learning.updateMany({
+          where: {
+            userId: userId,
+            lessonId: { in: excludedLessonIds.map((less) => less.id) },
+          },
+          data: { presentase: 0, prevPresentase: 0 },
+        });
+      }
     }
+    
 
     const updatedLearning = await prisma.learning.findFirst({
       where: {
@@ -298,6 +315,7 @@ const getPresentaseLesson = async (req, res, next) => {
       },
       select: {
         inProgress: true,
+        presentase: true,
         classCode: true,
         lessonId: true,
         userId: true,

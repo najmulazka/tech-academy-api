@@ -4,11 +4,11 @@
 
 ### GET ALL
 GET http://localhost:3000/api/v1/learning
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcwMzA4NDcxMX0.P_miAz_485HOuQsqoEAOnsRc7JsONBQ7nhbdtlYhhTE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMkBnbWFpbC5jb20iLCJpYXQiOjE3MDM5MDg4NjB9.sMg84VSxiOwXDKjyuojF8cHbRmrahlCfXivu54ZF8iU
 
 ### GET ALL LEARNING BY CLASSCODE
 GET http://localhost:3000/api/v1/learning/all
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIyQGdtYWlsLmNvbSIsImlhdCI6MTcwMzU4ODIxNn0.jQGYG0NdH2sjwtlSP9cMrc12DxNLKML-piQEoQXcDTE
+Authorization: apaneeeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMkBnbWFpbC5jb20iLCJpYXQiOjE3MDM5MDg4NjB9.sMg84VSxiOwXDKjyuojF8cHbRmrahlCfXivu54ZF8iU
 
 ### SEARCH LEARNING
 GET http://localhost:3000/api/v1/learning/all?search=test

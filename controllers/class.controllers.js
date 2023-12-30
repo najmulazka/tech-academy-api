@@ -239,7 +239,7 @@ const getByIdClass = async (req, res, next) => {
             userId: users.id,
             classCode: classCode,
           },
-          orderBy: { presentase: "desc" },
+          // orderBy: { presentase: "desc" },
           select: {
             presentase: true,
           },

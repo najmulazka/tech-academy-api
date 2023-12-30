@@ -45,7 +45,7 @@ POST http://localhost:3000/api/v1/auth/login-admin
 Content-Type: application/json
 
 {
-    "email":"admin@gmail.com",
+    "email":"admin2@gmail.com",
     "password":"admin"
 }
 
@@ -54,8 +54,8 @@ POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "fullName":"admin",
-    "email":"admin@gmail.com",
+    "fullName":"admin3",
+    "email":"admin3@gmail.com",
     "noTelp":"00000000000000",
     "password":"admin"
 }

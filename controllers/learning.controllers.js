@@ -59,7 +59,7 @@ const allLearningClassCode = async (req, res, next) => {
       levelName,
       isFree,
       inProgress,
-      limit = 10,
+      limit = 1000,
       page = 1,
     } = req.query;
     limit = Number(limit);
@@ -134,29 +134,22 @@ const allLearningClassCode = async (req, res, next) => {
       take: limit,
     });
 
-    const withPresentase = {};
+    // Membuat objek untuk menyimpan data untuk setiap classCode
+    const classCodeData = {};
+
+    // Memproses semua data dan memilih classCode dengan presentase tertinggi
     allLearning.forEach((item) => {
       const lowercaseClassCode = item.class.classCode.toLowerCase();
-
-      // Periksa apakah sudah ada entry untuk classCode tersebut
-      if (!withPresentase[lowercaseClassCode]) {
-        withPresentase[lowercaseClassCode] = {
+      if (!classCodeData[lowercaseClassCode] || item.presentase > classCodeData[lowercaseClassCode].presentase) {
+        classCodeData[lowercaseClassCode] = {
           ...item,
           prevPresentase: undefined,
         };
-      } else {
-        // Jika sudah ada, bandingkan presentase yang ada
-        if (item.presentase > withPresentase[lowercaseClassCode].presentase) {
-          // Ambil data dengan presentase tertinggi
-          withPresentase[lowercaseClassCode] = {
-            ...item,
-            prevPresentase: undefined,
-          };
-        }
       }
     });
 
-    const resultData = Object.values(withPresentase);
+    // Mengonversi objek menjadi array
+    const resultData = Object.values(classCodeData);
 
     res.status(200).json({
       status: true,
@@ -167,6 +160,7 @@ const allLearningClassCode = async (req, res, next) => {
     next(error);
   }
 };
+
 
 const getLearningByClassCode = async (req, res, next) => {
   try {

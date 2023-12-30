@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const {
   register,
+  sendOtp,
   resendOTP,
   verifyOTP,
   login,
@@ -13,6 +14,7 @@ const {
 const emailValidation = require('../middlewares/validationEmail.middlewares')
 
 router.post("/register", emailValidation, register);
+router.post("/send-otp", emailValidation, sendOtp);
 router.get("/resend-otp", resendOTP);
 router.post("/verify-otp", verifyOTP);
 router.post("/login-admin", loginAdmin);

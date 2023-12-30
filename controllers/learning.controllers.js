@@ -82,7 +82,6 @@ const allLearningClassCode = async (req, res, next) => {
     }
 
     if (latest) {
-
       orderBy.push({ class: { createdAt: "desc" } });
     }
 
@@ -138,11 +137,22 @@ const allLearningClassCode = async (req, res, next) => {
     const withPresentase = {};
     allLearning.forEach((item) => {
       const lowercaseClassCode = item.class.classCode.toLowerCase();
-      if (!withPresentase[lowercaseClassCode] || item.presentase > withPresentase[lowercaseClassCode].presentase) {
+
+      // Periksa apakah sudah ada entry untuk classCode tersebut
+      if (!withPresentase[lowercaseClassCode]) {
         withPresentase[lowercaseClassCode] = {
           ...item,
           prevPresentase: undefined,
         };
+      } else {
+        // Jika sudah ada, bandingkan presentase yang ada
+        if (item.presentase > withPresentase[lowercaseClassCode].presentase) {
+          // Ambil data dengan presentase tertinggi
+          withPresentase[lowercaseClassCode] = {
+            ...item,
+            prevPresentase: undefined,
+          };
+        }
       }
     });
 

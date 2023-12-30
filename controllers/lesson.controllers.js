@@ -1,22 +1,22 @@
-const prisma = require('../utils/libs/prisma.libs');
+const prisma = require("../utils/libs/prisma.libs");
 
 const getLessons = async (req, res, next) => {
   try {
     const lessons = await prisma.lessons.findMany({
       orderBy: {
-        id: 'asc',
+        id: "asc",
       },
     });
     if (!lessons || lessons.length === 0) {
       return res.status(400).json({
         status: false,
-        message: 'No Lessons Found',
+        message: "No Lessons Found",
         data: null,
       });
     }
     res.status(200).json({
       status: true,
-      message: 'Lessons retrieved successfully',
+      message: "Lessons retrieved successfully",
       data: lessons,
     });
   } catch (err) {
@@ -26,12 +26,24 @@ const getLessons = async (req, res, next) => {
 
 const createLesson = async (req, res, next) => {
   try {
-    const { title, learningMaterial, linkLearningMaterial, chapterId, duration } = req.body;
+    const {
+      title,
+      learningMaterial,
+      linkLearningMaterial,
+      chapterId,
+      duration,
+    } = req.body;
 
-    if (!title || !learningMaterial || !linkLearningMaterial || !chapterId || !duration) {
+    if (
+      !title ||
+      !learningMaterial ||
+      !linkLearningMaterial ||
+      !chapterId ||
+      !duration
+    ) {
       return res.status(400).json({
         status: false,
-        message: 'All fields must be filled in',
+        message: "All fields must be filled in",
         data: null,
       });
     }
@@ -44,7 +56,7 @@ const createLesson = async (req, res, next) => {
     if (!existingChapter) {
       return res.status(400).json({
         status: false,
-        message: 'Chapter with the provided ID does not exist',
+        message: "Chapter with the provided ID does not exist",
         data: null,
       });
     }
@@ -75,11 +87,11 @@ const createLesson = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'Lesson created successfully',
+      message: "Lesson created successfully",
       data: { lesson: newLesson },
     });
   } catch (err) {
-    console.error('Error creating lesson:', err);
+    console.error("Error creating lesson:", err);
     next(err);
   }
 };
@@ -89,19 +101,26 @@ const getLessonById = async (req, res, next) => {
     const lessonId = parseInt(req.params.id);
     const lesson = await prisma.lessons.findUnique({
       where: { id: lessonId },
+      include: {
+        chapters: {
+          select: {
+            chapterName: true,
+          },
+        },
+      },
     });
 
     if (!lesson) {
       return res.status(404).json({
         status: false,
-        message: 'Lesson not found',
+        message: "Lesson not found",
         data: null,
       });
     }
 
     res.status(200).json({
       status: true,
-      message: 'Lesson retrieved successfully',
+      message: "Lesson retrieved successfully",
       data: lesson,
     });
   } catch (err) {
@@ -112,6 +131,7 @@ const getLessonById = async (req, res, next) => {
 const getPresentaseLesson = async (req, res, next) => {
   try {
     const { classCode, id } = req.params;
+    const userId = req.user.id;
 
     const lesson = await prisma.lessons.findUnique({
       where: { id: Number(id) },
@@ -121,25 +141,26 @@ const getPresentaseLesson = async (req, res, next) => {
     if (!lesson || !id || !classCode) {
       return res.status(400).json({
         status: false,
-        message: 'Pelajaran dengan ID tertentu tidak ditemukan',
+        message: "Pelajaran dengan ID tertentu tidak ditemukan",
         data: null,
       });
     }
 
     // Set isView to true when hitting the endpoint
-    console.log('Before updating isView:', lesson.isView);
+    console.log("Before updating isView:", lesson.isView);
     await prisma.lessons.update({
       where: { id: Number(id) },
       data: { isView: true },
     });
-    console.log('After updating isView:', true);
+    console.log("After updating isView:", true);
 
     const lessonClassCode = lesson.chapters.classCode;
 
     if (classCode !== lessonClassCode) {
       return res.status(400).json({
         status: false,
-        message: 'Kode kelas dan Id lesson tidak sesuai dengan pelajaran yang diminta',
+        message:
+          "Kode kelas dan Id lesson tidak sesuai dengan pelajaran yang diminta",
         data: null,
       });
     }
@@ -150,7 +171,7 @@ const getPresentaseLesson = async (req, res, next) => {
       const isBuyData = await prisma.transactions.findFirst({
         where: {
           classCode: lessonClassCode,
-          userId: req.user.id,
+          userId: userId,
           status: true,
         },
       });
@@ -164,7 +185,7 @@ const getPresentaseLesson = async (req, res, next) => {
 
         return res.status(403).json({
           status: false,
-          message: 'Pelajaran ini tidak dapat diakses karena tidak gratis',
+          message: "Pelajaran ini tidak dapat diakses karena tidak gratis",
           data: {
             lesson,
             presentase: 0,
@@ -180,14 +201,20 @@ const getPresentaseLesson = async (req, res, next) => {
     const learning = await prisma.learning.findFirst({
       where: {
         lessonId: lesson.id,
-        userId: req.user.id,
+        userId: userId,
       },
+    });
+
+    // Update isView on the Learning model for the specific user
+    await prisma.learning.update({
+      where: { id: learning.id },
+      data: { isView: true },
     });
 
     if (!learning) {
       const newLearning = await prisma.learning.create({
         data: {
-          userId: req.user.id,
+          userId: userId,
           lessonId: lesson.id,
           presentase: 0,
           classCode: lessonClassCode,
@@ -199,7 +226,7 @@ const getPresentaseLesson = async (req, res, next) => {
 
       return res.status(200).json({
         status: true,
-        message: 'Rekam belajar baru telah dibuat untuk pelajaran tertentu',
+        message: "Rekam belajar baru telah dibuat untuk pelajaran tertentu",
         data: {
           lesson,
           presentase: Math.round(newLearning.presentase),
@@ -208,50 +235,47 @@ const getPresentaseLesson = async (req, res, next) => {
       });
     }
 
-    console.log('lessonClassCode:', lessonClassCode);
-    // Calculate presentase based on total isView in the classCode
-    const totalIsView = await prisma.lessons.count({
+    // Calculate presentase based on total isView in the classCode for the specific user
+    const totalIsViewForUser = await prisma.learning.count({
       where: {
-        chapters: {
-          classCode: lessonClassCode,
-        },
+        userId: userId,
+        classCode: lessonClassCode,
         isView: true,
       },
     });
 
-    const totalLessonsInClass = await prisma.lessons.count({
+    const totalLessonsInClassForUser = await prisma.learning.count({
       where: {
-        chapters: {
-          classCode: lessonClassCode,
-        },
+        userId: userId,
+        classCode: lessonClassCode,
       },
     });
 
-    console.log('Total isView:', totalIsView);
-    console.log('Total lessons in class:', totalLessonsInClass);
+    console.log("Total isView for user:", totalIsViewForUser);
+    console.log("Total lessons in class for user:", totalLessonsInClassForUser);
 
-    const calculatedPresentase = (totalIsView / totalLessonsInClass) * 100;
-    const finalPresentase = Math.min(100, Math.round(calculatedPresentase / 10) * 10);
+    const calculatedPresentaseForUser =
+      (totalIsViewForUser / totalLessonsInClassForUser) * 100;
+    const finalPresentaseForUser = Math.min(
+      100,
+      Math.round(calculatedPresentaseForUser / 10) * 10
+    );
 
-    if (calculatedPresentase < 101) {
+    if (calculatedPresentaseForUser < 101) {
       await prisma.learning.update({
         where: { id: learning.id },
         data: {
-          presentase: finalPresentase,
-          prevPresentase: finalPresentase,
+          presentase: finalPresentaseForUser,
+          prevPresentase: finalPresentaseForUser,
           inProgress: true,
           is_buy: isBuy ? isBuy.status : false, // Set is_buy based on transaction status
         },
       });
 
-      const excludedLessonIds = await prisma.lessons.findMany({
+      const excludedLessonIds = await prisma.learning.findMany({
         where: {
-          chapters: {
-            classCode: lessonClassCode,
-          },
-          id: {
-            not: lesson.id,
-          },
+          userId: userId,
+          lessonId: { not: lesson.id },
         },
         select: {
           id: true,
@@ -260,7 +284,7 @@ const getPresentaseLesson = async (req, res, next) => {
 
       await prisma.learning.updateMany({
         where: {
-          userId: req.user.id,
+          userId: userId,
           lessonId: { in: excludedLessonIds.map((less) => less.id) },
         },
         data: { presentase: 0, prevPresentase: 0 },
@@ -270,7 +294,7 @@ const getPresentaseLesson = async (req, res, next) => {
     const updatedLearning = await prisma.learning.findFirst({
       where: {
         lessonId: lesson.id,
-        userId: req.user.id,
+        userId: userId,
       },
       select: {
         inProgress: true,
@@ -283,10 +307,11 @@ const getPresentaseLesson = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'Detail pelajaran diambil dengan berhasil, dan presentase diperbarui',
+      message:
+        "Detail pelajaran diambil dengan berhasil, dan presentase diperbarui",
       data: {
         lesson,
-        presentase: Math.round(finalPresentase),
+        presentase: Math.round(finalPresentaseForUser),
         learning: updatedLearning,
         is_buy: Boolean(isBuy),
       },
@@ -299,7 +324,13 @@ const getPresentaseLesson = async (req, res, next) => {
 const updateLesson = async (req, res, next) => {
   try {
     const lessonId = Number(req.params.id);
-    const { title, learningMaterial, linkLearningMaterial, chapterId, duration } = req.body;
+    const {
+      title,
+      learningMaterial,
+      linkLearningMaterial,
+      chapterId,
+      duration,
+    } = req.body;
 
     // Periksa eksistensi pelajaran
     const existingLesson = await prisma.lessons.findUnique({
@@ -310,7 +341,7 @@ const updateLesson = async (req, res, next) => {
     if (!existingLesson) {
       return res.status(404).json({
         status: false,
-        message: 'Lesson with the provided ID not found',
+        message: "Lesson with the provided ID not found",
         data: null,
       });
     }
@@ -322,7 +353,7 @@ const updateLesson = async (req, res, next) => {
     if (!existingChapter) {
       return res.status(400).json({
         status: false,
-        message: 'Chapter with the provided ID does not exist',
+        message: "Chapter with the provided ID does not exist",
         data: null,
       });
     }
@@ -343,14 +374,16 @@ const updateLesson = async (req, res, next) => {
 
     if (durationChange !== 0) {
       // update total duration pada chapter
-      let updatedTotalDurationChapter = existingChapter.totalDuration + durationChange;
+      let updatedTotalDurationChapter =
+        existingChapter.totalDuration + durationChange;
       await prisma.chapters.update({
         where: { id: existingLesson.chapters.id },
         data: { totalDuration: updatedTotalDurationChapter },
       });
 
       // update total duration pada class
-      let updatedTotalDurationClass = existingLesson.chapters.class.totalDuration + durationChange;
+      let updatedTotalDurationClass =
+        existingLesson.chapters.class.totalDuration + durationChange;
       await prisma.class.update({
         where: { classCode: existingLesson.chapters.class.classCode },
         data: { totalDuration: updatedTotalDurationClass },
@@ -359,7 +392,7 @@ const updateLesson = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'Lesson updated successfully',
+      message: "Lesson updated successfully",
       data: updatedLesson,
     });
   } catch (err) {
@@ -379,20 +412,22 @@ const deleteLesson = async (req, res, next) => {
     if (!existingLesson) {
       return res.status(404).json({
         status: false,
-        message: 'Lesson with the provided ID not found',
+        message: "Lesson with the provided ID not found",
         data: null,
       });
     }
 
     // kurangi total duration pada chapter dan class
-    let updatedTotalDurationChapter = existingLesson.chapters.totalDuration - existingLesson.duration;
+    let updatedTotalDurationChapter =
+      existingLesson.chapters.totalDuration - existingLesson.duration;
 
     await prisma.chapters.update({
       where: { id: existingLesson.chapterId },
       data: { totalDuration: updatedTotalDurationChapter },
     });
 
-    let updatedTotalDurationClass = existingLesson.chapters.class.totalDuration - existingLesson.duration;
+    let updatedTotalDurationClass =
+      existingLesson.chapters.class.totalDuration - existingLesson.duration;
 
     await prisma.class.update({
       where: { classCode: existingLesson.chapters.class.classCode },
@@ -406,7 +441,7 @@ const deleteLesson = async (req, res, next) => {
 
     res.status(200).json({
       status: true,
-      message: 'Lesson deleted successfully',
+      message: "Lesson deleted successfully",
       data: null,
     });
   } catch (error) {

@@ -74,6 +74,7 @@ model Learning {
   classCode      String
   lessonId       Int
   userId         Int
+  isView         Boolean @default(false)
   class          Class   @relation(fields: [classCode], references: [classCode], onUpdate: Cascade, onDelete: Cascade)
   lesson         Lessons @relation(fields: [lessonId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   users          Users   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)

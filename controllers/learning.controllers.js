@@ -138,7 +138,7 @@ const allLearningClassCode = async (req, res, next) => {
     const withPresentase = {};
     allLearning.forEach((item) => {
       const lowercaseClassCode = item.class.classCode.toLowerCase();
-      if (!withPresentase[lowercaseClassCode] || item.presentase !== 0) {
+      if (!withPresentase[lowercaseClassCode] || item.presentase > withPresentase[lowercaseClassCode].presentase) {
         withPresentase[lowercaseClassCode] = {
           ...item,
           prevPresentase: undefined,

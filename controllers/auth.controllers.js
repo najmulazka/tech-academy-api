@@ -69,6 +69,65 @@ const register = async (req, res, next) => {
   }
 };
 
+const sendOtp = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        status: false,
+        message: 'Bad Request',
+        error: 'Email is required',
+        data: null,
+      });
+    }
+
+    let user = await prisma.users.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if(user.isActivated){
+      return res.status(400).json({
+        status: false,
+        message: 'Bad Request',
+        error: 'Email is Activated',
+        data: null,
+      });
+    }
+
+    const otp = generateOTP();
+    await prisma.activationCodes.upsert({
+      where: { userId: user.id },
+      create: {
+        userId: user.id,
+        activationCode: otp,
+        createdAt: new Date(),
+      },
+      update: {
+        activationCode: otp,
+        createdAt: new Date(),
+      },
+    });
+
+    let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
+    const htmlOtp = await nodemailer.getHtml('otp-message.ejs', {
+      user: { activationCode: otp },
+    });
+    nodemailer.sendEmail(email, 'Activation Code Verification', htmlOtp);
+
+    return res.status(200).json({
+      status: true,
+      message: 'send OTP success',
+      err: null,
+      data: { email, token },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const resendOTP = async (req, res, next) => {
   try {
     const { token } = req.query;
@@ -661,6 +720,7 @@ const changePassword = async (req, res, next) => {
 
 module.exports = {
   register,
+  sendOtp,
   resendOTP,
   verifyOTP,
   loginAdmin,

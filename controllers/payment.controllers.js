@@ -44,6 +44,17 @@ const createTransaction = async (req, res, next) => {
       },
     });
 
+    if (classExist.isFree) {
+      const UpdateTransaction = await prisma.transactions.update({
+        where: {
+          id: transaction.id,
+        },
+        data: {
+          status: true,
+        },
+      });
+    }
+
     res.status(200).json({
       status: true,
       message: 'OK!',

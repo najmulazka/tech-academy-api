@@ -254,6 +254,21 @@ const getByIdClass = async (req, res, next) => {
           presentase = learning.presentase;
         }
 
+        if(existingClass.isFree){
+          isBuy = true
+
+          return res.status(200).json({
+            status: true,
+            message: "getById class successfully",
+            data: {
+              ...existingClass,
+              is_buy: Boolean(isBuy),
+              presentase: presentase,
+              chapters: chaptersWithPreview,
+            },
+          });
+        }
+
         res.status(200).json({
           status: true,
           message: "getById class successfully",

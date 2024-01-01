@@ -193,6 +193,9 @@ const getByIdClass = async (req, res, next) => {
     }
 
     let isBuy = false;
+    if(existingClass.isFree){
+      isBuy = true
+    }
 
     let { authorization } = req.headers;
     let users;

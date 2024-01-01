@@ -193,9 +193,6 @@ const getByIdClass = async (req, res, next) => {
     }
 
     let isBuy = false;
-    if(existingClass.isFree){
-      isBuy = true
-    }
 
     let { authorization } = req.headers;
     let users;
@@ -255,6 +252,21 @@ const getByIdClass = async (req, res, next) => {
         let presentase = 0;
         if (learning) {
           presentase = learning.presentase;
+        }
+
+        if(existingClass.isFree){
+          isBuy = true
+
+          return res.status(200).json({
+            status: true,
+            message: "getById class successfully",
+            data: {
+              ...existingClass,
+              is_buy: Boolean(isBuy),
+              presentase: presentase,
+              chapters: chaptersWithPreview,
+            },
+          });
         }
 
         res.status(200).json({

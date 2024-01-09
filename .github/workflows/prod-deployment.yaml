@@ -19,6 +19,15 @@ jobs:
         with:
           node-version: 18.x
 
+      - name: Install Packages
+        run: npm install
+
+      - name: Prisma migrate
+        run: npx prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_DATABASE_URL }}
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 

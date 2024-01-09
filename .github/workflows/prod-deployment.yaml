@@ -1,14 +1,15 @@
-name: Deploy to Railway PROD Environment
-
+name: PROD environment
+# env:
+#   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+#   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
   push:
     branches:
-      - 'main'
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,18 +19,14 @@ jobs:
         with:
           node-version: 18.x
 
-      - name: Install Packages
-        run: npm install
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
 
-      - name: Install Railway CLI
-        run: npm i -g @railway/cli
+      # - name: Pull Vercel Environment Information
+      #   run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Run Migration
-        run: railway run --service ${{secrets.RAILWAY_SERVICE_ID}} npx prisma migrate deploy
-        env:
-          RAILWAY_TOKEN: ${{secrets.RAILWAY_PROD_TOKEN}}
+      # - name: Build Project
+      #   run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Deploy to Railway(prod)
-        run: railway up --service ${{secrets.RAILWAY_SERVICE_ID}}
-        env:
-          RAILWAY_TOKEN: ${{secrets.RAILWAY_PROD_TOKEN}}
+      # - name: Deploy Project to Vercel
+      #   run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

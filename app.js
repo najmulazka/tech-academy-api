@@ -7,6 +7,7 @@ const Sentry = require('@sentry/node');
 const path = require('path');
 const { PORT = 3000, SENRTY_DSN } = process.env;
 const { notFoundHandler, errorHandler } = require('./middlewares/index.middlewares');
+const pool = require('./database');
 
 Sentry.init({
   dsn: SENRTY_DSN,

@@ -7,7 +7,6 @@ const Sentry = require('@sentry/node');
 const path = require('path');
 const { PORT = 3000, SENRTY_DSN } = process.env;
 const { notFoundHandler, errorHandler } = require('./middlewares/index.middlewares');
-const pool = require('./database');
 
 Sentry.init({
   dsn: SENRTY_DSN,
@@ -38,7 +37,7 @@ app.use('/api/v1', require('./routes/index.routes'));
 app.use(Sentry.Handlers.errorHandler());
 
 // server error handling middleware
-app.use(notFoundHandler);
-app.use(errorHandler);
+// app.use(notFoundHandler);
+// app.use(errorHandler);
 
 app.listen(PORT, () => console.log('Running on port', PORT));

@@ -45,7 +45,7 @@ const register = async (req, res, next) => {
     const htmlOtp = await nodemailer.getHtml("otp-message.ejs", {
       user: { activationCode: otp },
     });
-    nodemailer.sendEmail(email, "Activation Code Verification", htmlOtp);
+    await nodemailer.sendEmail(email, "Activation Code Verification", htmlOtp);
 
     let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
 

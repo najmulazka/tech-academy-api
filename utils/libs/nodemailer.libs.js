@@ -31,7 +31,7 @@ module.exports = {
       },
     });
 
-    transport.sendMail({ to, subject, html });
+    await transport.sendMail({ to, subject, html });
   },
 
   getHtml: (fileName, data) => {

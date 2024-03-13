@@ -9,15 +9,6 @@ const register = async (req, res, next) => {
   try {
     const { fullName, email, noTelp, password } = req.body;
 
-    if (!email) {
-      return res.status(400).json({
-        status: false,
-        message: "Bad Request",
-        error: "Email is required",
-        data: null,
-      });
-    }
-
     let userExist = await prisma.users.findUnique({ where: { email } });
     if (userExist) {
       return res.status(400).json({
@@ -51,12 +42,12 @@ const register = async (req, res, next) => {
         createdAt: new Date(),
       },
     });
-
-    let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
     const htmlOtp = await nodemailer.getHtml("otp-message.ejs", {
       user: { activationCode: otp },
     });
     nodemailer.sendEmail(email, "Activation Code Verification", htmlOtp);
+
+    let token = jwt.sign({ email: user.email }, JWT_SECRET_KEY);
 
     return res.status(201).json({
       status: true,

@@ -58,7 +58,7 @@ const register = async (req, res, next) => {
     });
     nodemailer.sendEmail(email, "Activation Code Verification", htmlOtp);
 
-    return res.status(200).json({
+    return res.status(201).json({
       status: true,
       message: "Created",
       err: null,

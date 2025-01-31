@@ -44,8 +44,8 @@ module.exports = {
       html,
     });
 
-    console.log('Message sent: %s', info.messageId);
-    console.log('send mail success');
+    // console.log('Message sent: %s', info.messageId);
+    // console.log('send mail success');
     // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
   },
 

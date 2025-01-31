@@ -106,7 +106,7 @@ const sendOtp = async (req, res, next) => {
     const htmlOtp = await nodemailer.getHtml('otp-message.ejs', {
       user: { activationCode: otp },
     });
-    nodemailer.sendEmail(email, 'Activation Code Verification', htmlOtp);
+    await nodemailer.sendEmail(email, 'Activation Code Verification', htmlOtp);
 
     return res.status(200).json({
       status: true,
@@ -168,7 +168,7 @@ const resendOTP = async (req, res, next) => {
     const htmlOtp = await nodemailer.getHtml('otp-message.ejs', {
       user: { activationCode: otp },
     });
-    nodemailer.sendEmail(email, 'Activation Code Resent', htmlOtp);
+    await nodemailer.sendEmail(email, 'Activation Code Resent', htmlOtp);
 
     return res.status(200).json({
       status: true,
@@ -235,7 +235,7 @@ const verifyOTP = async (req, res, next) => {
     const htmlOtp = await nodemailer.getHtml('welcome-message.ejs', {
       user: { fullName: user.fullName },
     });
-    nodemailer.sendEmail(email, 'Welcome to TechAcademy', htmlOtp);
+    await nodemailer.sendEmail(email, 'Welcome to TechAcademy', htmlOtp);
 
     await prisma.notifications.create({
       data: {
@@ -446,7 +446,7 @@ const resendOtpPassword = async (req, res, next) => {
         otp,
         fullName: user.fullName,
       });
-      nodemailer.sendEmail(decoded.email, 'Lupa Password', htmlOtp);
+      await nodemailer.sendEmail(decoded.email, 'Lupa Password', htmlOtp);
 
       return res.status(200).json({
         status: true,
@@ -604,7 +604,7 @@ const resetPassword = async (req, res, next) => {
       const resetPasswordSucces = await nodemailer.getHtml('reset-password-success.ejs', {
         fullName: user.fullName,
       });
-      nodemailer.sendEmail(user.email, 'Reset Password Success', resetPasswordSucces);
+      await nodemailer.sendEmail(user.email, 'Reset Password Success', resetPasswordSucces);
 
       return res.status(200).json({
         status: true,

@@ -7,6 +7,7 @@ const Sentry = require('@sentry/node');
 const path = require('path');
 const { PORT = 3000, SENRTY_DSN } = process.env;
 const { notFoundHandler, errorHandler } = require('./middlewares/index.middlewares');
+const { sendEmail } = require('./utils/libs/nodemailer.libs');
 
 Sentry.init({
   dsn: SENRTY_DSN,
@@ -31,6 +32,9 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   return res.status(200).json({ status: true, message: 'Welcome to techacademy app', err: null, data: null });
 });
+// app.get('/test', async (req, res) => {
+//   await sendEmail();
+// });
 app.use('/api/v1', require('./routes/index.routes'));
 
 // The error handler must be registered before any other error middleware and after all controllers

@@ -56,9 +56,9 @@ Content-Type: application/json
 
 {
     "fullName":"user1",
-    "email":"najmulaz3dwq69@gmail.com",
-    "noTelp":"000000000",
-    "password":"userrrrrr1"
+    "email":"asdasfdsafds@gmail.com",
+    "noTelp":"0000000000",
+    "password":"admin"
 }
 
 ### change-password
